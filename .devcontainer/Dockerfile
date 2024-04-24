@@ -1,5 +1,5 @@
 # TensorFlow
-FROM tensorflow/tensorflow:latest-gpu
+FROM pytorch/pytorch:2.2.2-cuda12.1-cudnn8-runtime
 
 
 # Set application directory <app>
@@ -10,7 +10,7 @@ WORKDIR /app
 COPY /.devcontainer/requirements.txt /app
 
 RUN pip install --upgrade pip && \
-    pip install --rrequirement /app/requirements.txt --no-cache
+    pip install -r /app/requirements.txt --no-cache
 
 
 # Port
