@@ -11,33 +11,30 @@ class Fundamentals:
         
         self.__datapath = config.Config().datapath 
 
-        self.__names: dict[str, str] = {'Word': 'word',
-                                        'POS': 'part', 'Tag': 'tag'}
+        self.__names: dict[str, str] = {'Word': 'word', 'POS': 'part', 'Tag': 'tag'}
 
     def __read(self) -> dfr.DataFrame:
 
         try:
             frame: dfr.DataFrame = dfr.read_csv(path=os.path.join(self.__datapath, 'dataset.csv'), header=0)
-            # frame: pd.DataFrame = pd.read_csv(filepath_or_buffer=os.path.join(self.__datapath, 'dataset.csv'), header=0, encoding='utf-8')
         except ImportError as err:
             raise err from err
         
-        frame = frame.assign(sentence_identifier=frame['Sentence #'].ffill())
-        frame = frame.drop(columns='Sentence #')
+        frame: dfr.DataFrame = frame.assign(sentence_identifier=frame['Sentence #'].ffill())
+        frame: dfr.DataFrame = frame.drop(columns='Sentence #')
                 
         return frame
 
-    def __rename(self, blob):
+    def __rename(self, blob: dfr.DataFrame) -> dfr.DataFrame:
 
-        frame = blob.copy()
-        # frame.rename(mapper=str.lower, axis=1, inplace=True)
-        frame = frame.rename(columns=self.__names)
+        frame: dfr.DataFrame = blob.copy()
+        frame: dfr.DataFrame = frame.rename(columns=self.__names)
         
         return frame
 
     def exc(self) -> pd.DataFrame:
 
-        frame = self.__read()
-        frame = self.__rename(blob=frame)
+        frame: dfr.DataFrame = self.__read()
+        frame: dfr.DataFrame = self.__rename(blob=frame)
         
         return frame.compute()
