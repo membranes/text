@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import dask.dataframe as dfr
+import dask_expr._collection
 
 import config
 
@@ -10,35 +11,33 @@ class Fundamentals:
         
         self.__datapath = config.Config().datapath 
 
-        self.__names: dict[str, str] = {'sentence #': 'sentence_identifier', 'pos': 'part'}
+        self.__names: dict[str, str] = {'Word': 'word',
+                                        'POS': 'part', 'Tag': 'tag'}
 
-    def __read(self) -> pd.DataFrame:
+    def __read(self) -> dfr.DataFrame:
 
         try:
-             frame: pd.DataFrame = pd.read_csv(filepath_or_buffer=os.path.join(self.__datapath, 'dataset.csv'), header=0, encoding='utf-8')
+            frame: dfr.DataFrame = dfr.read_csv(path=os.path.join(self.__datapath, 'dataset.csv'), header=0)
+            # frame: pd.DataFrame = pd.read_csv(filepath_or_buffer=os.path.join(self.__datapath, 'dataset.csv'), header=0, encoding='utf-8')
         except ImportError as err:
             raise err from err
         
-        frame.loc[:, 'Sentence #'] = frame['Sentence #'].ffill().values
-
-        print(type(frame))
-        
+        frame = frame.assign(sentence_identifier=frame['Sentence #'].ffill())
+        frame = frame.drop(columns='Sentence #')
+                
         return frame
 
-    def __rename(self, blob: pd.DataFrame) -> pd.DataFrame:
+    def __rename(self, blob):
 
-        frame: pd.DataFrame = blob.copy()
-        frame.rename(mapper=str.lower, axis=1, inplace=True)
-        frame.rename(columns={'sentence #': 'sentence_identifier', 'pos': 'part'}, inplace=True)
+        frame = blob.copy()
+        # frame.rename(mapper=str.lower, axis=1, inplace=True)
+        frame = frame.rename(columns=self.__names)
         
         return frame
 
     def exc(self) -> pd.DataFrame:
 
-        frame: pd.DataFrame = self.__read()
+        frame = self.__read()
         frame = self.__rename(blob=frame)
-
-        return frame
         
-        
-
+        return frame.compute()
