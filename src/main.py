@@ -12,6 +12,7 @@ def main():
     logger.info(msg=device)
 
     data = src.data.fundamentals.Fundamentals().exc()
+    logger.info('Hence ...')
     data.info()
 
 
