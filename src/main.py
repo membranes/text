@@ -11,6 +11,9 @@ def main():
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     logger.info(msg=device)
 
+    data = src.data.fundamentals.Fundamentals().exc()
+    data.info()
+
 
 if __name__ == '__main__':
 
@@ -23,6 +26,9 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO,
                         format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
                         datefmt='%Y-%m-%d %H:%M:%S')
+    
+    # Modules
+    import src.data.fundamentals
 
 
     main()
