@@ -2,6 +2,7 @@ import logging
 import os
 import sys
 
+import pandas as pd
 import torch
 
 def main():
@@ -11,7 +12,7 @@ def main():
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     logger.info(msg=device)
 
-    data = src.data.fundamentals.Fundamentals().exc()
+    data: pd.DataFrame = src.data.fundamentals.Fundamentals().exc()
     logger.info('Hence ...')
     data.info()
 
