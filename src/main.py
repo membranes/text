@@ -12,9 +12,9 @@ def main():
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     logger.info(msg=device)
 
-    src.data.fundamentals.Fundamentals().exc()
-    # logger.info(msg=data.head())
-    # data.info()
+    data: pd.DataFrame = src.data.fundamentals.Fundamentals().exc()
+    logger.info(msg=data.head())
+    data.info()
     
     src.functions.cache.Cache().exc()
 
