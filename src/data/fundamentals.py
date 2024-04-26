@@ -45,6 +45,7 @@ class Fundamentals:
 
         frame: dfr.DataFrame = self.__read()
         frame: dfr.DataFrame = self.__rename(blob=frame)
-        frame = self.__tag_splits(blob=frame)
+        frame: dfr.DataFrame = frame.assign(word=frame['word'].astype(str))
+        frame: dfr.DataFrame = self.__tag_splits(blob=frame)
         
         return frame.compute()
