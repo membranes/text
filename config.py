@@ -13,3 +13,6 @@ class Config:
 
         self.datapath = os.path.join(os.getcwd(), 'data')
         self.warehouse = os.path.join(os.getcwd(), 'warehouse')
+
+        # Addressing category imbalance ...
+        self.minimum_category_frequency = 1000
