@@ -14,7 +14,7 @@ def main():
     logger.info(msg=device)
 
     # The Data
-    data: pd.DataFrame = src.data.source.Fundamentals().exc()
+    data: pd.DataFrame = src.data.source.Source().exc()
     
     # Tags
     elements, enumerator, denumerator = src.data.tags.Tags(data=data).exc()
