@@ -22,8 +22,8 @@ class Tags:
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger: logging.Logger = logging.getLogger(name=__name__)
 
-    def exc(self, series: pd.Series):
+    def exc(self, blob: pd.DataFrame):
 
-        elements: pd.DataFrame = series.value_counts().to_frame().reset_index(drop=False)
+        elements: pd.DataFrame = blob.groupby(by=['tag', 'annotation', 'category']).value_counts().to_frame().reset_index(drop=False)
 
         self.__logger.info(elements)
