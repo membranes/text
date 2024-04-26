@@ -5,7 +5,7 @@ import dask_expr._collection
 
 import config
 
-class Fundamentals:
+class Source:
 
     def __init__(self) -> None:
         
