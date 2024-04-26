@@ -31,10 +31,19 @@ class Fundamentals:
         frame: dfr.DataFrame = frame.rename(columns=self.__names)
         
         return frame
+    
+    def __tag_splits(self, blob: dfr.DataFrame):
 
-    def exc(self) -> pd.DataFrame:
+        splits = blob['tag'].str.split(pat='-', n=2, expand=True)
+        print(type(splits))
+        
+        return splits
+
+    def exc(self):
 
         frame: dfr.DataFrame = self.__read()
         frame: dfr.DataFrame = self.__rename(blob=frame)
-        
-        return frame.compute()
+        splits = self.__tag_splits(blob=frame)
+        splits = splits.rename(columns={0: 'annotation', 1: 'category'})
+        X = splits.compute()
+        print(X)
