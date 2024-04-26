@@ -19,7 +19,10 @@ def main():
     data.info()
 
     # Tags
-    src.data.tags.Tags(data=data).exc()
+    elements, enumerator, denumerator = src.data.tags.Tags(data=data).exc()
+    logger.info(elements)
+    logger.info(enumerator)
+    logger.info(denumerator)
     
     # Delete Cache Points
     src.functions.cache.Cache().exc()
