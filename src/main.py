@@ -24,6 +24,11 @@ def main():
     logger.info(enumerator)
     logger.info(denumerator)
     
+    # Balance/Imbalance
+    data = data.copy().loc[data['category'].isin(values=elements['category'].unique()), :]
+    logger.info(msg=data.head())
+    data.info()
+
     # Delete Cache Points
     src.functions.cache.Cache().exc()
 
