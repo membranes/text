@@ -19,7 +19,7 @@ def main():
     data.info()
 
     # Tags
-    src.data.tags.Tags().exc(series=data['tag'])
+    src.data.tags.Tags(data=data).exc()
     
     # Delete Cache Points
     src.functions.cache.Cache().exc()
