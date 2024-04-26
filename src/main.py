@@ -16,6 +16,8 @@ def main():
     logger.info('Hence ...')
     data.info()
 
+    src.functions.cache.Cache().exc()
+
 
 if __name__ == '__main__':
 
@@ -31,6 +33,7 @@ if __name__ == '__main__':
     
     # Modules
     import src.data.fundamentals
+    import src.functions.cache
 
 
     main()
