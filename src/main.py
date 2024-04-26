@@ -14,7 +14,7 @@ def main():
     logger.info(msg=device)
 
     # The Data
-    data: pd.DataFrame = src.data.fundamentals.Fundamentals().exc()
+    data: pd.DataFrame = src.data.source.Fundamentals().exc()
     
     # Tags
     elements, enumerator, denumerator = src.data.tags.Tags(data=data).exc()
@@ -43,7 +43,7 @@ if __name__ == '__main__':
                         datefmt='%Y-%m-%d %H:%M:%S')
     
     # Modules
-    import src.data.fundamentals
+    import src.data.source
     import src.data.tags
     import src.data.demarcations
     import src.functions.cache
