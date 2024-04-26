@@ -32,18 +32,18 @@ class Fundamentals:
         
         return frame
     
-    def __tag_splits(self, blob: dfr.DataFrame):
+    def __tag_splits(self, blob: dfr.DataFrame) -> dfr.DataFrame:
 
-        splits = blob['tag'].str.split(pat='-', n=2, expand=True)
-        print(type(splits))
+        splits: dfr.DataFrame = blob['tag'].str.split(pat='-', n=2, expand=True)
+        splits: dfr.DataFrame = splits.rename(columns={0: 'annotation', 1: 'category'})
+        frame : dfr.DataFrame = blob.join(other=splits)   
         
-        return splits
+        return frame
 
-    def exc(self):
+    def exc(self) -> pd.DataFrame:
 
         frame: dfr.DataFrame = self.__read()
         frame: dfr.DataFrame = self.__rename(blob=frame)
-        splits = self.__tag_splits(blob=frame)
-        splits = splits.rename(columns={0: 'annotation', 1: 'category'})
-        X = splits.compute()
-        print(X)
+        frame = self.__tag_splits(blob=frame)
+        
+        return frame.compute()
