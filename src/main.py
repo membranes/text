@@ -13,9 +13,9 @@ def main():
     logger.info(msg=device)
 
     data: pd.DataFrame = src.data.fundamentals.Fundamentals().exc()
-    logger.info('Hence ...')
+    logger.info(msg=data.head())
     data.info()
-
+    
     src.functions.cache.Cache().exc()
 
 
