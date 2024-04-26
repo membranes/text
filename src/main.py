@@ -15,19 +15,16 @@ def main():
 
     # The Data
     data: pd.DataFrame = src.data.fundamentals.Fundamentals().exc()
-    logger.info(msg=data.head())
-    data.info()
-
+    
     # Tags
     elements, enumerator, denumerator = src.data.tags.Tags(data=data).exc()
-    logger.info(elements)
-    logger.info(enumerator)
-    logger.info(denumerator)
     
     # Balance/Imbalance
     data = data.copy().loc[data['category'].isin(values=elements['category'].unique()), :]
-    logger.info(msg=data.head())
-    data.info()
+
+    # Sentences & Labels
+    frame = src.data.demarcations.Dermacations(data=data).__call__()
+    logger.info(frame)
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
@@ -48,6 +45,7 @@ if __name__ == '__main__':
     # Modules
     import src.data.fundamentals
     import src.data.tags
+    import src.data.demarcations
     import src.functions.cache
     
     main()
