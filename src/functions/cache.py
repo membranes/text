@@ -14,21 +14,33 @@ class Cache:
         Constructor
         """
 
+        self.__patterns: list[str] = ['__pycache__', '.pytest_cache']
+
         # Logging
         logging.basicConfig(level=logging.WARNING,
                             format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
 
-    def delete(self):
+    def __delete(self, pattern: str) -> None:
         """
-        
+
         :return:
         """
 
-        for path in pathlib.Path.cwd().rglob('__pycache__'):
+        for path in pathlib.Path.cwd().rglob(pattern=pattern):
             if path.is_dir():
                 try:
                     shutil.rmtree(path)
                 except PermissionError as err:
                     raise (self.__logger.warning(err)) from err
+
+    def exc(self):
+        """
+
+        :return: None
+        """
+
+        for pattern in self.__patterns:
+
+            self.__delete(pattern=pattern)
