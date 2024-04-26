@@ -36,7 +36,8 @@ class Fundamentals:
 
         splits: dfr.DataFrame = blob['tag'].str.split(pat='-', n=2, expand=True)
         splits: dfr.DataFrame = splits.rename(columns={0: 'annotation', 1: 'category'})
-        frame : dfr.DataFrame = blob.join(other=splits)   
+        splits: dfr.DataFrame = splits.assign(category=splits['category'].fillna(value='O'))
+        frame : dfr.DataFrame = blob.join(other=splits)
         
         return frame
 
