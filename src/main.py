@@ -23,7 +23,7 @@ def main():
     data = data.copy().loc[data['category'].isin(values=elements['category'].unique()), :]
 
     # Sentences & Labels
-    frame: pd.DataFrame = src.data.demarcations.Dermacations(data=data).__call__()
+    frame: pd.DataFrame = src.data.demarcations.Dermacations(data=data).exc()
     logger.info(frame)
 
     # Delete Cache Points
