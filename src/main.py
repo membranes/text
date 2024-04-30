@@ -27,6 +27,8 @@ def main():
     frame: pd.DataFrame = src.data.demarcations.Dermacations(data=data).exc()
     logger.info(frame)
 
+    src.structures.initial.Initial(frame=frame, enumerator=enumerator).exc()
+
     # Delete Cache Points
     src.functions.cache.Cache().exc()
 
@@ -48,5 +50,6 @@ if __name__ == '__main__':
     import src.data.tags
     import src.data.demarcations
     import src.functions.cache
+    import src.structures.initial
     
     main()
