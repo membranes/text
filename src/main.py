@@ -15,6 +15,7 @@ def main():
 
     # The Data
     data: pd.DataFrame = src.data.source.Source().exc()
+    logger.info(data.head())
     
     # Tags
     elements, enumerator, denumerator = src.data.tags.Tags(data=data).exc()
