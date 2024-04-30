@@ -15,7 +15,7 @@ class Dermacations:
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
 
-    def __call__(self) -> pd.DataFrame:
+    def exc(self) -> pd.DataFrame:
 
         T = self.__data[['sentence_identifier', 'word', 'tag']].copy()
         T.info()
