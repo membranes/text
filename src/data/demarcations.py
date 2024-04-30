@@ -29,5 +29,6 @@ class Dermacations:
         
         frame: pd.DataFrame = sentences.join(labels).drop_duplicates()
         frame.reset_index(inplace=True)
+        frame.rename(columns={'word': 'sentence', 'tag': 'tagstr'}, inplace=True)
 
         return frame
