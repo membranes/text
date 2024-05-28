@@ -45,7 +45,7 @@ class Data(torch.utils.data.Dataset):
     def __getitem__(self, index):
         """
 
-        
+        :param index: A row index
         """
 
         # A sentence's words, and the tokenization of words
