@@ -3,6 +3,11 @@ import pandas as pd
 import src.structures.bert.data
 import src.elements.variable
 
+import src.structures.bert.preview
+import logging
+
+import config
+
 class Initial:
 
     def __init__(self, frame: pd.DataFrame, enumerator: dict) -> None:
@@ -13,6 +18,12 @@ class Initial:
         self.__seed = 5
 
         self.__variable = src.elements.variable.Variable()
+        self.__preview = src.structures.bert.preview.Preview()
+
+        logging.basicConfig(level=logging.INFO,
+                            format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
+                            datefmt='%Y-%m-%d %H:%M:%S')
+        self.__logger = logging.getLogger(__name__)
 
     def __split(self):
 
@@ -28,9 +39,11 @@ class Initial:
     
     def __bert(self, blob: pd.DataFrame):
 
-        return src.structures.bert.data.Data(
-            blob, self.__variable, self.__enumerator)
+        dataset = src.structures.bert.data.Data(blob, self.__variable, self.__enumerator)
 
+        # self.__preview.exc(dataset=dataset)
+
+        return dataset
 
     def exc(self):
 
@@ -39,5 +52,5 @@ class Initial:
         btr = self.__bert(blob=training)
         bva = self.__bert(blob=validating)
 
-        print(btr[0])
-        print(bva[0])
+        self.__logger.info('Training Object: %s', btr.__len__())
+        self.__logger.info('Validating Object: %s', bva.__len__())
