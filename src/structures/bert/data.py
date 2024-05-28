@@ -37,17 +37,19 @@ class Data(torch.utils.data.Dataset):
         :return:
         """
 
+        temporary = classes.copy()
+
         i = 0
         for index, mapping in enumerate(encoding['offset_mapping']):
 
             if mapping[0] == 0 and mapping[1] != 0:
-                classes[index] = codes[i]
+                temporary[index] = codes[i]
                 i += 1
 
-        return classes
+        return temporary
 
     @staticmethod
-    def __structure(encoding: dict, classes: np.ndarray) -> dict:
+    def __structure(encoding: dict, temporary: np.ndarray) -> dict:
         """
 
         :param encoding:
@@ -56,7 +58,7 @@ class Data(torch.utils.data.Dataset):
         """
 
         item = {key: torch.as_tensor(value) for key, value in encoding.items()} 
-        item['labels'] = torch.as_tensor(classes)     
+        item['labels'] = torch.as_tensor(temporary)
 
         return item 
 
@@ -78,9 +80,9 @@ class Data(torch.utils.data.Dataset):
         codes = [self.__enumerator[tag] for tag in tags]
 
         # Re-setting
-        classes: np.ndarray = self.__temporary(encoding=encoding, classes=classes, codes=codes)
+        temporary: np.ndarray = self.__temporary(encoding=encoding, classes=classes, codes=codes)
 
-        return self.__structure(encoding=encoding, classes=classes)
+        return self.__structure(encoding=encoding, temporary=temporary)
     
     def __len__(self):
         """
