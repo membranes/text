@@ -1,7 +1,7 @@
 import pandas as pd
 
 import src.structures.bert.data
-import src.types.variable
+import src.elements.variable
 
 class Initial:
 
@@ -12,7 +12,7 @@ class Initial:
         self.__fraction = 0.8
         self.__seed = 5
 
-        self.__variable = src.types.variable.Variable()
+        self.__variable = src.elements.variable.Variable()
 
     def __split(self):
 
