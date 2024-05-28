@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 import torch
 import torch.utils.data
-import transformers
 
+import src.structures.bert.parameters
 import src.elements.variable
 
 
@@ -25,9 +25,7 @@ class Data(torch.utils.data.Dataset):
 
         self.__variable = variable
         self.__enumerator = enumerator
-
-        self.__tokenizer = transformers.BertTokenizerFast.from_pretrained(
-            pretrained_model_name_or_path='google-bert/bert-base-uncased')
+        self.__tokenizer = src.structures.bert.parameters.Parameters().tokenizer
 
     @staticmethod
     def __temporary(encoding: dict, classes: np.ndarray, codes: list) -> np.ndarray:
@@ -71,8 +69,9 @@ class Data(torch.utils.data.Dataset):
 
         # A sentence's words, and the tokenization of words
         words: list[str] = self.__frame['sentence'][index].strip().split()
-        encoding: dict = self.__tokenizer(words, padding='max_length', truncation=True,
-                                          max_length=self.__variable.MAX_LENGTH, return_offsets_mapping=True)
+        encoding: dict = self.__tokenizer(
+            words, padding='max_length', truncation=True,
+            max_length=self.__variable.MAX_LENGTH, return_offsets_mapping=True)
         classes: np.ndarray = np.ones(shape=len(encoding['offset_mapping']), dtype=int) * -100
 
         # The corresponding tags of a sentence's words, and the code of each tag
