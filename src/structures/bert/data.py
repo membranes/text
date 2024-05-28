@@ -49,12 +49,12 @@ class Data(torch.utils.data.Dataset):
         return classes
 
     @staticmethod
-    def __space(encoding: dict, classes: np.ndarray) -> dict:
+    def __structure(encoding: dict, classes: np.ndarray) -> dict:
         """
 
         :param encoding:
         :param classes:
-        :return:
+        :return: A dictionary of tensors
         """
 
         item = {key: torch.as_tensor(value) for key, value in encoding.items()} 
@@ -62,7 +62,7 @@ class Data(torch.utils.data.Dataset):
 
         return item 
 
-    def __getitem__(self, index):
+    def __getitem__(self, index) -> dict:
         """
 
         :param index: A row index
@@ -82,7 +82,7 @@ class Data(torch.utils.data.Dataset):
         # Re-setting
         classes: np.ndarray = self.__temporary(encoding=encoding, classes=classes, codes=codes)
 
-        return self.__space(encoding=encoding, classes=classes)
+        return self.__structure(encoding=encoding, classes=classes)
     
     def __len__(self):
         """
