@@ -8,6 +8,9 @@ import src.structures.bert.parameters
 class Preview:
 
     def __init__(self):
+        """
+
+        """
 
         self.__tokenizer = src.structures.bert.parameters.Parameters().tokenizer
 
@@ -15,25 +18,52 @@ class Preview:
                             format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
+        
+    def __content(self, segment: dict):
+        """
+
+        :param segment:
+        :return:
+        """
+
+        inputs_: torch.Tensor = segment['input_ids']
+        labels_: torch.Tensor = segment['labels']
+        token_type_identifiers_: torch.Tensor = segment['token_type_ids']
+        attention_mask_: torch.Tensor = segment['attention_mask']
+        offset_mapping_: torch.Tensor = segment['offset_mapping']
+        
+        return inputs_, labels_, token_type_identifiers_, attention_mask_, offset_mapping_
+
+    def __details(self, name: str, item: torch.Tensor):
+        """
+
+        :param name:
+        :param item:
+        :return:
+        """
+
+        self.__logger.info('%s: %s', name, item.shape)
+        self.__logger.info(item.data)
 
     def exc(self, dataset):
+        """
 
+        :param dataset:
+        :return:
+        """
+
+        # A segment of dataset
         index = dataset.__len__() - 1
-        dictionary: dict = dataset.__getitem__(index)
-        elements: torch.Tensor = dictionary['input_ids']
-        labels: torch.Tensor = dictionary['labels']
-
-        self.__logger.info(dictionary.keys())
-        self.__logger.info(dictionary)
-
-        self.__logger.info(elements.shape)
-        self.__logger.info(elements)
-
-        self.__logger.info(labels.shape)
-        self.__logger.info(labels)
+        segment: dict = dataset.__getitem__(index)
+        self.__logger.info(segment.keys())
+        
+        # The content of the segment
+        inputs_, labels_, _, _, _ = self.__content(segment=segment)
+        self.__details(name='inputs', item=inputs_)
+        self.__details(name='labels', item=labels_)
 
 
-        for element, label in zip(elements[:5], labels[:5]):
-            self.__logger.info(element)
-            self.__logger.info(label)
-            self.__logger.info(self.__tokenizer.convert_ids_to_tokens(element))
+        for input_, label_ in zip(inputs_[:5], labels_[:5]):
+            self.__logger.info(input_)
+            self.__logger.info(label_)
+            self.__logger.info(self.__tokenizer.convert_ids_to_tokens(input_))
