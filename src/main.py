@@ -9,7 +9,7 @@ def main():
 
     logger: logging.Logger = logging.getLogger(__name__)
 
-    # Device Selection
+    # Device Selection: Setting a graphics processing unit as the default device
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     logger.info(msg=device)
 
