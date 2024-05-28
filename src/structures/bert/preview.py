@@ -1,5 +1,7 @@
 import logging
 
+import torch
+
 import src.structures.bert.parameters
 
 
@@ -18,17 +20,19 @@ class Preview:
 
         index = dataset.__len__() - 1
         dictionary = dataset.__getitem__(index)
+        elements: torch.Tensor = dictionary['input_ids']
+        labels: torch.Tensor = dictionary['labels']
 
         self.__logger.info(dictionary)
 
-        for input in dictionary['input_ids']:
-            self.__logger.info(input)
+        self.__logger.info(elements.shape)
+        self.__logger.info(elements)
 
-        '''
-        tokens = self.__tokenizer.convert_ids_to_tokens(dataset[0]['input_ids'])
-        labels = dataset[0]['labels']
-        for token, label in zip(tokens, labels):
+        self.__logger.info(labels.shape)
+        self.__logger.info(labels)
 
-            self.__logger.info('%s: %s', token, label)
-        '''
 
+        for element, label in zip(elements[:5], labels[:5]):
+            self.__logger.info(element)
+            self.__logger.info(label)
+            self.__logger.info(self.__tokenizer.convert_ids_to_tokens(element))
