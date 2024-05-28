@@ -27,7 +27,7 @@ def main():
     data = data.copy().loc[data['category'].isin(values=elements['category'].unique()), :]
 
     # Sentences & Labels
-    frame: pd.DataFrame = src.data.demarcations.Dermacations(data=data).exc()
+    frame: pd.DataFrame = src.data.demarcations.Demarcations(data=data).exc()
     logger.info(frame)
 
     src.structures.initial.Initial(frame=frame, enumerator=enumerator).exc()
