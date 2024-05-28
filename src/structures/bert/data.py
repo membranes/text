@@ -3,8 +3,8 @@ import pandas as pd
 import torch
 import torch.utils.data
 
-import src.structures.bert.parameters
 import src.elements.variable
+import src.structures.bert.parameters
 
 
 class Data(torch.utils.data.Dataset):
@@ -69,9 +69,8 @@ class Data(torch.utils.data.Dataset):
 
         # A sentence's words, and the tokenization of words
         words: list[str] = self.__frame['sentence'][index].strip().split()
-        encoding: dict = self.__tokenizer(
-            words, padding='max_length', truncation=True,
-            max_length=self.__variable.MAX_LENGTH, return_offsets_mapping=True)
+        encoding: dict = self.__tokenizer(words, padding='max_length', truncation=True,
+                                          max_length=self.__variable.MAX_LENGTH, return_offsets_mapping=True)
         classes: np.ndarray = np.ones(shape=len(encoding['offset_mapping']), dtype=int) * -100
 
         # The corresponding tags of a sentence's words, and the code of each tag
