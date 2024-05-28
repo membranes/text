@@ -1,9 +1,10 @@
 import os
-import pandas as pd
+
 import dask.dataframe as dfr
-import dask_expr._collection
+import pandas as pd
 
 import config
+
 
 class Source:
 
@@ -32,7 +33,8 @@ class Source:
         
         return frame
     
-    def __tag_splits(self, blob: dfr.DataFrame) -> dfr.DataFrame:
+    @staticmethod
+    def __tag_splits(blob: dfr.DataFrame) -> dfr.DataFrame:
 
         splits: dfr.DataFrame = blob['tag'].str.split(pat='-', n=2, expand=True)
         splits: dfr.DataFrame = splits.rename(columns={0: 'annotation', 1: 'category'})
