@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 
 
-class Dermacations:
+class Demarcations:
 
     def __init__(self, data: pd.DataFrame) -> None:
         
