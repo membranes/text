@@ -1,6 +1,8 @@
 """config.py"""
 import os
 
+import transformers
+
 class Config:
     """
     Config
@@ -16,3 +18,5 @@ class Config:
 
         # Addressing category imbalance ...
         self.minimum_category_frequency = 1000
+
+
