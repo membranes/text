@@ -19,6 +19,9 @@ def main():
     
     # Tags
     elements, enumerator, denumerator = src.data.tags.Tags(data=data).exc()
+    logger.info(elements)
+    logger.info(enumerator)
+    logger.info(denumerator)
     
     # Balance/Imbalance
     data = data.copy().loc[data['category'].isin(values=elements['category'].unique()), :]
