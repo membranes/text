@@ -48,6 +48,7 @@ docker run --rm --gpus all -i -t -p 127.0.0.1:10000:8888 pytorch/pytorch:2.2.2-c
   * The Data
   * Format vis-à-vis annotation scheme.
   * Investigate tag categories imbalances, i.e., cf. the categories tags frequencies vis-à-vis <abbr title="inside">I</abbr>, <abbr title="outside">O</abbr>, & <abbr title="beginning">B</abbr>.
+  * Beware of token encoding approaches.
 
 
 
