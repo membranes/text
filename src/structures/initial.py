@@ -1,12 +1,11 @@
-import pandas as pd
-
-import src.structures.bert.data
-import src.elements.variable
-
-import src.structures.bert.preview
 import logging
 
-import config
+import pandas as pd
+
+import src.elements.variable
+import src.structures.bert.data
+import src.structures.bert.preview
+
 
 class Initial:
 
@@ -41,7 +40,7 @@ class Initial:
 
         dataset = src.structures.bert.data.Data(blob, self.__variable, self.__enumerator)
 
-        # self.__preview.exc(dataset=dataset)
+        self.__preview.exc(dataset=dataset)
 
         return dataset
 
