@@ -17,13 +17,13 @@ class Demarcations:
 
     def exc(self) -> pd.DataFrame:
 
-        T = self.__data[['sentence_identifier', 'word', 'tag']].copy()
-        T.info()
+        blob = self.__data[['sentence_identifier', 'word', 'tag']].copy()
+        blob.info()
 
-        sentences: pd.DataFrame = T.drop(columns='tag').groupby(
+        sentences: pd.DataFrame = blob.drop(columns='tag').groupby(
             by=['sentence_identifier'])['word'].apply(lambda x: ' '.join(x)).to_frame()
 
-        labels: pd.DataFrame = T.drop(columns='word').groupby(
+        labels: pd.DataFrame = blob.drop(columns='word').groupby(
             by=['sentence_identifier'])['tag'].apply(lambda x: ','.join(x)).to_frame()
         
         
