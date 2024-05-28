@@ -4,7 +4,7 @@ Language
 
 <br>
 
-### Notes
+### Development Notes
 
 Build
 
@@ -34,6 +34,23 @@ or
 ```bash
 docker run --rm --gpus all -i -t -p 127.0.0.1:10000:8888 pytorch/pytorch:2.2.2-cuda12.1-cudnn8-devel
 ```
+
+<br>
+<br>
+
+### Modelling Notes
+
+* Word level annotation scheme: <abbr title="Inside, Outside, Beginning">IOB</abbr> Tagging
+  * [tagtog](https://docs.tagtog.com)
+  * [doccano](https://github.com/doccano/doccano)
+
+* STEPS
+  * The Data
+  * Format vis-à-vis annotation scheme.
+  * Investigate tag categories imbalances.
+
+
+
 
 <br>
 <br>
