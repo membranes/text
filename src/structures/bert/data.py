@@ -5,11 +5,11 @@ import transformers
 import numpy as np
 import pandas as pd
 
-import src.types.variable
+import src.elements.variable
 
 class Data(torch.utils.data.Dataset):
 
-    def __init__(self, frame: pd.DataFrame, variable: src.types.variable.Variable, 
+    def __init__(self, frame: pd.DataFrame, variable: src.elements.variable.Variable,
                  enumerator: dict) -> None:
         super().__init__()
 
