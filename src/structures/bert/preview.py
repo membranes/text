@@ -19,10 +19,11 @@ class Preview:
     def exc(self, dataset):
 
         index = dataset.__len__() - 1
-        dictionary = dataset.__getitem__(index)
+        dictionary: dict = dataset.__getitem__(index)
         elements: torch.Tensor = dictionary['input_ids']
         labels: torch.Tensor = dictionary['labels']
 
+        self.__logger.info(dictionary.keys())
         self.__logger.info(dictionary)
 
         self.__logger.info(elements.shape)
