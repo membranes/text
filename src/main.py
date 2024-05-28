@@ -28,7 +28,7 @@ def main():
 
     # Sentences & Labels
     frame: pd.DataFrame = src.data.demarcations.Demarcations(data=data).exc()
-    logger.info(frame)
+    logger.info(frame.head())
 
     src.structures.initial.Initial(frame=frame, enumerator=enumerator).exc()
 
