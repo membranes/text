@@ -51,9 +51,9 @@ class Tags:
     
     def __coding(self, series: pd.Series) -> typing.Tuple[dict, dict]:
 
-        enumerator: dict[str, int] = {k: v for v, k in enumerate(iterable=series)}
+        enumerator = {k: v for v, k in enumerate(iterable=series)}
 
-        denumerator: dict[int, str] = {v: k for v, k in enumerate(iterable=series)}
+        denumerator = {v: k for v, k in enumerate(iterable=series)}
 
         return enumerator, denumerator
 
