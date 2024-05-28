@@ -1,16 +1,23 @@
-import torch.utils.data
-import torch
-import transformers
-
 import numpy as np
 import pandas as pd
+import torch
+import torch.utils.data
+import transformers
 
 import src.elements.variable
+
 
 class Data(torch.utils.data.Dataset):
 
     def __init__(self, frame: pd.DataFrame, variable: src.elements.variable.Variable,
                  enumerator: dict) -> None:
+        """
+
+        :param frame:
+        :param variable:
+        :param enumerator:
+        """
+
         super().__init__()
 
         self.__frame = frame
@@ -24,6 +31,13 @@ class Data(torch.utils.data.Dataset):
 
     @staticmethod
     def __temporary(encoding: dict, classes: np.ndarray, codes: list) -> np.ndarray:
+        """
+
+        :param encoding:
+        :param classes:
+        :param codes:
+        :return:
+        """
 
         i = 0
         for index, mapping in enumerate(encoding['offset_mapping']):
@@ -36,6 +50,12 @@ class Data(torch.utils.data.Dataset):
 
     @staticmethod
     def __space(encoding: dict, classes: np.ndarray) -> dict:
+        """
+
+        :param encoding:
+        :param classes:
+        :return:
+        """
 
         item = {key: torch.as_tensor(value) for key, value in encoding.items()} 
         item['labels'] = torch.as_tensor(classes)     
