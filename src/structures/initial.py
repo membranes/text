@@ -1,6 +1,7 @@
 import logging
 
 import pandas as pd
+import torch.utils.data
 
 import src.elements.variable
 import src.structures.bert.data
@@ -36,10 +37,10 @@ class Initial:
 
         return training, validating
     
-    def __bert(self, blob: pd.DataFrame):
+    def __bert(self, blob: pd.DataFrame) -> dict:
 
         dataset = src.structures.bert.data.Data(blob, self.__variable, self.__enumerator)
-
+        self.__logger.info(type(dataset))
         self.__preview.exc(dataset=dataset)
 
         return dataset
@@ -50,6 +51,3 @@ class Initial:
 
         btr = self.__bert(blob=training)
         bva = self.__bert(blob=validating)
-
-        self.__logger.info('Training Object: %s', btr.__len__())
-        self.__logger.info('Validating Object: %s', bva.__len__())
