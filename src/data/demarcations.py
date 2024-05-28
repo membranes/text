@@ -15,18 +15,30 @@ class Demarcations:
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
 
+    @staticmethod
+    def __sentences(blob: pd.DataFrame) -> pd.DataFrame:
+
+        sentences: pd.DataFrame = blob.copy().drop(columns='tag').groupby(
+            by=['sentence_identifier'])['word'].apply(lambda x: ' '.join(x)).to_frame()
+
+        return sentences
+
+    @staticmethod
+    def __labels(blob: pd.DataFrame) -> pd.DataFrame:
+
+        labels: pd.DataFrame = blob.copy().drop(columns='word').groupby(
+            by=['sentence_identifier'])['tag'].apply(lambda x: ','.join(x)).to_frame()
+
+        return labels
+
     def exc(self) -> pd.DataFrame:
 
         blob = self.__data[['sentence_identifier', 'word', 'tag']].copy()
         blob.info()
 
-        sentences: pd.DataFrame = blob.drop(columns='tag').groupby(
-            by=['sentence_identifier'])['word'].apply(lambda x: ' '.join(x)).to_frame()
+        sentences = self.__sentences(blob=blob)
+        labels = self.__labels(blob=blob)
 
-        labels: pd.DataFrame = blob.drop(columns='word').groupby(
-            by=['sentence_identifier'])['tag'].apply(lambda x: ','.join(x)).to_frame()
-        
-        
         frame: pd.DataFrame = sentences.join(labels).drop_duplicates()
         frame.reset_index(inplace=True)
         frame.rename(columns={'word': 'sentence', 'tag': 'tagstr'}, inplace=True)
