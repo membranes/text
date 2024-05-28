@@ -22,7 +22,8 @@ class Data(torch.utils.data.Dataset):
         self.__tokenizer = transformers.BertTokenizerFast.from_pretrained(
             pretrained_model_name_or_path='google-bert/bert-base-uncased')
 
-    def __temporary(self, encoding: dict, classes: np.ndarray, codes: list) -> np.ndarray:
+    @staticmethod
+    def __temporary(encoding: dict, classes: np.ndarray, codes: list) -> np.ndarray:
 
         i = 0
         for index, mapping in enumerate(encoding['offset_mapping']):
@@ -33,7 +34,8 @@ class Data(torch.utils.data.Dataset):
 
         return classes
 
-    def __space(self, encoding: dict, classes: np.ndarray) -> dict:
+    @staticmethod
+    def __space(encoding: dict, classes: np.ndarray) -> dict:
 
         item = {key: torch.as_tensor(value) for key, value in encoding.items()} 
         item['labels'] = torch.as_tensor(classes)     
@@ -42,22 +44,20 @@ class Data(torch.utils.data.Dataset):
 
     def __getitem__(self, index):
         """
-        sentence: str, tagstr: str
-        sentence.strip().split()
-        tagstr.split(',')
+
         
         """
 
         # A sentence's words, and the tokenization of words
         words: list[str] = self.__frame['sentence'][index].strip().split()
-        encoding: dict = self.__tokenizer(words, padding='max_length', 
-                                    truncation=True, max_length=self.__variable.MAX_LENGTH, 
-                                    return_offsets_mapping=True)        
+        encoding: dict = self.__tokenizer(words, padding='max_length',
+                                          truncation=True, max_length=self.__variable.MAX_LENGTH,
+                                          return_offsets_mapping=True)
         classes: np.ndarray = np.ones(shape=len(encoding['offset_mapping']), dtype=int) * -100
 
-        # The corresponding taglets of a sentence's words, and the code of each taglet
-        taglets: list[str] = self.__frame['tagstr'][index].split(',')
-        codes = [self.__enumerator[label] for label in taglets]
+        # The corresponding tags of a sentence's words, and the code of each tag
+        tags: list[str] = self.__frame['tagstr'][index].split(',')
+        codes = [self.__enumerator[tag] for tag in tags]
 
         # Re-setting
         classes: np.ndarray = self.__temporary(encoding=encoding, classes=classes, codes=codes)
