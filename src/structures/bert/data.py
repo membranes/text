@@ -66,13 +66,13 @@ class Data(torch.utils.data.Dataset):
         """
 
         :param index: A row index
+        :return:
         """
 
         # A sentence's words, and the tokenization of words
         words: list[str] = self.__frame['sentence'][index].strip().split()
-        encoding: dict = self.__tokenizer(words, padding='max_length',
-                                          truncation=True, max_length=self.__variable.MAX_LENGTH,
-                                          return_offsets_mapping=True)
+        encoding: dict = self.__tokenizer(words, padding='max_length', truncation=True,
+                                          max_length=self.__variable.MAX_LENGTH, return_offsets_mapping=True)
         classes: np.ndarray = np.ones(shape=len(encoding['offset_mapping']), dtype=int) * -100
 
         # The corresponding tags of a sentence's words, and the code of each tag
@@ -85,5 +85,9 @@ class Data(torch.utils.data.Dataset):
         return self.__space(encoding=encoding, classes=classes)
     
     def __len__(self):
+        """
+
+        :return:
+        """
 
         return self.__length
