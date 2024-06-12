@@ -1,10 +1,11 @@
 """Module tags.py"""
 import logging
-import numpy as np
-import pandas as pd
 import typing
 
+import pandas as pd
+
 import config
+
 
 class Tags:
     """
@@ -49,13 +50,14 @@ class Tags:
 
         return elements
     
-    def __coding(self, series: pd.Series) -> typing.Tuple[dict, dict]:
+    @staticmethod
+    def __coding(series: pd.Series) -> typing.Tuple[dict, dict]:
 
         enumerator = {k: v for v, k in enumerate(iterable=series)}
 
-        denumerator = {v: k for v, k in enumerate(iterable=series)}
+        archetype = {v: k for v, k in enumerate(iterable=series)}
 
-        return enumerator, denumerator
+        return enumerator, archetype
 
 
     def exc(self) -> typing.Tuple[pd.DataFrame, dict, dict]:
@@ -72,7 +74,7 @@ class Tags:
 
         # Coding
         enumerator: dict
-        denumerator: dict
-        enumerator, denumerator = self.__coding(series=elements['tag'])
+        archetype: dict
+        enumerator, archetype = self.__coding(series=elements['tag'])
 
-        return elements, enumerator, denumerator
+        return elements, enumerator, archetype
