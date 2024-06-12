@@ -19,7 +19,8 @@ class Preview:
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
         
-    def __content(self, segment: dict):
+    @staticmethod
+    def __content(segment: dict):
         """
 
         :param segment:
@@ -55,15 +56,17 @@ class Preview:
         # A segment of dataset
         index = dataset.__len__() - 1
         segment: dict = dataset.__getitem__(index)
+        self.__logger.info(dataset.__len__())
         self.__logger.info(segment.keys())
+        self.__logger.info(segment)
         
         # The content of the segment
         inputs_, labels_, _, _, _ = self.__content(segment=segment)
         self.__details(name='inputs', item=inputs_)
         self.__details(name='labels', item=labels_)
 
-
-        for input_, label_ in zip(inputs_[:5], labels_[:5]):
-            self.__logger.info(input_)
-            self.__logger.info(label_)
-            self.__logger.info(self.__tokenizer.convert_ids_to_tokens(input_))
+        #
+        # for input_, label_ in zip(inputs_[:2], labels_[:2]):
+        #     self.__logger.info(input_)
+        #     self.__logger.info(label_)
+        #     self.__logger.info(self.__tokenizer.convert_ids_to_tokens(input_))
