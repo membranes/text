@@ -39,10 +39,7 @@ class Tags:
         """
 
         categories: pd.DataFrame = blob[['category', 'count']].groupby(by='category').sum().reset_index(drop=False)
-        self.__logger.info(msg=categories)
-
         categories = categories.copy().loc[categories['count'] >= self.__mcf, :]
-        self.__logger.info(msg=categories)
 
         elements: pd.DataFrame = blob.copy().loc[
             blob['category'].isin(values=categories['category'].values), :]
