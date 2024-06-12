@@ -57,8 +57,8 @@ class Dataset(torch.utils.data.Dataset):
                 ela[index] = labels[index]
                 i += 1
 
+        encoding['labels'] = ela
         item = {key: torch.as_tensor(value) for key, value in encoding.items()}
-        item['labels'] = torch.as_tensor(ela)
         
         return item
     
