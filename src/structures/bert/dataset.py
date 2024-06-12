@@ -48,14 +48,12 @@ class Dataset(torch.utils.data.Dataset):
         tags: list[str] = self.__frame['tagstr'][index].split(',')
         labels = [self.__enumerator[tag] for tag in tags]
         
-        # Herein, per word index we iterate through the offset pairings per
-        # token of the word.  There are <max_length> tokens per word.
-        # (number of words, maximum number of tokens, 2)
-        i = 0
+        # Herein, per word index cf. offset pairings.  There are <max_length> tokens.
+        # (maximum number of tokens, 2)
+        limit = len(labels)
         for iteration, mapping in enumerate(encoding['offset_mapping']):
-            if mapping[0] == 0 and mapping[1] != 0:
-                ela[iteration] = labels[i]
-                i += 1
+            if mapping[0] == 0 and mapping[1] != 0 and iteration < limit:
+                ela[iteration] = labels[iteration]
 
         encoding['labels'] = ela
         item = {key: torch.as_tensor(value) for key, value in encoding.items()}
