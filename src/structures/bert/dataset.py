@@ -37,6 +37,7 @@ class Dataset(torch.utils.data.Dataset):
         # A sentence's words, and the tokenization of words
         words: list[str] = self.__frame['sentence'][index].strip().split()
         encoding: dict = self.__tokenizer(words, padding='max_length', truncation=True,
+                                          is_split_into_words=True,
                                           max_length=self.__variable.MAX_LENGTH,
                                           return_offsets_mapping=True)
 
@@ -50,11 +51,10 @@ class Dataset(torch.utils.data.Dataset):
         # Herein, per word index we iterate through the offset pairings per
         # token of the word.  There are <max_length> tokens per word.
         # (number of words, maximum number of tokens, 2)
-        # Why labels[i] instead of labels[index]?
         i = 0
-        for index, mapping in enumerate(encoding['offset_mapping']):
-            if mapping[0][0] == 0 and mapping[0][1] != 0:
-                ela[index] = labels[index]
+        for iteration, mapping in enumerate(encoding['offset_mapping']):
+            if mapping[0] == 0 and mapping[1] != 0:
+                ela[iteration] = labels[i]
                 i += 1
 
         encoding['labels'] = ela
