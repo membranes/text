@@ -17,7 +17,7 @@ docker build . --file .devcontainer/Dockerfile --tag entities
 For a built image ...
 
 ```bash
-docker run --rm -i -t -p 127.0.0.1:10000:8888 -w /app \
+docker run --rm --gpus all -i -t -p 127.0.0.1:10000:8888 -w /app \
     --mount type=bind,src="$(pwd)",target=/app entities
 ```
 
