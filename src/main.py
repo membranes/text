@@ -18,10 +18,10 @@ def main():
     logger.info(data.head())
     
     # Tags
-    elements, enumerator, denumerator = src.data.tags.Tags(data=data).exc()
+    elements, enumerator, archetype = src.data.tags.Tags(data=data).exc()
     logger.info(elements)
     logger.info(enumerator)
-    logger.info(denumerator)
+    logger.info(archetype)
     
     # Balance/Imbalance
     data = data.copy().loc[data['category'].isin(values=elements['category'].unique()), :]
