@@ -48,6 +48,8 @@ class Initial:
     def exc(self):
 
         training, validating = self.__split()
+        self.__logger.info('training: %s', training.shape)
+        self.__logger.info('validating: %s', validating.shape)
 
         btr = self.__bert(blob=training)
         bva = self.__bert(blob=validating)
