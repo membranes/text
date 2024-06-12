@@ -36,9 +36,11 @@ class Demarcations:
         blob = self.__data[['sentence_identifier', 'word', 'tag']].copy()
         blob.info()
 
+        # Re-build the sentences, and a string of the corresponding labels per sentence word.
         sentences = self.__sentences(blob=blob)
         labels = self.__labels(blob=blob)
 
+        # The frames <sentences> & <labels> each have a _sentence identifiers_ index field.
         frame: pd.DataFrame = sentences.join(labels).drop_duplicates()
         frame.reset_index(inplace=True)
         frame.rename(columns={'word': 'sentence', 'tag': 'tagstr'}, inplace=True)
