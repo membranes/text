@@ -37,22 +37,28 @@ class Data(torch.utils.data.Dataset):
         # A sentence's words, and the tokenization of words
         words: list[str] = self.__frame['sentence'][index].strip().split()
         encoding: dict = self.__tokenizer(words, padding='max_length', truncation=True,
-                                          max_length=self.__variable.MAX_LENGTH, return_offsets_mapping=True)
-        labels: np.ndarray = np.ones(shape=len(encoding['offset_mapping']), dtype=int) * -100
+                                          max_length=self.__variable.MAX_LENGTH,
+                                          return_offsets_mapping=True)
+
+        # placeholder array of labels for the encoding dict
+        ela: np.ndarray = np.ones(shape=self.__variable.MAX_LENGTH, dtype=int) * -100
 
         # The corresponding tags of a sentence's words, and the code of each tag
         tags: list[str] = self.__frame['tagstr'][index].split(',')
-        codes = [self.__enumerator[tag] for tag in tags]
+        labels = [self.__enumerator[tag] for tag in tags]
         
-        # Hence
+        # Herein, per word index we iterate through the offset pairings per
+        # token of the word.  There are <max_length> tokens per word.
+        # (number of words, maximum number of tokens, 2)
+        # Why labels[i] instead of labels[index]?
         i = 0
         for index, mapping in enumerate(encoding['offset_mapping']):
-            if mapping[0] == 0 and mapping[1] != 0:
-                labels[index] = codes[i]
+            if mapping[0][0] == 0 and mapping[0][1] != 0:
+                ela[index] = labels[index]
                 i += 1
 
         item = {key: torch.as_tensor(value) for key, value in encoding.items()}
-        item['labels'] = torch.as_tensor(labels)
+        item['labels'] = torch.as_tensor(ela)
         
         return item
     
