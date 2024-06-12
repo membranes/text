@@ -1,8 +1,10 @@
 import logging
 
 import torch
-
+import numpy as np
 import src.structures.bert.parameters
+
+import config
 
 
 class Preview:
@@ -14,6 +16,10 @@ class Preview:
 
         self.__tokenizer = src.structures.bert.parameters.Parameters().tokenizer
 
+        # A random number generator instance
+        self.__rng = np.random.default_rng(seed=config.Config().seed)
+
+        # Logging
         logging.basicConfig(level=logging.INFO,
                             format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
                             datefmt='%Y-%m-%d %H:%M:%S')
@@ -54,16 +60,17 @@ class Preview:
         """
 
         # A segment of dataset
-        index = dataset.__len__() - 1
+        index = self.__rng.integers(low=0, high=(dataset.__len__() - 1))
         segment: dict = dataset.__getitem__(index)
-        self.__logger.info(dataset.__len__())
+
+        self.__logger.info('Previewing an instance of the data: ...')
         self.__logger.info(segment.keys())
-        self.__logger.info(segment)
         
         # The content of the segment
-        inputs_, labels_, _, _, _ = self.__content(segment=segment)
+        inputs_, labels_, token_type_identifiers_, _, _ = self.__content(segment=segment)
         self.__details(name='inputs', item=inputs_)
         self.__details(name='labels', item=labels_)
+        self.__details(name='token type identifiers', item=token_type_identifiers_)
 
         #
         # for input_, label_ in zip(inputs_[:2], labels_[:2]):
