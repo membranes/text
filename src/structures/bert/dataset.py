@@ -7,7 +7,7 @@ import src.elements.variable
 import src.structures.bert.parameters
 
 
-class Data(torch.utils.data.Dataset):
+class Dataset(torch.utils.data.Dataset):
 
     def __init__(self, frame: pd.DataFrame, variable: src.elements.variable.Variable,
                  enumerator: dict) -> None:
