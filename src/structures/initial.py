@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 
 import src.elements.variable
-import src.structures.bert.data
+import src.structures.bert.dataset
 import src.structures.bert.preview
 
 
@@ -38,7 +38,7 @@ class Initial:
     
     def __bert(self, blob: pd.DataFrame) -> dict:
 
-        dataset = src.structures.bert.data.Data(blob, self.__variable, self.__enumerator)
+        dataset = src.structures.bert.dataset.Dataset(blob, self.__variable, self.__enumerator)
         self.__logger.info('frame: %s', blob.shape)
         self.__logger.info('dataset: %s', dataset.__len__())
 
