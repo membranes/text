@@ -17,3 +17,11 @@ class Config:
 
         # Addressing category imbalance ...
         self.minimum_category_frequency = 1000
+
+        '''Modelling'''
+
+        # Splitting fraction
+        self.fraction = 0.8
+
+        # Seed: All cases
+        self.seed = 5
