@@ -53,7 +53,7 @@ class Data(torch.utils.data.Dataset):
         """
 
         :param encoding:
-        :param classes:
+        :param temporary:
         :return: A dictionary of tensors
         """
 
