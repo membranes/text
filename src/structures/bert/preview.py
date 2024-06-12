@@ -67,13 +67,8 @@ class Preview:
         self.__logger.info(segment.keys())
         
         # The content of the segment
-        inputs_, labels_, token_type_identifiers_, _, _ = self.__content(segment=segment)
+        inputs_, labels_, token_type_identifiers_, _, offset_mapping_ = self.__content(segment=segment)
         self.__details(name='inputs', item=inputs_)
         self.__details(name='labels', item=labels_)
         self.__details(name='token type identifiers', item=token_type_identifiers_)
-
-        #
-        # for input_, label_ in zip(inputs_[:2], labels_[:2]):
-        #     self.__logger.info(input_)
-        #     self.__logger.info(label_)
-        #     self.__logger.info(self.__tokenizer.convert_ids_to_tokens(input_))
+        self.__details(name='offset mapping', item=offset_mapping_)
