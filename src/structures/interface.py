@@ -8,8 +8,13 @@ import src.structures.bert.steps
 class Interface:
 
     def __init__(self, frame: pd.DataFrame, enumerator: dict):
+        """
 
-        self.__training, self.__validating = src.structures.splittings.Splittings(frame=frame).exc()
+        :param frame: The data set for the training, validating, etc., stages
+        :param enumerator:
+        """
+
+        self.__training, self.__validating, _ = src.structures.splittings.Splittings(frame=frame).exc()
         self.__enumerator = enumerator
 
     def exc(self) -> None:
