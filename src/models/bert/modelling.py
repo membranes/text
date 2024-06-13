@@ -15,6 +15,7 @@ class Modelling:
 
         self.__parameters = src.models.bert.parameters.Parameters()
 
+        # https://huggingface.co/docs/transformers/main_classes/model#transformers.PreTrainedModel.from_pretrained
         # https://huggingface.co/docs/transformers/main_classes/configuration#transformers.PretrainedConfig
         model = transformers.BertForTokenClassification.from_pretrained(
             pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
