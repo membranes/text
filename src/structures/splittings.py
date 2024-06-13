@@ -65,7 +65,7 @@ class Splittings:
         training, validating = self.__split(data=self.__frame, frac=self.__configurations.fraction)
 
         if self.__configurations.aside > 0:
-            frac = 1 - self.__configurations.fraction - self.__configurations.aside
+            frac = 1 - self.__configurations.aside
             validating, testing = self.__split(data=validating, frac=frac)
         else:
             testing = None
