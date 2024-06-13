@@ -1,4 +1,5 @@
 
+import logging
 import transformers
 
 import torch
@@ -21,8 +22,8 @@ class Modelling:
         # https://huggingface.co/docs/transformers/main_classes/configuration#transformers.PretrainedConfig
         self.__parameters = src.models.bert.parameters.Parameters()
 
+        logging.info('\n\nPretrained Model\n')
         self.model = transformers.BertForTokenClassification.from_pretrained(
             pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
             **{'num_labels': len(enumerator)})
-
         self.model.to(device)
