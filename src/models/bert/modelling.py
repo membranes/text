@@ -31,26 +31,33 @@ class Modelling:
         self.__parameters = src.models.bert.parameters.Parameters()
 
         logging.info('\n\nPretrained Model\n')
-        self.model = transformers.BertForTokenClassification.from_pretrained(
+        self.__model = transformers.BertForTokenClassification.from_pretrained(
             pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
             **{'num_labels': len(enumerator)})
-        self.model.to(self.__device)
+        self.__model.to(self.__device)
 
     def __train(self):
 
         training_loss = 0
         training_accuracy = 0
 
+        self.__model.train()
+        logging.info(self.__model.__dict__)
+
+        '''
+        index: int
+        batch: dict
         for index, batch in enumerate(self.__dataloader):
 
-            logging.info(index)
-            logging.info(batch)
-            logging.info(batch['input_ids'])
+            logging.info(batch.keys())
             inputs_ = batch['input_ids'].to(self.__device, dtype = torch.long)
+            labels_ = batch['labels'].to(self.__device, dtype = torch.long)
+            attention_mask_ = batch['attention_mask'].to(self.__device, dtype = torch.long)
+        '''
 
     def exc(self):
 
-        for epoch in range(self.__variable.EPOCHS):
+            for epoch in range(self.__variable.EPOCHS):
 
-            logging.info('Epoch: %s', epoch + 1)
-            self.__train()
+                logging.info('Epoch: %s', epoch)
+                self.__train()
