@@ -1,7 +1,7 @@
 
 import transformers
 
-import src.structures.bert.parameters
+import src.models.bert.parameters
 
 
 class Modelling:
@@ -13,7 +13,7 @@ class Modelling:
         :param enumerator: The labels enumerator
         """
 
-        self.__parameters = src.structures.bert.parameters.Parameters()
+        self.__parameters = src.models.bert.parameters.Parameters()
 
         # https://huggingface.co/docs/transformers/main_classes/configuration#transformers.PretrainedConfig
         model = transformers.BertForTokenClassification.from_pretrained(
