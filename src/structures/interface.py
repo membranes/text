@@ -1,7 +1,7 @@
 
 import pandas as pd
 
-import src.structures.splittings
+import src.models.splittings
 import src.models.bert.steps
 
 
@@ -14,7 +14,7 @@ class Interface:
         :param enumerator:
         """
 
-        self.__training, self.__validating, _ = src.structures.splittings.Splittings(frame=frame).exc()
+        self.__training, self.__validating, _ = src.models.splittings.Splittings(frame=frame).exc()
         self.__enumerator = enumerator
 
     def exc(self) -> None:
