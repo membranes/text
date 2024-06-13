@@ -2,12 +2,12 @@ import logging
 import typing
 
 import pandas as pd
-
 import torch.utils.data as tu
 
 import src.elements.variable
 import src.models.bert.dataset
 import src.models.loadings
+
 
 class DataCollection:
 
@@ -41,8 +41,6 @@ class DataCollection:
 
         dataset: tu.Dataset = src.models.bert.dataset.Dataset(
             frame=blob, variable=self.__variable, enumerator=self.__enumerator)
-        self.__logger.info('frame: %s', blob.shape)
-        self.__logger.info('dataset: %s', dataset.__doc__)
 
         dataloader: tu.DataLoader = self.__loadings.exc(
             dataset=dataset, parameters=parameters)
