@@ -26,7 +26,7 @@ class Steps:
 
         # A set of values for machine learning model development
         self.__variable = src.elements.variable.Variable()
-        self.__variable._replace(EPOCHS=2)
+        self.__variable = self.__variable._replace(EPOCHS=2)
 
         # Instances
         self.__loadings = src.models.loadings.Loadings()
