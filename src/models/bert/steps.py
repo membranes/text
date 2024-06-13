@@ -40,17 +40,18 @@ class Steps:
         self.__logger = logging.getLogger(__name__)
 
     def exc(self):
+        """
+        
+        :return:
+        """
 
         self.__logger.info('Training')
-        training_dataset, training_dataloader = self.__data_collection.exc(blob=self.__training, parameters={
-            'batch_size': self.__variable.TRAIN_BATCH_SIZE, 'shuffle': True, 'num_workers': 0})
-        self.__logger.info('training dataset:\n%s', training_dataset.__dict__)
-        self.__logger.info('training dataloader:\n%s', training_dataloader.__dict__)
+        _, training_dataloader = self.__data_collection.exc(blob=self.__training, parameters={
+            'batch_size': self.__variable.TRAIN_BATCH_SIZE, 'shuffle': True, 'num_workers': 0}, name='training')
 
         self.__logger.info('Validating')
-        validating_dataset, validating_dataloader = self.__data_collection.exc(blob=self.__validating, parameters={
-            'batch_size': self.__variable.VALID_BATCH_SIZE, 'shuffle': True, 'num_workers': 0})
-        self.__logger.info('validating dataset:\n%s', validating_dataset.__dict__)
-        self.__logger.info('validating dataloader:\n%s', validating_dataloader.__dict__)
+        _, validating_dataloader = self.__data_collection.exc(blob=self.__validating, parameters={
+            'batch_size': self.__variable.VALID_BATCH_SIZE, 'shuffle': True, 'num_workers': 0}, name='validating')
 
-        src.models.bert.modelling.Modelling(enumerator=self.__enumerator)
+        src.models.bert.modelling.Modelling(variable = self.__variable, enumerator=self.__enumerator,
+                                            dataloader=training_dataloader).exc()
