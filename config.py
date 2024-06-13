@@ -20,8 +20,9 @@ class Config:
 
         '''Modelling'''
 
-        # Splitting fraction
+        # Splitting fractions
         self.fraction = 0.8
+        self.aside = 0.05
 
         # Seed: All cases
         self.seed = 5
