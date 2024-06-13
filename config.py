@@ -20,9 +20,12 @@ class Config:
 
         '''Modelling'''
 
-        # Splitting fractions
+        # Splitting fractions:
+        # * 80% of the data for training
+        # * A tenth of the remaining 20% for testing, i.e., 18%
+        #   for validating, 2% for testing
         self.fraction = 0.8
-        self.aside = 0.05
+        self.aside = 0.1
 
         # Seed: All cases
         self.seed = 5
