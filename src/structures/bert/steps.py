@@ -23,6 +23,7 @@ class Steps:
 
         # A set of values for machine learning model development
         self.__variable = src.elements.variable.Variable()
+        self.__variable._replace(EPOCHS=2)
 
         # Logging
         logging.basicConfig(level=logging.INFO,
