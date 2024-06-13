@@ -10,10 +10,13 @@ class Variable(typing.NamedTuple):
         The maximum number of tokens
 
     TRAIN_BATCH_SIZE : int
-        The training stage data batch size
+        The batch size for the training stage
 
     VALID_BATCH_SIZE : int
-        The validation stage data batch size
+        The batch size for the validation stage
+
+    TEST_BATCH_SIZE : int
+        The batch size for the testing stage
 
     EPOCHS : int
         The number of epochs
@@ -28,6 +31,7 @@ class Variable(typing.NamedTuple):
     MAX_LENGTH: int = 128
     TRAIN_BATCH_SIZE: int = 4
     VALID_BATCH_SIZE: int = 2
+    TEST_BATCH_SIZE: int = 2
     EPOCHS: int = 1
     LEARNING_RATE: float = 1e-05
     MAX_GRADIENT_NORM: int = 10
