@@ -6,7 +6,7 @@ import torch.utils.data as tu
 
 import src.elements.variable
 import src.models.bert.dataset
-import src.structures.loadings
+import src.models.loadings
 
 
 class Steps:
@@ -25,7 +25,7 @@ class Steps:
         self.__validating = validating
 
         # Instances
-        self.__loadings = src.structures.loadings.Loadings()
+        self.__loadings = src.models.loadings.Loadings()
 
         # A set of values for machine learning model development
         self.__variable = src.elements.variable.Variable()
