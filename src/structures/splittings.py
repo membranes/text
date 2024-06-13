@@ -11,13 +11,15 @@ class Splittings:
     def __init__(self, frame: pd.DataFrame) -> None:
         """
 
-        :param frame: The data set for the training and validating stages
+        :param frame: The data set for the modelling stages
         """
 
         self.__frame = frame
 
+        # Configurations
         configurations = config.Config()
         self.__fraction = configurations.fraction
+        self.__aside = configurations.aside
         self.__seed = configurations.seed
 
         # Logging
@@ -26,31 +28,31 @@ class Splittings:
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
 
-    def __split(self) -> typing.Tuple[pd.DataFrame, pd.DataFrame]:
+    def __split(self, data: pd.DataFrame, frac: float) -> typing.Tuple[pd.DataFrame, pd.DataFrame]:
         """
-        This method splits  data set into training & validating data sets.
+        This method splits  data set into parent & child data sets.
 
         :return:
-        training : pandas.DataFrame<br>
-            The data set for training<br>
-        validating : pandas.DataFrame<br>
-            The data set for the validating stage
+        parent : pandas.DataFrame<br>
+            The data set for parent<br>
+        child : pandas.DataFrame<br>
+            The data set for the child stage
         """
 
-        blob = self.__frame.copy()
+        blob = data.copy()
 
-        training = blob.sample(frac=self.__fraction, random_state=self.__seed)
-        validating = blob.drop(training.index)
+        parent = blob.sample(frac=frac, random_state=self.__seed)
+        child = blob.drop(parent.index)
 
-        training.reset_index(drop=True, inplace=True)
-        validating.reset_index(drop=True, inplace=True)
+        parent.reset_index(drop=True, inplace=True)
+        child.reset_index(drop=True, inplace=True)
 
-        self.__logger.info('training: %s', training.shape)
-        self.__logger.info('validating: %s', validating.shape)
+        self.__logger.info('parent: %s', parent.shape)
+        self.__logger.info('child: %s', child.shape)
 
-        return training, validating
+        return parent, child
 
-    def exc(self) -> typing.Tuple[pd.DataFrame, pd.DataFrame]:
+    def exc(self) -> typing.Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         """
 
         :return:
@@ -58,6 +60,17 @@ class Splittings:
             The training stage data
         validating: pandas.DataFrame
             The validating stage data
+        testing: pandas.DataFrame
+            The testing stage data
         """
 
-        return self.__split()
+        training, validating = self.__split(data=self.__frame, frac=self.__fraction)
+
+        if self.__aside > 0:
+            frac = 1 - self.__fraction - self.__aside
+            validating, testing = self.__split(data=validating, frac=frac)
+        else:
+            testing = None
+
+
+        return training, validating, testing
