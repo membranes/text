@@ -7,6 +7,7 @@ import torch.utils.data as tu
 import src.elements.variable
 import src.models.bert.dataset
 import src.models.loadings
+import src.models.bert.data_collection
 
 
 class Steps:
@@ -24,12 +25,14 @@ class Steps:
         self.__training = training
         self.__validating = validating
 
-        # Instances
-        self.__loadings = src.models.loadings.Loadings()
-
         # A set of values for machine learning model development
         self.__variable = src.elements.variable.Variable()
         self.__variable._replace(EPOCHS=2)
+
+        # Instances
+        self.__loadings = src.models.loadings.Loadings()
+        self.__data_collection = src.models.bert.data_collection.DataCollection(
+            enumerator=self.__enumerator, variable=self.__variable)
 
         # Logging
         logging.basicConfig(level=logging.INFO,
@@ -37,29 +40,13 @@ class Steps:
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
 
-    def __structure(self, blob: pd.DataFrame) -> tu.Dataset:
-        """
-
-        :param blob:
-        :return:
-        """
-
-        dataset: tu.Dataset = src.models.bert.dataset.Dataset(blob, self.__variable, self.__enumerator)
-        self.__logger.info('frame: %s', blob.shape)
-        self.__logger.info('dataset: %s', dataset.__doc__)
-
-        return dataset
-
     def exc(self):
 
         self.__logger.info('Training')
-        training_dataset = self.__structure(blob=self.__training)
-        training_loader = self.__loadings.exc(training_dataset, parameters={
+        training_dataset, training_dataloader = self.__data_collection.exc(blob=self.__training, parameters={
             'batch_size': self.__variable.TRAIN_BATCH_SIZE, 'shuffle': True, 'num_workers': 0})
 
 
-
         self.__logger.info('Validating')
-        validating_dataset = self.__structure(blob=self.__validating)
-        validating_loader = self.__loadings.exc(validating_dataset, parameters={
+        validating_dataset, validating_dataloader = self.__data_collection.exc(blob=self.__validating, parameters={
             'batch_size': self.__variable.VALID_BATCH_SIZE, 'shuffle': True, 'num_workers': 0})
