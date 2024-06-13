@@ -2,7 +2,7 @@ import logging
 
 import torch
 import numpy as np
-import src.structures.bert.parameters
+import src.models.bert.parameters
 
 import config
 
@@ -14,7 +14,7 @@ class Preview:
 
         """
 
-        self.__tokenizer = src.structures.bert.parameters.Parameters().tokenizer
+        self.__tokenizer = src.models.bert.parameters.Parameters().tokenizer
 
         # A random number generator instance
         self.__rng = np.random.default_rng(seed=config.Config().seed)
