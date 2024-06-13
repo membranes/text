@@ -17,10 +17,8 @@ class Splittings:
         self.__frame = frame
 
         # Configurations
-        configurations = config.Config()
-        self.__fraction = configurations.fraction
-        self.__aside = configurations.aside
-        self.__seed = configurations.seed
+        self.__configurations = config.Config()
+
 
         # Logging
         logging.basicConfig(level=logging.INFO,
@@ -41,7 +39,7 @@ class Splittings:
 
         blob = data.copy()
 
-        parent = blob.sample(frac=frac, random_state=self.__seed)
+        parent = blob.sample(frac=frac, random_state=self.__configurations.seed)
         child = blob.drop(parent.index)
 
         parent.reset_index(drop=True, inplace=True)
@@ -64,13 +62,12 @@ class Splittings:
             The testing stage data
         """
 
-        training, validating = self.__split(data=self.__frame, frac=self.__fraction)
+        training, validating = self.__split(data=self.__frame, frac=self.__configurations.fraction)
 
-        if self.__aside > 0:
-            frac = 1 - self.__fraction - self.__aside
+        if self.__configurations.aside > 0:
+            frac = 1 - self.__configurations.fraction - self.__configurations.aside
             validating, testing = self.__split(data=validating, frac=frac)
         else:
             testing = None
-
 
         return training, validating, testing
