@@ -6,7 +6,7 @@ import pandas as pd
 import config
 
 
-class Initial:
+class Splittings:
 
     def __init__(self, frame: pd.DataFrame) -> None:
         """
