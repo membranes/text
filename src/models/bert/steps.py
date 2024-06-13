@@ -44,9 +44,13 @@ class Steps:
         self.__logger.info('Training')
         training_dataset, training_dataloader = self.__data_collection.exc(blob=self.__training, parameters={
             'batch_size': self.__variable.TRAIN_BATCH_SIZE, 'shuffle': True, 'num_workers': 0})
+        self.__logger.info('training dataset:\n%s', training_dataset.__dict__)
+        self.__logger.info('training dataloader:\n%s', training_dataloader.__dict__)
 
         self.__logger.info('Validating')
         validating_dataset, validating_dataloader = self.__data_collection.exc(blob=self.__validating, parameters={
             'batch_size': self.__variable.VALID_BATCH_SIZE, 'shuffle': True, 'num_workers': 0})
+        self.__logger.info('validating dataset:\n%s', validating_dataset.__dict__)
+        self.__logger.info('validating dataloader:\n%s', validating_dataloader.__dict__)
 
-        src.models.bert.modelling.Modelling()
+        src.models.bert.modelling.Modelling(enumerator=self.__enumerator)
