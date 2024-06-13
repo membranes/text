@@ -9,6 +9,10 @@ import config
 class Initial:
 
     def __init__(self, frame: pd.DataFrame) -> None:
+        """
+
+        :param frame: The data set for the training and validating stages
+        """
 
         self.__frame = frame
 
@@ -23,6 +27,15 @@ class Initial:
         self.__logger = logging.getLogger(__name__)
 
     def __split(self) -> typing.Tuple[pd.DataFrame, pd.DataFrame]:
+        """
+        This method splits  data set into training & validating data sets.
+
+        :return:
+        training : pandas.DataFrame<br>
+            The data set for training<br>
+        validating : pandas.DataFrame<br>
+            The data set for the validating stage
+        """
 
         blob = self.__frame.copy()
 
@@ -38,5 +51,13 @@ class Initial:
         return training, validating
 
     def exc(self) -> typing.Tuple[pd.DataFrame, pd.DataFrame]:
+        """
+
+        :return:
+        training: pandas.DataFrame
+            The training stage data
+        validating: pandas.DataFrame
+            The validating stage data
+        """
 
         return self.__split()
