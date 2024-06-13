@@ -2,12 +2,11 @@ import logging
 
 import pandas as pd
 
-import torch.utils.data as tu
-
 import src.elements.variable
+import src.models.bert.data_collection
 import src.models.bert.dataset
 import src.models.loadings
-import src.models.bert.data_collection
+import src.models.bert.modelling
 
 
 class Steps:
@@ -46,7 +45,8 @@ class Steps:
         training_dataset, training_dataloader = self.__data_collection.exc(blob=self.__training, parameters={
             'batch_size': self.__variable.TRAIN_BATCH_SIZE, 'shuffle': True, 'num_workers': 0})
 
-
         self.__logger.info('Validating')
         validating_dataset, validating_dataloader = self.__data_collection.exc(blob=self.__validating, parameters={
             'batch_size': self.__variable.VALID_BATCH_SIZE, 'shuffle': True, 'num_workers': 0})
+
+        src.models.bert.modelling.Modelling()
