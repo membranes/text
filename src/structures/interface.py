@@ -1,7 +1,7 @@
 
 import pandas as pd
 
-import src.structures.initial
+import src.structures.splittings
 import src.structures.bert.steps
 
 
@@ -9,7 +9,7 @@ class Interface:
 
     def __init__(self, frame: pd.DataFrame, enumerator: dict):
 
-        self.__training, self.__validating = src.structures.initial.Initial(frame=frame).exc()
+        self.__training, self.__validating = src.structures.splittings.Splittings(frame=frame).exc()
         self.__enumerator = enumerator
 
     def exc(self) -> None:
