@@ -2,7 +2,7 @@
 import pandas as pd
 
 import src.structures.splittings
-import src.structures.bert.steps
+import src.models.bert.steps
 
 
 class Interface:
@@ -24,7 +24,7 @@ class Interface:
         """
 
         # bert
-        src.structures.bert.steps.Steps(
+        src.models.bert.steps.Steps(
             enumerator=self.__enumerator, training=self.__training, validating=self.__validating).exc()
 
         # electra
