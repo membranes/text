@@ -4,7 +4,7 @@ import torch
 import torch.utils.data
 
 import src.elements.variable
-import src.structures.bert.parameters
+import src.models.bert.parameters
 
 
 class Dataset(torch.utils.data.Dataset):
@@ -25,7 +25,7 @@ class Dataset(torch.utils.data.Dataset):
 
         self.__variable = variable
         self.__enumerator = enumerator
-        self.__tokenizer = src.structures.bert.parameters.Parameters().tokenizer
+        self.__tokenizer = src.models.bert.parameters.Parameters().tokenizer
     
     def __getitem__(self, index) -> dict:
         """
