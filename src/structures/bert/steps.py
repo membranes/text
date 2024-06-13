@@ -5,7 +5,7 @@ import pandas as pd
 import torch.utils.data as tu
 
 import src.elements.variable
-import src.structures.bert.dataset
+import src.models.bert.dataset
 import src.structures.loadings
 
 
@@ -44,7 +44,7 @@ class Steps:
         :return:
         """
 
-        dataset: tu.Dataset = src.structures.bert.dataset.Dataset(blob, self.__variable, self.__enumerator)
+        dataset: tu.Dataset = src.models.bert.dataset.Dataset(blob, self.__variable, self.__enumerator)
         self.__logger.info('frame: %s', blob.shape)
         self.__logger.info('dataset: %s', dataset.__doc__)
 
