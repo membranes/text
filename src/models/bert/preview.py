@@ -1,10 +1,8 @@
 import logging
 
-import numpy as np
 import torch
 import torch.utils.data as tu
 
-import config
 import src.models.bert.parameters
 
 
@@ -12,13 +10,10 @@ class Preview:
 
     def __init__(self):
         """
-
+        Constructor
         """
 
         self.__tokenizer = src.models.bert.parameters.Parameters().tokenizer
-
-        # A random number generator instance
-        self.__rng = np.random.default_rng(seed=config.Config().seed)
 
         # Logging
         logging.basicConfig(level=logging.INFO,
@@ -55,7 +50,6 @@ class Preview:
 
     def exc(self, dataset: tu.Dataset):
         """
-        index = self.__rng.integers(low=0, high=(dataset.__len__() - 1))
 
         :param dataset:
         :return:
