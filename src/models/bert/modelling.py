@@ -56,50 +56,52 @@ class Modelling:
         self.__model.train()
         logging.info(self.__model.__dict__)
 
-        index: int
-        batch: dict
-        for index, batch in enumerate(self.__dataloader):
+        for epoch in range(self.__variable.EPOCHS):
 
-            steps_ += 1
+            logging.info('Epoch: %s', epoch)
 
-            # Parts of the dataset
-            inputs_: torch.Tensor = batch['input_ids'].to(self.__parameters.device, dtype = torch.long)
-            labels_: torch.Tensor = batch['labels'].to(self.__parameters.device, dtype = torch.long)
-            attention_mask_: torch.Tensor = batch['attention_mask'].to(self.__parameters.device, dtype = torch.long)
+            index: int
+            batch: dict
+            for index, batch in enumerate(self.__dataloader):
 
-            # https://huggingface.co/docs/transformers/main_classes/output#transformers.modeling_outputs.TokenClassifierOutput
-            bucket: tm.TokenClassifierOutput = self.__model(input_ids=inputs_, attention_mask=attention_mask_, labels=labels_)
+                steps_ += 1
 
-            # Loss, Tracking Loss Aggregates
-            loss_ += bucket.loss.item()
-            if (index % 100) == 0:
-                print(f'Average epoch loss, after step {steps_}: {loss_/steps_}')
+                # Parts of the dataset
+                inputs_: torch.Tensor = batch['input_ids'].to(self.__parameters.device, dtype = torch.long)
+                labels_: torch.Tensor = batch['labels'].to(self.__parameters.device, dtype = torch.long)
+                attention_mask_: torch.Tensor = batch['attention_mask'].to(self.__parameters.device, dtype = torch.long)
 
-            # Targets, active targets.
-            targets = labels_.view(-1)
-            active = labels_.view(-1).ne(100)
-            __labels.extend(torch.masked_select(targets, active))
+                # https://huggingface.co/docs/transformers/main_classes/output#transformers.modeling_outputs.TokenClassifierOutput
+                bucket: tm.TokenClassifierOutput = self.__model(input_ids=inputs_, attention_mask=attention_mask_, labels=labels_)
 
-            # Predictions
-            logits = bucket.logits.view(-1, self.__model.config.num_labels)
-            __predictions.extend(torch.argmax(logits, dim=1))
+                # Loss, Tracking Loss Aggregates
+                loss_ += bucket.loss.item()
+                if (index % 100) == 0:
+                    print(f'Average epoch loss, after step {steps_}: {loss_/steps_}')
 
-            # Accuracy
-            # Replace this metric
-            score: float = sm.accuracy_score(__labels[-1].cpu().numpy(), __predictions[-1].cpu().numpy())
-            accuracy_ += score
+                # Targets, active targets.
+                targets = labels_.view(-1)
+                active = labels_.view(-1).ne(100)
+                __labels.extend(torch.masked_select(targets, active))
 
-            # Gradient: Ambiguous
-            torch.nn.utils.clip_grad_norm(parameters=self.__model.parameters(),
-                                          max_norm=self.__variable.MAX_GRADIENT_NORM)
-            self.__optim.zero_grad()
-            bucket.loss.backward()
-            self.__optim.step()
+                # Predictions
+                logits = bucket.logits.view(-1, self.__model.config.num_labels)
+                __predictions.extend(torch.argmax(logits, dim=1))
 
+                # Accuracy
+                # Replace this metric
+                score: float = sm.accuracy_score(__labels[-1].cpu().numpy(), __predictions[-1].cpu().numpy())
+                accuracy_ += score
+
+                # Gradient: Ambiguous
+                torch.nn.utils.clip_grad_norm(parameters=self.__model.parameters(),
+                                              max_norm=self.__variable.MAX_GRADIENT_NORM)
+                self.__optim.zero_grad()
+                bucket.loss.backward()
+                self.__optim.step()
+
+        logging.info(loss_ / steps_)
 
     def exc(self):
 
-            for epoch in range(self.__variable.EPOCHS):
-
-                logging.info('Epoch: %s', epoch)
-                self.__train()
+        self.__train()
