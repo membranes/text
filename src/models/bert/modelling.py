@@ -60,6 +60,8 @@ class Modelling:
         batch: dict
         for index, batch in enumerate(self.__dataloader):
 
+            steps_ += 1
+
             # Parts of the dataset
             inputs_: torch.Tensor = batch['input_ids'].to(self.__parameters.device, dtype = torch.long)
             labels_: torch.Tensor = batch['labels'].to(self.__parameters.device, dtype = torch.long)
@@ -68,15 +70,12 @@ class Modelling:
             # https://huggingface.co/docs/transformers/main_classes/output#transformers.modeling_outputs.TokenClassifierOutput
             bucket: tm.TokenClassifierOutput = self.__model(input_ids=inputs_, attention_mask=attention_mask_, labels=labels_)
 
-            logging.info(bucket.keys())
+            # Loss, Tracking Loss Aggregates
             loss_ += bucket.loss.item()
-            steps_ += 1
-
-            # Tracking
             if (index % 100) == 0:
                 print(f'Average epoch loss, after step {steps_}: {loss_/steps_}')
 
-            # Targets
+            # Targets, active targets.
             targets = labels_.view(-1)
             active = labels_.view(-1).ne(100)
             __labels.extend(torch.masked_select(targets, active))
@@ -90,9 +89,13 @@ class Modelling:
             score: float = sm.accuracy_score(__labels[-1].cpu().numpy(), __predictions[-1].cpu().numpy())
             accuracy_ += score
 
+            # Gradient: Ambiguous
+            torch.nn.utils.clip_grad_norm(parameters=self.__model.parameters(),
+                                          max_norm=self.__variable.MAX_GRADIENT_NORM)
+            self.__optim.zero_grad()
+            bucket.loss.backward()
+            self.__optim.step()
 
-
-            logging.info(bucket.logits.data)
 
     def exc(self):
 
