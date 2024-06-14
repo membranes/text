@@ -2,6 +2,7 @@
 import logging
 import transformers
 import transformers.modeling_outputs as tm
+import sklearn.metrics as sm
 
 import torch
 import torch.utils.data as tu
@@ -76,8 +77,15 @@ class Modelling:
 
             # Accuracy
             targets = labels_.view(-1)
+            active = labels_.view(-1).ne(100)
+            __labels.extend(torch.masked_select(targets, active))
+
+            # Predictions
             logits = bucket.logits.view(-1, self.__model.config.num_labels)
-            predictions = torch.argmax(logits, dim=1)
+            __predictions.extend(torch.argmax(logits, dim=1))
+
+            # sm.accuracy_score()
+
 
 
             logging.info(bucket.logits.data)
