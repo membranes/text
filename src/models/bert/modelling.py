@@ -38,6 +38,10 @@ class Modelling:
         self.__model.to(self.__device)
 
     def __train(self):
+        """
+
+        :return:
+        """
 
         # For measures & metrics
         loss_ = 0
@@ -63,7 +67,7 @@ class Modelling:
             # https://huggingface.co/docs/transformers/main_classes/output#transformers.modeling_outputs.TokenClassifierOutput
             bucket: tm.TokenClassifierOutput = self.__model(input_ids=inputs_, attention_mask=attention_mask_, labels=labels_)
             logging.info(bucket.keys())
-            logging.info(bucket.loss.data)
+            logging.info(bucket.loss.item())
             logging.info(bucket.logits.data)
 
     def exc(self):
