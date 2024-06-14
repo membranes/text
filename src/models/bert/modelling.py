@@ -44,16 +44,19 @@ class Modelling:
         self.__model.train()
         logging.info(self.__model.__dict__)
 
-        '''
+
         index: int
         batch: dict
         for index, batch in enumerate(self.__dataloader):
 
-            logging.info(batch.keys())
             inputs_ = batch['input_ids'].to(self.__device, dtype = torch.long)
             labels_ = batch['labels'].to(self.__device, dtype = torch.long)
             attention_mask_ = batch['attention_mask'].to(self.__device, dtype = torch.long)
-        '''
+
+            loss, logit = self.__model(input_ids=inputs_, attention_mask=attention_mask_, labels=labels_)
+            logging.info(type(loss))
+            logging.info(type(logit))
+
 
     def exc(self):
 
