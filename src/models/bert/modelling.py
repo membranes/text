@@ -17,26 +17,25 @@ class Modelling:
                  enumerator: dict, dataloader: tu.DataLoader):
         """
 
+        :param variable:
         :param enumerator: The labels enumerator
+        :param dataloader:
         """
 
         self.__variable = variable
         self.__dataloader = dataloader
 
-        # The device for computation
-        self.__device = 'cuda' if torch.cuda.is_available() else 'cpu'
-
-        # https://huggingface.co/docs/transformers/main_classes/model#transformers.PreTrainedModel.from_pretrained
-        # https://huggingface.co/docs/transformers/main_classes/configuration#transformers.PretrainedConfig
+        # Parameters
         self.__parameters = src.models.bert.parameters.Parameters()
 
-
-        logging.info('\n\nPretrained Model\n')
+        # Model
         self.__model = transformers.BertForTokenClassification.from_pretrained(
             pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
             **{'num_labels': len(enumerator)})
-        self.__model.to(self.__device)
-        torch.optim.Adam(params=self.__model.parameters(), lr=self.__variable.LEARNING_RATE)
+        self.__model.to(self.__parameters.device)
+
+        # Optimisation
+        self.__optim = torch.optim.Adam(params=self.__model.parameters(), lr=self.__variable.LEARNING_RATE)
 
     def __train(self):
         """
@@ -61,9 +60,10 @@ class Modelling:
         batch: dict
         for index, batch in enumerate(self.__dataloader):
 
-            inputs_: torch.Tensor = batch['input_ids'].to(self.__device, dtype = torch.long)
-            labels_: torch.Tensor = batch['labels'].to(self.__device, dtype = torch.long)
-            attention_mask_: torch.Tensor = batch['attention_mask'].to(self.__device, dtype = torch.long)
+            # Parts of the dataset
+            inputs_: torch.Tensor = batch['input_ids'].to(self.__parameters.device, dtype = torch.long)
+            labels_: torch.Tensor = batch['labels'].to(self.__parameters.device, dtype = torch.long)
+            attention_mask_: torch.Tensor = batch['attention_mask'].to(self.__parameters.device, dtype = torch.long)
 
             # https://huggingface.co/docs/transformers/main_classes/output#transformers.modeling_outputs.TokenClassifierOutput
             bucket: tm.TokenClassifierOutput = self.__model(input_ids=inputs_, attention_mask=attention_mask_, labels=labels_)
@@ -72,6 +72,7 @@ class Modelling:
             loss_ += bucket.loss.item()
             steps_ += 1
 
+            # Tracking
             if (index % 100) == 0:
                 print(f'Average epoch loss, after step {steps_}: {loss_/steps_}')
 
