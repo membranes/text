@@ -1,16 +1,14 @@
 
 import logging
-import transformers
-import transformers.modeling_outputs as tm
-import sklearn.metrics as sm
 
+import sklearn.metrics as sm
 import torch
 import torch.utils.data as tu
-
-import src.models.bert.parameters
+import transformers
+import transformers.modeling_outputs as tm
 
 import src.elements.variable
-
+import src.models.bert.parameters
 
 
 class Modelling:
@@ -32,11 +30,13 @@ class Modelling:
         # https://huggingface.co/docs/transformers/main_classes/configuration#transformers.PretrainedConfig
         self.__parameters = src.models.bert.parameters.Parameters()
 
+
         logging.info('\n\nPretrained Model\n')
         self.__model = transformers.BertForTokenClassification.from_pretrained(
             pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
             **{'num_labels': len(enumerator)})
         self.__model.to(self.__device)
+        torch.optim.Adam(params=self.__model.parameters(), lr=self.__variable.LEARNING_RATE)
 
     def __train(self):
         """
@@ -50,8 +50,8 @@ class Modelling:
         accuracy_ = 0
 
         # For estimates
-        __labels = []
-        __predictions = []
+        __labels: list[torch.Tensor] = []
+        __predictions: list[torch.Tensor] = []
 
         # Preparing a training epoch ...
         self.__model.train()
@@ -75,7 +75,7 @@ class Modelling:
             if (index % 100) == 0:
                 print(f'Average epoch loss, after step {steps_}: {loss_/steps_}')
 
-            # Accuracy
+            # Targets
             targets = labels_.view(-1)
             active = labels_.view(-1).ne(100)
             __labels.extend(torch.masked_select(targets, active))
@@ -84,7 +84,10 @@ class Modelling:
             logits = bucket.logits.view(-1, self.__model.config.num_labels)
             __predictions.extend(torch.argmax(logits, dim=1))
 
-            # sm.accuracy_score()
+            # Accuracy
+            # Replace this metric
+            score: float = sm.accuracy_score(__labels[-1].cpu().numpy(), __predictions[-1].cpu().numpy())
+            accuracy_ += score
 
 
 
