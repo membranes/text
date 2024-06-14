@@ -1,10 +1,11 @@
 import logging
 
-import torch
 import numpy as np
-import src.models.bert.parameters
+import torch
+import torch.utils.data as tu
 
 import config
+import src.models.bert.parameters
 
 
 class Preview:
@@ -52,16 +53,18 @@ class Preview:
         self.__logger.info('%s: %s', name, item.shape)
         self.__logger.info(item.data)
 
-    def exc(self, dataset):
+    def exc(self, dataset: tu.Dataset):
         """
+        index = self.__rng.integers(low=0, high=(dataset.__len__() - 1))
 
         :param dataset:
         :return:
         """
 
         # A segment of dataset
-        index = self.__rng.integers(low=0, high=(dataset.__len__() - 1))
-        segment: dict = dataset.__getitem__(index)
+        self.__logger.info(dataset.__doc__)
+        self.__logger.info(type(dataset.__getitem__(0)))
+        segment: dict = dataset.__getitem__(0)
 
         self.__logger.info('Previewing an instance of the data: ...')
         self.__logger.info(segment.keys())
