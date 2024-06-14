@@ -38,8 +38,8 @@ class Modelling:
 
     def __train(self):
 
-        training_loss = 0
-        training_accuracy = 0
+        # training_loss = 0
+        # training_accuracy = 0
 
         self.__model.train()
         logging.info(self.__model.__dict__)
