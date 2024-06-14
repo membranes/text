@@ -7,7 +7,6 @@ import torch.utils.data as tu
 import src.elements.variable
 import src.models.bert.dataset
 import src.models.loadings
-import src.models.bert.preview
 
 
 class DataCollection:
@@ -43,7 +42,6 @@ class DataCollection:
 
         dataset: tu.Dataset = src.models.bert.dataset.Dataset(
             frame=blob, variable=self.__variable, enumerator=self.__enumerator)
-        src.models.bert.preview.Preview().exc(dataset=dataset)
 
         dataloader: tu.DataLoader = self.__loadings.exc(
             dataset=dataset, parameters=parameters)
