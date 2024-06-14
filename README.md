@@ -61,6 +61,7 @@ docker run --rm --gpus all -i -t -p 127.0.0.1:10000:8888 pytorch/pytorch:2.2.2-c
   * [Tensors](https://pytorch.org/docs/stable/tensors.html)
   * For tensors that have a single value: [torch.Tensor.item()](https://pytorch.org/docs/stable/generated/torch.Tensor.item.html#torch.Tensor.item)
 
+  * Optimisation: [torch.optim](https://pytorch.org/docs/stable/optim.html#module-torch.optim)
 
 <br>
 <br>
