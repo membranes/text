@@ -39,10 +39,16 @@ class Modelling:
 
     def __train(self):
 
-        # loss_ = 0
-        # accuracy_ = 0
-        # steps_ = 0
+        # For measures & metrics
+        loss_ = 0
+        accuracy_ = 0
+        steps_ = 0
 
+        # For estimates
+        __labels = []
+        __predictions = []
+
+        # Preparing a training epoch ...
         self.__model.train()
         logging.info(self.__model.__dict__)
 
