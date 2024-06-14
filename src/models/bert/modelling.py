@@ -44,9 +44,9 @@ class Modelling:
         """
 
         # For measures & metrics
-        loss_ = 0
+        loss_: float = 0
+        steps_: int = 0
         accuracy_ = 0
-        steps_ = 0
 
         # For estimates
         __labels = []
@@ -60,14 +60,26 @@ class Modelling:
         batch: dict
         for index, batch in enumerate(self.__dataloader):
 
-            inputs_ = batch['input_ids'].to(self.__device, dtype = torch.long)
-            labels_ = batch['labels'].to(self.__device, dtype = torch.long)
-            attention_mask_ = batch['attention_mask'].to(self.__device, dtype = torch.long)
+            inputs_: torch.Tensor = batch['input_ids'].to(self.__device, dtype = torch.long)
+            labels_: torch.Tensor = batch['labels'].to(self.__device, dtype = torch.long)
+            attention_mask_: torch.Tensor = batch['attention_mask'].to(self.__device, dtype = torch.long)
 
             # https://huggingface.co/docs/transformers/main_classes/output#transformers.modeling_outputs.TokenClassifierOutput
             bucket: tm.TokenClassifierOutput = self.__model(input_ids=inputs_, attention_mask=attention_mask_, labels=labels_)
+
             logging.info(bucket.keys())
-            logging.info(bucket.loss.item())
+            loss_ += bucket.loss.item()
+            steps_ += 1
+
+            if (index % 100) == 0:
+                print(f'Average epoch loss, after step {steps_}: {loss_/steps_}')
+
+            # Accuracy
+            targets = labels_.view(-1)
+            logits = bucket.logits.view(-1, self.__model.config.num_labels)
+            predictions = torch.argmax(logits, dim=1)
+
+
             logging.info(bucket.logits.data)
 
     def exc(self):
