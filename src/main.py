@@ -30,6 +30,8 @@ def main():
     frame: pd.DataFrame = src.data.demarcations.Demarcations(data=data).exc()
     logger.info(frame.head())
 
+    # Temporary
+    frame = frame.loc[:1000, :]
     src.models.interface.Interface(frame=frame, enumerator=enumerator).exc()
 
     # Delete Cache Points
