@@ -18,11 +18,10 @@ class Validating:
         :param archetype: The identifiers to label mappings
         """
 
-        # Model
+        # Model, DataLoader, Tag Mappings
         self.__model = model
-
-        # Data
         self.__dataloader = dataloader
+        self.__archetype = archetype
 
         # Parameters
         self.__parameters = src.models.bert.parameters.Parameters()
