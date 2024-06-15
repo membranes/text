@@ -1,4 +1,5 @@
 import logging
+import typing
 
 import sklearn.metrics as sm
 import torch
@@ -27,7 +28,7 @@ class Validating:
         # Parameters
         self.__parameters = src.models.bert.parameters.Parameters()
 
-    def __validating(self):
+    def __validating(self) -> typing.Tuple[list, list]:
 
         # Preparing for validation stage ...
         self.__model.eval()
