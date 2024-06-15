@@ -1,7 +1,6 @@
-
-import transformers
-
+"""Module parameters.py"""
 import torch
+import transformers
 
 
 class Parameters:
@@ -12,6 +11,9 @@ class Parameters:
     """
 
     def __init__(self):
+        """
+        Constructor
+        """
 
         # The device for computation
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
