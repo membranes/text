@@ -1,4 +1,4 @@
-
+"""Module interface.py"""
 import pandas as pd
 
 import src.models.splittings
@@ -6,6 +6,9 @@ import src.models.bert.steps
 
 
 class Interface:
+    """
+    An interface to each model.
+    """
 
     def __init__(self, frame: pd.DataFrame, enumerator: dict, archetype: dict):
         """
