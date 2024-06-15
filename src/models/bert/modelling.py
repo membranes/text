@@ -1,5 +1,6 @@
 
 import logging
+import tqdm
 
 import sklearn.metrics as sm
 import torch
