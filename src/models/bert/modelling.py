@@ -1,6 +1,6 @@
 
 import logging
-import tqdm
+import tqdm.auto
 
 import sklearn.metrics as sm
 import torch
@@ -25,6 +25,8 @@ class Modelling:
 
         self.__variable = variable
         self.__dataloader = dataloader
+        self.__n_steps = self.__variable.EPOCHS * len(self.__dataloader)
+        self.__progress = tqdm.auto.tqdm(iterable=range(self.__n_steps))
 
         # Parameters
         self.__parameters = src.models.bert.parameters.Parameters()
@@ -35,8 +37,11 @@ class Modelling:
             **{'num_labels': len(enumerator)})
         self.__model.to(self.__parameters.device)
 
-        # Optimisation
-        self.__optim = torch.optim.Adam(params=self.__model.parameters(), lr=self.__variable.LEARNING_RATE)
+        # Optimizing & Scheduling
+        self.__optimizer = torch.optim.AdamW(params=self.__model.parameters(), lr=self.__variable.LEARNING_RATE)
+        self.__scheduler = transformers.get_scheduler(
+            name='linear', optimizer=self.__optimizer, num_warmup_steps=0,
+            num_training_steps=self.__n_steps)
 
     def __train(self):
         """
@@ -45,8 +50,7 @@ class Modelling:
         """
 
         # For measures & metrics
-        loss_: float = 0
-        steps_: int = 0
+        step_ = 0
         accuracy_ = 0
 
         # For estimates
@@ -55,8 +59,8 @@ class Modelling:
 
         # Preparing a training epoch ...
         self.__model.train()
-        logging.info(self.__model.__dict__)
 
+        # Train
         for epoch in range(self.__variable.EPOCHS):
 
             logging.info('Epoch: %s', epoch)
@@ -65,7 +69,7 @@ class Modelling:
             batch: dict
             for index, batch in enumerate(self.__dataloader):
 
-                steps_ += 1
+                step_ += 1
 
                 # Parts of the dataset
                 inputs_: torch.Tensor = batch['input_ids'].to(self.__parameters.device, dtype = torch.long)
@@ -75,10 +79,9 @@ class Modelling:
                 # https://huggingface.co/docs/transformers/main_classes/output#transformers.modeling_outputs.TokenClassifierOutput
                 bucket: tm.TokenClassifierOutput = self.__model(input_ids=inputs_, attention_mask=attention_mask_, labels=labels_)
 
-                # Loss, Tracking Loss Aggregates
-                loss_ += bucket.loss.item()
-                if (index % 100) == 0:
-                    print(f'Average epoch loss, after step {steps_}: {loss_/steps_}')
+                # Loss
+                loss_ = bucket.loss.item()
+                loss_.backward()
 
                 # Targets, active targets.
                 targets = labels_.view(-1)
@@ -97,11 +100,11 @@ class Modelling:
                 # Gradient: Ambiguous
                 torch.nn.utils.clip_grad_norm(parameters=self.__model.parameters(),
                                               max_norm=self.__variable.MAX_GRADIENT_NORM)
-                self.__optim.zero_grad()
-                bucket.loss.backward()
-                self.__optim.step()
+                self.__optimizer.step()
+                self.__scheduler.step()
+                self.__optimizer.zero_grad()
+                self.__progress.update(1)
 
-        logging.info(loss_ / steps_)
 
     def exc(self):
 
