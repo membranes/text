@@ -1,3 +1,4 @@
+"""Module steps.py"""
 import logging
 
 import pandas as pd
@@ -13,6 +14,9 @@ import src.models.metrics
 
 
 class Steps:
+    """
+    The BERT steps.
+    """
 
     def __init__(self, enumerator: dict, archetype: dict,
                  training: pd.DataFrame, validating: pd.DataFrame):
