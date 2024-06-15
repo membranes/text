@@ -1,3 +1,4 @@
+"""Module validating.py"""
 import logging
 import typing
 
@@ -86,6 +87,10 @@ class Validating:
 
             return the_originals, the_predictions
 
-    def exc(self):
+    def exc(self) -> typing.Tuple[list, list]:
+        """
 
-        self.__validating()
+        :return:
+        """
+
+        return self.__validating()
