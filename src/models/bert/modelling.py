@@ -1,10 +1,10 @@
-
+"""Module modelling.py"""
 import logging
-import tqdm.auto
 
 import sklearn.metrics as sm
 import torch
 import torch.utils.data as tu
+import tqdm.auto
 import transformers
 import transformers.modeling_outputs as tm
 
@@ -13,6 +13,12 @@ import src.models.bert.parameters
 
 
 class Modelling:
+    """
+    Notes
+    -----
+
+    BERT
+    """
 
     def __init__(self, variable: src.elements.variable.Variable,
                  enumerator: dict, dataloader: tu.DataLoader):
@@ -39,9 +45,8 @@ class Modelling:
 
         # Optimizing & Scheduling
         self.__optimizer = torch.optim.AdamW(params=self.__model.parameters(), lr=self.__variable.LEARNING_RATE)
-        self.__scheduler = transformers.get_scheduler(
-            name='linear', optimizer=self.__optimizer, num_warmup_steps=0,
-            num_training_steps=self.__n_steps)
+        self.__scheduler = transformers.get_scheduler(name='linear', optimizer=self.__optimizer,
+                                                      num_warmup_steps=0, num_training_steps=self.__n_steps)
 
     def __train(self) -> transformers.modeling_utils.PreTrainedModel:
         """
@@ -49,7 +54,7 @@ class Modelling:
         :return:
         """
 
-        # Preparing a training epoch ...
+        # Preparing for training ...
         self.__model.train()
 
         # Train
@@ -90,7 +95,7 @@ class Modelling:
                 original = torch.masked_select(targets, active)
                 __labels.extend(original)
 
-                # Predictions
+                # Predictions, of active targets
                 logits = bucket.logits.view(-1, self.__model.config.num_labels)
                 maxima = torch.argmax(logits, dim=1)
                 predictions = torch.masked_select(maxima, active)
@@ -98,8 +103,6 @@ class Modelling:
 
                 # Accuracy
                 # Replace this metric; inappropriate, and probably incorrect arithmetic.
-                logging.info(original)
-                logging.info(predictions)
                 score: float = sm.accuracy_score(original.cpu().numpy(), predictions.cpu().numpy())
                 accuracy_ += score
 
