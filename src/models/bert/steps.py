@@ -5,7 +5,7 @@ import pandas as pd
 import transformers
 
 import src.elements.variable
-import src.models.bert.data_collection
+import src.models.data_collection
 import src.models.bert.dataset
 import src.models.loadings
 import src.models.bert.modelling
@@ -40,7 +40,7 @@ class Steps:
 
         # Instances
         self.__loadings = src.models.loadings.Loadings()
-        self.__data_collection = src.models.bert.data_collection.DataCollection(
+        self.__data_collection = src.models.data_collection.DataCollection(
             enumerator=self.__enumerator, variable=self.__variable)
 
         # Logging
