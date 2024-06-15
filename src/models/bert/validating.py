@@ -1,9 +1,10 @@
+import logging
 
+import sklearn.metrics as sm
 import torch
 import torch.utils.data as tu
 import transformers
 import transformers.modeling_outputs as tm
-import sklearn.metrics as sm
 
 import src.models.bert.parameters
 
@@ -75,9 +76,14 @@ class Validating:
                 # Replace this metric; inappropriate, and probably incorrect arithmetic.
                 score: float = sm.accuracy_score(original.cpu().numpy(), prediction.cpu().numpy())
                 accuracy_ += score
+
+            logging.info(loss_/step_)
+            logging.info(accuracy_/step_)
                 
             the_originals = [self.__archetype[code.item()] for code in __originals]
             the_predictions = [self.__archetype[code.item()] for code in __predictions]
+
+            return the_originals, the_predictions
 
     def exc(self):
 
