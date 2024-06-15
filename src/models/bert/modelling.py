@@ -111,10 +111,10 @@ class Modelling:
                 self.__optimizer.zero_grad()
                 self.__progress.update(1)
 
-            logging.info(loss_/step_)
-            logging.info(accuracy_/step_)
+            logging.info('EPOCH %s -> Rough loss: %s', epoch, loss_/step_)
+            logging.info('EPOCH %s -> Rough accuracy: %s', epoch, accuracy_/step_)
 
-            return self.__model
+        return self.__model
 
 
     def exc(self) -> transformers.modeling_utils.PreTrainedModel:
