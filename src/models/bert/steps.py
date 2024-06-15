@@ -13,16 +13,19 @@ import src.models.bert.validation
 
 class Steps:
 
-    def __init__(self, enumerator: dict, training: pd.DataFrame, validating: pd.DataFrame):
+    def __init__(self, enumerator: dict, archetype: dict,
+                 training: pd.DataFrame, validating: pd.DataFrame):
         """
 
         :param enumerator:
+        :param archetype:
         :param training:
         :param validating:
         """
 
         # Inputs
         self.__enumerator = enumerator
+        self.__archetype = archetype
         self.__training = training
         self.__validating = validating
 
@@ -58,4 +61,4 @@ class Steps:
         model: transformers.PreTrainedModel = src.models.bert.modelling.Modelling(
             variable = self.__variable, enumerator=self.__enumerator, dataloader=training_dataloader).exc()
 
-        self.__logger.info(model.__dict__)
+        originals, predictions = src.models.bert.validation.Validation(model=model, dataloader=validating_dataloader, archetype=self.__archetype).exc()
