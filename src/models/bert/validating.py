@@ -10,7 +10,13 @@ import src.models.bert.parameters
 
 class Validating:
 
-    def __init__(self, model: transformers.PreTrainedModel, dataloader: tu.DataLoader):
+    def __init__(self, model: transformers.PreTrainedModel, dataloader: tu.DataLoader, archetype: dict):
+        """
+
+        :param model: The trained model
+        :param dataloader: The validation data DataLoader
+        :param archetype: The identifiers to label mappings
+        """
 
         # Model
         self.__model = model
