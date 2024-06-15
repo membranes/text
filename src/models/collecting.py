@@ -9,7 +9,7 @@ import src.models.bert.dataset
 import src.models.loadings
 
 
-class DataCollection:
+class Collecting:
 
     def __init__(self, enumerator: dict, variable: src.elements.variable.Variable):
         """
