@@ -33,6 +33,8 @@ class DataCollection:
 
     def exc(self, blob: pd.DataFrame, parameters: dict, name: str = None) -> typing.Tuple[tu.Dataset, tu.DataLoader]:
         """
+        self.__logger.info('%s dataset:\n%s', name, dataset.__dict__)
+        self.__logger.info('%s dataloader:\n%s', name, dataloader.__dict__)
 
         :param blob: The dataframe being transformed
         :param parameters: The modelling parameters of <blob>
@@ -45,8 +47,5 @@ class DataCollection:
 
         dataloader: tu.DataLoader = self.__loadings.exc(
             dataset=dataset, parameters=parameters)
-
-        self.__logger.info('%s dataset:\n%s', name, dataset.__dict__)
-        self.__logger.info('%s dataloader:\n%s', name, dataloader.__dict__)
 
         return dataset, dataloader
