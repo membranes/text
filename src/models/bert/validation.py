@@ -1,4 +1,4 @@
-"""Module validating.py"""
+"""Module validation.py"""
 import logging
 import typing
 
@@ -11,7 +11,7 @@ import transformers.modeling_outputs as tm
 import src.models.bert.parameters
 
 
-class Validating:
+class Validation:
 
     def __init__(self, model: transformers.PreTrainedModel, dataloader: tu.DataLoader, archetype: dict):
         """
