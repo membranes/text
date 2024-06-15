@@ -82,10 +82,10 @@ class Validating:
             logging.info(loss_/step_)
             logging.info(accuracy_/step_)
                 
-            the_originals = [self.__archetype[code.item()] for code in __originals]
-            the_predictions = [self.__archetype[code.item()] for code in __predictions]
+            originals_ = [self.__archetype[code.item()] for code in __originals]
+            predictions_ = [self.__archetype[code.item()] for code in __predictions]
 
-            return the_originals, the_predictions
+            return originals_, predictions_
 
     def exc(self) -> typing.Tuple[list, list]:
         """
