@@ -86,13 +86,13 @@ class Validation:
                 score: float = sm.accuracy_score(original.cpu().numpy(), prediction.cpu().numpy())
                 accuracy_ += score
 
-            logging.info(loss_/step_)
-            logging.info(accuracy_/step_)
-                
-            originals_ = [self.__archetype[code.item()] for code in __originals]
-            predictions_ = [self.__archetype[code.item()] for code in __predictions]
+        logging.info(loss_/step_)
+        logging.info(accuracy_/step_)
 
-            return originals_, predictions_
+        originals_ = [self.__archetype[code.item()] for code in __originals]
+        predictions_ = [self.__archetype[code.item()] for code in __predictions]
+
+        return originals_, predictions_
 
     def exc(self) -> typing.Tuple[list, list]:
         """
