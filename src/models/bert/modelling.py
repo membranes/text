@@ -59,11 +59,12 @@ class Modelling:
 
             # For measures & metrics
             step_ = 0
+            loss_ = 0
             accuracy_ = 0
             __labels: list[torch.Tensor] = []
             __predictions: list[torch.Tensor] = []
 
-
+            # By batch
             index: int
             batch: dict
             for index, batch in enumerate(self.__dataloader):
@@ -79,8 +80,9 @@ class Modelling:
                 bucket: tm.TokenClassifierOutput = self.__model(input_ids=inputs_, attention_mask=attention_mask_, labels=labels_)
 
                 # Loss
-                loss_ = bucket.loss.item()
-                loss_.backward()
+                loss = bucket.loss.item()
+                loss_ += loss
+                loss.backward()
 
                 # Targets, active targets.
                 targets = labels_.view(-1)
@@ -97,12 +99,15 @@ class Modelling:
                 accuracy_ += score
 
                 # Gradient: Ambiguous
-                torch.nn.utils.clip_grad_norm(parameters=self.__model.parameters(),
-                                              max_norm=self.__variable.MAX_GRADIENT_NORM)
+                # torch.nn.utils.clip_grad_norm(parameters=self.__model.parameters(),
+                #                               max_norm=self.__variable.MAX_GRADIENT_NORM)
                 self.__optimizer.step()
                 self.__scheduler.step()
                 self.__optimizer.zero_grad()
                 self.__progress.update(1)
+
+            logging.info(loss_/step_)
+            logging.info(accuracy_/step_)
 
 
     def exc(self):
