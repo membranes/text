@@ -5,7 +5,7 @@ import pandas as pd
 import transformers
 
 import src.elements.variable
-import src.models.data_collection
+import src.models.collecting
 import src.models.bert.dataset
 import src.models.loadings
 import src.models.bert.modelling
@@ -40,7 +40,7 @@ class Steps:
 
         # Instances
         self.__loadings = src.models.loadings.Loadings()
-        self.__data_collection = src.models.data_collection.DataCollection(
+        self.__collecting = src.models.collecting.Collecting(
             enumerator=self.__enumerator, variable=self.__variable)
 
         # Logging
@@ -56,11 +56,11 @@ class Steps:
         """
 
         self.__logger.info('Training Data')
-        _, training_dataloader = self.__data_collection.exc(blob=self.__training, parameters={
+        _, training_dataloader = self.__collecting.exc(blob=self.__training, parameters={
             'batch_size': self.__variable.TRAIN_BATCH_SIZE, 'shuffle': True, 'num_workers': 0}, name='training')
 
         self.__logger.info('Validation Data')
-        _, validating_dataloader = self.__data_collection.exc(blob=self.__validating, parameters={
+        _, validating_dataloader = self.__collecting.exc(blob=self.__validating, parameters={
             'batch_size': self.__variable.VALID_BATCH_SIZE, 'shuffle': True, 'num_workers': 0}, name='validating')
 
         self.__logger.info('Modelling: Training Stage')
