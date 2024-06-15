@@ -8,6 +8,7 @@ import src.models.bert.data_collection
 import src.models.bert.dataset
 import src.models.loadings
 import src.models.bert.modelling
+import src.models.bert.validation
 
 
 class Steps:
