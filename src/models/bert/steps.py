@@ -1,6 +1,7 @@
 import logging
 
 import pandas as pd
+import transformers
 
 import src.elements.variable
 import src.models.bert.data_collection
@@ -53,5 +54,7 @@ class Steps:
         _, validating_dataloader = self.__data_collection.exc(blob=self.__validating, parameters={
             'batch_size': self.__variable.VALID_BATCH_SIZE, 'shuffle': True, 'num_workers': 0}, name='validating')
 
-        src.models.bert.modelling.Modelling(variable = self.__variable, enumerator=self.__enumerator,
-                                            dataloader=training_dataloader).exc()
+        model: transformers.PreTrainedModel = src.models.bert.modelling.Modelling(
+            variable = self.__variable, enumerator=self.__enumerator, dataloader=training_dataloader).exc()
+
+        self.__logger.info(model.__dict__)
