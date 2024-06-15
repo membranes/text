@@ -35,7 +35,7 @@ class Validating:
         step_ = 0
         loss_ = 0
         accuracy_ = 0
-        __labels: list[torch.Tensor] = []
+        __originals: list[torch.Tensor] = []
         __predictions: list[torch.Tensor] = []
 
         with torch.no_grad():
@@ -63,18 +63,21 @@ class Validating:
                 targets = labels_.view(-1)
                 active = labels_.view(-1).ne(-100)
                 original = torch.masked_select(targets, active)
-                __labels.extend(original)
+                __originals.extend(original)
 
                 # Predictions, of active targets
                 logits = bucket.logits.view(-1, self.__model.config.num_labels)
                 maxima = torch.argmax(logits, dim=1)
-                predictions = torch.masked_select(maxima, active)
-                __predictions.extend(predictions)
+                prediction = torch.masked_select(maxima, active)
+                __predictions.extend(prediction)
 
                 # Accuracy
                 # Replace this metric; inappropriate, and probably incorrect arithmetic.
-                score: float = sm.accuracy_score(original.cpu().numpy(), predictions.cpu().numpy())
+                score: float = sm.accuracy_score(original.cpu().numpy(), prediction.cpu().numpy())
                 accuracy_ += score
+                
+            the_originals = [self.__archetype[code.item()] for code in __originals]
+            the_predictions = [self.__archetype[code.item()] for code in __predictions]
 
     def exc(self):
 
