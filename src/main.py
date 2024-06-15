@@ -32,7 +32,7 @@ def main():
 
     # Temporary
     frame = frame.loc[:1000, :]
-    src.models.interface.Interface(frame=frame, enumerator=enumerator).exc()
+    src.models.interface.Interface(frame=frame, enumerator=enumerator, archetype=archetype).exc()
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
