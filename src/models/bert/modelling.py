@@ -49,14 +49,6 @@ class Modelling:
         :return:
         """
 
-        # For measures & metrics
-        step_ = 0
-        accuracy_ = 0
-
-        # For estimates
-        __labels: list[torch.Tensor] = []
-        __predictions: list[torch.Tensor] = []
-
         # Preparing a training epoch ...
         self.__model.train()
 
@@ -64,6 +56,13 @@ class Modelling:
         for epoch in range(self.__variable.EPOCHS):
 
             logging.info('Epoch: %s', epoch)
+
+            # For measures & metrics
+            step_ = 0
+            accuracy_ = 0
+            __labels: list[torch.Tensor] = []
+            __predictions: list[torch.Tensor] = []
+
 
             index: int
             batch: dict
