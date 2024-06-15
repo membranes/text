@@ -9,6 +9,7 @@ import src.models.bert.dataset
 import src.models.loadings
 import src.models.bert.modelling
 import src.models.bert.validation
+import src.models.metrics
 
 
 class Steps:
@@ -50,15 +51,19 @@ class Steps:
         :return:
         """
 
-        self.__logger.info('Training')
+        self.__logger.info('Training Data')
         _, training_dataloader = self.__data_collection.exc(blob=self.__training, parameters={
             'batch_size': self.__variable.TRAIN_BATCH_SIZE, 'shuffle': True, 'num_workers': 0}, name='training')
 
-        self.__logger.info('Validating')
+        self.__logger.info('Validation Data')
         _, validating_dataloader = self.__data_collection.exc(blob=self.__validating, parameters={
             'batch_size': self.__variable.VALID_BATCH_SIZE, 'shuffle': True, 'num_workers': 0}, name='validating')
 
+        self.__logger.info('Modelling: Training Stage')
         model: transformers.PreTrainedModel = src.models.bert.modelling.Modelling(
             variable = self.__variable, enumerator=self.__enumerator, dataloader=training_dataloader).exc()
 
-        originals, predictions = src.models.bert.validation.Validation(model=model, dataloader=validating_dataloader, archetype=self.__archetype).exc()
+        self.__logger.info('Modelling: Validation Stage')
+        originals, predictions = src.models.bert.validation.Validation(model=model, dataloader=validating_dataloader,
+                                                                       archetype=self.__archetype).exc()
+        src.models.metrics.Metrics().exc(originals=originals, predictions=predictions)
