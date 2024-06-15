@@ -12,6 +12,9 @@ import src.models.bert.parameters
 
 
 class Validation:
+    """
+    For validation stage calculations
+    """
 
     def __init__(self, model: transformers.PreTrainedModel, dataloader: tu.DataLoader, archetype: dict):
         """
@@ -30,6 +33,10 @@ class Validation:
         self.__parameters = src.models.bert.parameters.Parameters()
 
     def __validating(self) -> typing.Tuple[list, list]:
+        """
+
+        :return:
+        """
 
         # Preparing for validation stage ...
         self.__model.eval()
