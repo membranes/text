@@ -14,9 +14,6 @@ import src.models.bert.parameters
 
 class Modelling:
     """
-    Notes
-    -----
-
     BERT
     """
 
