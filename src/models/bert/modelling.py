@@ -43,7 +43,7 @@ class Modelling:
             name='linear', optimizer=self.__optimizer, num_warmup_steps=0,
             num_training_steps=self.__n_steps)
 
-    def __train(self):
+    def __train(self) -> transformers.modeling_utils.PreTrainedModel:
         """
 
         :return:
@@ -80,22 +80,27 @@ class Modelling:
                 bucket: tm.TokenClassifierOutput = self.__model(input_ids=inputs_, attention_mask=attention_mask_, labels=labels_)
 
                 # Loss
-                loss = bucket.loss.item()
-                loss_ += loss
+                loss = bucket.loss
+                loss_ += loss.item()
                 loss.backward()
 
                 # Targets, active targets.
                 targets = labels_.view(-1)
-                active = labels_.view(-1).ne(100)
-                __labels.extend(torch.masked_select(targets, active))
+                active = labels_.view(-1).ne(-100)
+                original = torch.masked_select(targets, active)
+                __labels.extend(original)
 
                 # Predictions
                 logits = bucket.logits.view(-1, self.__model.config.num_labels)
-                __predictions.extend(torch.argmax(logits, dim=1))
+                maxima = torch.argmax(logits, dim=1)
+                predictions = torch.masked_select(maxima, active)
+                __predictions.extend(predictions)
 
                 # Accuracy
-                # Replace this metric
-                score: float = sm.accuracy_score(__labels[-1].cpu().numpy(), __predictions[-1].cpu().numpy())
+                # Replace this metric; inappropriate, and probably incorrect arithmetic.
+                logging.info(original)
+                logging.info(predictions)
+                score: float = sm.accuracy_score(original.cpu().numpy(), predictions.cpu().numpy())
                 accuracy_ += score
 
                 # Gradient: Ambiguous
@@ -109,7 +114,9 @@ class Modelling:
             logging.info(loss_/step_)
             logging.info(accuracy_/step_)
 
+            return self.__model
 
-    def exc(self):
 
-        self.__train()
+    def exc(self) -> transformers.modeling_utils.PreTrainedModel:
+
+        return self.__train()
