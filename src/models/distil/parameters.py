@@ -1,6 +1,5 @@
 """Module parameters.py"""
 import torch
-import transformers
 
 
 class Parameters:
