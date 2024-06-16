@@ -8,7 +8,7 @@ import tqdm.auto
 import transformers
 import transformers.modeling_outputs as tm
 
-import src.elements.variable
+import src.elements.variable as vr
 import src.models.bert.parameters
 
 
@@ -17,7 +17,7 @@ class Modelling:
     BERT
     """
 
-    def __init__(self, variable: src.elements.variable.Variable,
+    def __init__(self, variable: vr.Variable,
                  enumerator: dict, dataloader: tu.DataLoader):
         """
 
