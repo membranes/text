@@ -1,4 +1,4 @@
-"""Module collecting.py"""
+"""Module structures.py"""
 import logging
 
 import pandas as pd
@@ -10,7 +10,7 @@ import src.models.bert.dataset
 import src.models.loadings
 
 
-class Collecting:
+class Structures:
     """
     Collecting
     ----------
