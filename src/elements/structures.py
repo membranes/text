@@ -1,4 +1,4 @@
-"""Module collecting.py"""
+"""Module structures.py"""
 import typing
 
 import torch.utils.data as tu
