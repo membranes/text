@@ -5,7 +5,7 @@ import pandas as pd
 import transformers
 
 import src.elements.variable
-import src.models.collecting
+import src.models.structures
 import src.models.bert.dataset
 import src.models.loadings
 import src.models.bert.modelling
@@ -38,7 +38,7 @@ class Steps:
 
         # Instances
         self.__loadings = src.models.loadings.Loadings()
-        self.__collecting = src.models.collecting.Collecting(
+        self.__structures = src.models.structures.Structures(
             enumerator=self.__enumerator, variable=self.__variable,
             training=training, validating=validating)
 
@@ -54,8 +54,8 @@ class Steps:
         :return:
         """
 
-        training = self.__collecting.training_()
-        validating = self.__collecting.validating_()
+        training = self.__structures.training()
+        validating = self.__structures.validating()
 
         self.__logger.info('Modelling: Training Stage')
         model: transformers.PreTrainedModel = src.models.bert.modelling.Modelling(
