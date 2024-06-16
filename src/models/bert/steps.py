@@ -4,7 +4,7 @@ import logging
 import pandas as pd
 import transformers
 
-import src.elements.variable
+import src.elements.variable as vr
 import src.models.structures
 import src.models.bert.dataset
 import src.models.loadings
@@ -33,7 +33,7 @@ class Steps:
         self.__archetype = archetype
 
         # A set of values for machine learning model development
-        self.__variable = src.elements.variable.Variable()
+        self.__variable = vr.Variable()
         self.__variable = self.__variable._replace(EPOCHS=2)
 
         # Instances
