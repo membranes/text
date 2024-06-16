@@ -5,12 +5,10 @@ import pandas as pd
 import transformers
 
 import src.elements.variable as vr
-import src.models.structures
-import src.models.bert.dataset
-import src.models.loadings
 import src.models.bert.modelling
 import src.models.bert.validation
 import src.models.metrics
+import src.models.structures
 
 
 class Steps:
@@ -37,7 +35,6 @@ class Steps:
         self.__variable = self.__variable._replace(EPOCHS=2)
 
         # Instances
-        self.__loadings = src.models.loadings.Loadings()
         self.__structures = src.models.structures.Structures(
             enumerator=self.__enumerator, variable=self.__variable,
             training=training, validating=validating)
