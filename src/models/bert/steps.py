@@ -31,8 +31,6 @@ class Steps:
         # Inputs
         self.__enumerator = enumerator
         self.__archetype = archetype
-        self.__training = training
-        self.__validating = validating
 
         # A set of values for machine learning model development
         self.__variable = src.elements.variable.Variable()
@@ -42,7 +40,7 @@ class Steps:
         self.__loadings = src.models.loadings.Loadings()
         self.__collecting = src.models.collecting.Collecting(
             enumerator=self.__enumerator, variable=self.__variable,
-            training=self.__training, validating=self.__validating)
+            training=training, validating=validating)
 
         # Logging
         logging.basicConfig(level=logging.INFO,
@@ -56,15 +54,18 @@ class Steps:
         :return:
         """
 
+        training = self.__collecting.training_()
+        validating = self.__collecting.validating_()
+
         self.__logger.info('Modelling: Training Stage')
         model: transformers.PreTrainedModel = src.models.bert.modelling.Modelling(
             variable = self.__variable, enumerator=self.__enumerator,
-            dataloader=self.__collecting.training_().dataloader).exc()
+            dataloader=training.dataloader).exc()
 
         self.__logger.info('Modelling: Validation Stage')
         originals, predictions = src.models.bert.validation.Validation(
             model=model, archetype=self.__archetype,
-            dataloader=self.__collecting.validating_().dataloader).exc()
+            dataloader=validating.dataloader).exc()
 
         self.__logger.info('Metrics')
         src.models.metrics.Metrics().exc(originals=originals, predictions=predictions)
