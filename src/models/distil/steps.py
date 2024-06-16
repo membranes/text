@@ -1,8 +1,13 @@
+"""Module steps.py"""
 import pandas as pd
 
 import src.elements.variable
 
+
 class Steps:
+    """
+    Steps
+    """
 
     def __init__(self, enumerator: dict, archetype: dict,
                  training: pd.DataFrame, validating: pd.DataFrame):
