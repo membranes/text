@@ -44,6 +44,7 @@ class Intelligence:
 
     def __call__(self):
         """
+        https://huggingface.co/docs/transformers/v4.41.3/en/main_classes/trainer#transformers.Trainer
 
         :return:
         """
