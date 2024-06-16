@@ -64,7 +64,7 @@ class Structures:
 
         return cl.Collecting(dataset=dataset, dataloader=dataloader)
 
-    def training_(self) -> cl.Collecting:
+    def training(self) -> cl.Collecting:
         """
         Delivers the training data's Dataset & DataLoader
 
@@ -76,7 +76,7 @@ class Structures:
 
         return self.__structure(frame=self.__training, parameters=parameters)
 
-    def validating_(self) -> cl.Collecting:
+    def validating(self) -> cl.Collecting:
         """
         Delivers the validation data's Dataset & DataLoader
 
@@ -88,7 +88,7 @@ class Structures:
 
         return self.__structure(frame=self.__validating, parameters=parameters)
 
-    def testing_(self) -> cl.Collecting:
+    def testing(self) -> cl.Collecting:
         """
         Delivers the testing data's Dataset & DataLoader
 
