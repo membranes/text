@@ -3,7 +3,7 @@ import typing
 
 import torch.utils.data as tu
 
-class Collecting(typing.NamedTuple):
+class Structures(typing.NamedTuple):
     """
 
     Attributes
