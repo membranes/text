@@ -63,6 +63,12 @@ docker run --rm --gpus all -i -t -p 127.0.0.1:10000:8888 pytorch/pytorch:2.2.2-c
 
   * Optimisation: [torch.optim](https://pytorch.org/docs/stable/optim.html#module-torch.optim)
 
+* EXTRACTORS
+  * [pypdf](https://pypdf.readthedocs.io/en/stable/user/extract-text.html), [pip](https://pypi.org/project/pypdf/)
+    * [example](https://www.geeksforgeeks.org/extract-text-from-pdf-file-using-python/)
+  * [PyMuPDF](https://pymupdf.readthedocs.io/en/latest/), [pip](https://pypi.org/project/PyMuPDF/)
+    * [example](https://www.geeksforgeeks.org/extract-text-from-pdf-file-using-python/)
+
 <br>
 <br>
 
