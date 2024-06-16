@@ -16,18 +16,18 @@ class Validation:
     For validation stage calculations
     """
 
-    def __init__(self, model: transformers.PreTrainedModel, dataloader: tu.DataLoader, archetype: dict):
+    def __init__(self, model: transformers.PreTrainedModel, archetype: dict, dataloader: tu.DataLoader):
         """
 
         :param model: The trained model
-        :param dataloader: The validation data DataLoader
         :param archetype: The identifiers to label mappings
+        :param dataloader: The validation data DataLoader
         """
 
         # Model, DataLoader, Tag Mappings
         self.__model = model
-        self.__dataloader = dataloader
         self.__archetype = archetype
+        self.__dataloader = dataloader
 
         # Parameters
         self.__parameters = src.models.bert.parameters.Parameters()
