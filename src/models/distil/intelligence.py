@@ -41,3 +41,9 @@ class Intelligence:
             per_device_eval_batch_size=self.__variable.VALID_BATCH_SIZE,
             num_train_epochs=self.__variable.EPOCHS,
             weight_decay=0.01)
+
+    def __call__(self):
+        """
+
+        :return:
+        """
