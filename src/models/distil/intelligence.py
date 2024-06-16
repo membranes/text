@@ -1,11 +1,16 @@
-import transformers
+"""Module intelligence.py"""
 import torch.utils.data as tu
+import transformers
 
-import src.models.distil.parameters
 import src.elements.variable
 import src.models.distil.parameters
+import src.models.distil.parameters
+
 
 class Intelligence:
+    """
+    Intelligence
+    """
 
     def __init__(self, variable: src.elements.variable.Variable,
                  enumerator: dict, dataloader: tu.DataLoader):
@@ -36,4 +41,3 @@ class Intelligence:
             per_device_eval_batch_size=self.__variable.VALID_BATCH_SIZE,
             num_train_epochs=self.__variable.EPOCHS,
             weight_decay=0.01)
-
