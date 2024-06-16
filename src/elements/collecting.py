@@ -1,3 +1,4 @@
+"""Module collecting.py"""
 import typing
 
 import torch.utils.data as tu
