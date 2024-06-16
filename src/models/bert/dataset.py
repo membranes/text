@@ -3,13 +3,13 @@ import pandas as pd
 import torch
 import torch.utils.data
 
-import src.elements.variable
+import src.elements.variable as vr
 import src.models.bert.parameters
 
 
 class Dataset(torch.utils.data.Dataset):
 
-    def __init__(self, frame: pd.DataFrame, variable: src.elements.variable.Variable,
+    def __init__(self, frame: pd.DataFrame, variable: vr.Variable,
                  enumerator: dict) -> None:
         """
 
