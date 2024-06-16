@@ -1,19 +1,25 @@
 import logging
-import typing
 
 import pandas as pd
 import torch.utils.data as tu
 
-import src.elements.variable as vr
 import src.elements.collecting as cl
+import src.elements.variable as vr
 import src.models.bert.dataset
 import src.models.loadings
 
 
 class Collecting:
+    """
+    Collecting
+    ----------
+
+    Builds and delivers the data structures per modelling stage
+    """
 
     def __init__(self, enumerator: dict, variable: vr.Variable,
-                 training: pd.DataFrame, validating: pd.DataFrame = None, testing: pd.DataFrame = None):
+                 training: pd.DataFrame, validating: pd.DataFrame = None,
+                 testing: pd.DataFrame = None):
         """
 
         :param enumerator:
@@ -39,54 +45,57 @@ class Collecting:
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
 
-    def training_(self) -> cl.Collecting:
-
-        parameters = {'batch_size': self.__variable.TRAIN_BATCH_SIZE, 'shuffle': True, 'num_workers': 0}
-
-        dataset: tu.Dataset = src.models.bert.dataset.Dataset(
-            frame=self.__training, variable=self.__variable, enumerator=self.__enumerator)
-
-        dataloader: tu.DataLoader = self.__loadings.exc(dataset=dataset, parameters=parameters)
-
-        return cl.Collecting(dataset=dataset, dataloader=dataloader)
-
-    def validating_(self) -> cl.Collecting:
-
-        parameters = {'batch_size': self.__variable.VALID_BATCH_SIZE, 'shuffle': True, 'num_workers': 0}
-
-        dataset: tu.Dataset = src.models.bert.dataset.Dataset(
-            frame=self.__validating, variable=self.__variable, enumerator=self.__enumerator)
-
-        dataloader: tu.DataLoader = self.__loadings.exc(dataset=dataset, parameters=parameters)
-
-        return cl.Collecting(dataset=dataset, dataloader=dataloader)
-
-    def testing_(self) -> cl.Collecting:
-
-        parameters = {'batch_size': self.__variable.TEST_BATCH_SIZE, 'shuffle': True, 'num_workers': 0}
-
-        dataset: tu.Dataset = src.models.bert.dataset.Dataset(
-            frame=self.__testing, variable=self.__variable, enumerator=self.__enumerator)
-
-        dataloader: tu.DataLoader = self.__loadings.exc(dataset=dataset, parameters=parameters)
-
-        return cl.Collecting(dataset=dataset, dataloader=dataloader)
-
-    def exc(self, blob: pd.DataFrame, parameters: dict, name: str = None) -> typing.Tuple[tu.Dataset, tu.DataLoader]:
+    def __structure(self, frame: pd.DataFrame, parameters: dict) -> cl.Collecting:
         """
         self.__logger.info('%s dataset:\n%s', name, dataset.__dict__)
         self.__logger.info('%s dataloader:\n%s', name, dataloader.__dict__)
 
-        :param blob: The dataframe being transformed
-        :param parameters: The modelling parameters of <blob>
-        :param name: A descriptive name, e.g., training, validating, etc.
+        :param frame:
+        :param parameters:
         :return:
         """
 
-        dataset: tu.Dataset = src.models.bert.dataset.Dataset(
-            frame=blob, variable=self.__variable, enumerator=self.__enumerator)
+        dataset = src.models.bert.dataset.Dataset(
+            frame=frame, variable=self.__variable, enumerator=self.__enumerator)
 
         dataloader: tu.DataLoader = self.__loadings.exc(
             dataset=dataset, parameters=parameters)
 
-        return dataset, dataloader
+        return cl.Collecting(dataset=dataset, dataloader=dataloader)
+
+    def training_(self) -> cl.Collecting:
+        """
+        Delivers the training data's Dataset & DataLoader
+
+        :return:
+        """
+
+        parameters = {'batch_size': self.__variable.TRAIN_BATCH_SIZE,
+                      'shuffle': True, 'num_workers': 0}
+
+        return self.__structure(frame=self.__training, parameters=parameters)
+
+    def validating_(self) -> cl.Collecting:
+        """
+        Delivers the validation data's Dataset & DataLoader
+
+        :return:
+        """
+
+        parameters = {'batch_size': self.__variable.VALID_BATCH_SIZE,
+                      'shuffle': True, 'num_workers': 0}
+
+        return self.__structure(frame=self.__validating, parameters=parameters)
+
+    def testing_(self) -> cl.Collecting:
+        """
+        Delivers the testing data's Dataset & DataLoader
+
+        :return:
+        """
+
+        # The modelling parameters
+        parameters = {'batch_size': self.__variable.TEST_BATCH_SIZE,
+                      'shuffle': True, 'num_workers': 0}
+
+        return self.__structure(frame=self.__testing, parameters=parameters)
