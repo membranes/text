@@ -33,7 +33,7 @@ class Intelligence:
             **{'num_labels': len(enumerator)})
 
         # https://huggingface.co/docs/transformers/v4.41.3/en/main_classes/trainer#transformers.TrainingArguments
-        transformers.TrainingArguments(
+        arguments = transformers.TrainingArguments(
             output_dir=self.__parameters.model_checkpoint.split('/')[-1],
             evaluation_strategy='epoch',
             learning_rate=self.__variable.LEARNING_RATE,
