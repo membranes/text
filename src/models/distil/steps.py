@@ -1,13 +1,11 @@
 """Module steps.py"""
 import logging
 
-import pandas as pd
-
-import src.elements.variable as vr
 import src.elements.frames as fr
-
-import src.models.structures
+import src.elements.variable as vr
+import src.models.distil.intelligence
 import src.models.distil.parameters
+import src.models.structures
 
 
 class Steps:
@@ -20,8 +18,7 @@ class Steps:
 
         :param enumerator:
         :param archetype:
-        :param training:
-        :param validating:
+        :param frames:
         """
 
         # Inputs
@@ -51,3 +48,7 @@ class Steps:
 
         training = self.__structures.training()
         validating = self.__structures.validating()
+
+        intelligence = src.models.distil.intelligence.Intelligence(
+            variable=self.__variable, enumerator=self.__enumerator)
+        intelligence(training=training, validating=validating)
