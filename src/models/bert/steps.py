@@ -8,7 +8,7 @@ import src.elements.variable as vr
 import src.models.bert.modelling
 import src.models.bert.validation
 import src.models.bert.metrics
-import src.models.structures
+import src.models.bert.structures
 
 
 class Steps:
@@ -35,7 +35,7 @@ class Steps:
         self.__variable = self.__variable._replace(EPOCHS=2)
 
         # Instances
-        self.__structures = src.models.structures.Structures(
+        self.__structures = src.models.bert.structures.Structures(
             enumerator=self.__enumerator, variable=self.__variable,
             training=training, validating=validating)
 
