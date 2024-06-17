@@ -36,7 +36,8 @@ class Steps:
         # Instances
         parameters = src.models.bert.parameters.Parameters()
         self.__structures = src.models.structures.Structures(
-            enumerator=self.__enumerator, variable=self.__variable, frames=frames, tokenizer=parameters.tokenizer)
+            enumerator=self.__enumerator, variable=self.__variable,
+            frames=frames, tokenizer=parameters.tokenizer)
 
         # Logging
         logging.basicConfig(level=logging.INFO,
