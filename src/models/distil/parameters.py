@@ -21,7 +21,7 @@ class Parameters:
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
         # Pretrained model
-        self.pretrained_model_name = 'distilbert_base_uncased'
+        self.pretrained_model_name = 'distilbert-base-uncased'
 
         # Tokenizer
         self.tokenizer = transformers.DistilBertTokenizerFast.from_pretrained(
