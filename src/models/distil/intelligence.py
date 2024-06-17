@@ -26,12 +26,12 @@ class Intelligence:
 
         # https://huggingface.co/docs/transformers/v4.41.3/en/model_doc/auto#transformers.AutoModel
         self.__model = transformers.AutoModelForTokenClassification.from_pretrained(
-            pretrained_model_name_or_path=self.__parameters.model_checkpoint,
+            pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
             **{'num_labels': len(enumerator)})
 
         # https://huggingface.co/docs/transformers/v4.41.3/en/main_classes/trainer#transformers.TrainingArguments
         self.__args = transformers.TrainingArguments(
-            output_dir=self.__parameters.model_checkpoint.split('/')[-1],
+            output_dir=self.__parameters.pretrained_model_name.split('/')[-1],
             evaluation_strategy='epoch',
             learning_rate=self.__variable.LEARNING_RATE,
             per_device_train_batch_size=self.__variable.TRAIN_BATCH_SIZE,
@@ -46,4 +46,7 @@ class Intelligence:
         :return:
         """
 
-        transformers.Trainer(model=self.__model, args=self.__args, train_dataset=training.dataset, eval_dataset=validating.dataset)
+        transformers.Trainer(model=self.__model,
+                             args=self.__args,
+                             train_dataset=training.dataset,
+                             eval_dataset=validating.dataset)
