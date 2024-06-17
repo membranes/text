@@ -27,9 +27,6 @@ class Metrics:
         :return:
         """
 
-        self.__logger.info(originals)
-        self.__logger.info(predictions)
-
         y_true = [originals]
         y_pred = [predictions]
 
