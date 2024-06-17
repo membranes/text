@@ -7,7 +7,7 @@ import transformers
 import src.elements.variable as vr
 import src.models.bert.modelling
 import src.models.bert.validation
-import src.models.metrics
+import src.models.bert.metrics
 import src.models.structures
 
 
@@ -65,4 +65,4 @@ class Steps:
             dataloader=validating.dataloader).exc()
 
         self.__logger.info('Metrics')
-        src.models.metrics.Metrics().exc(originals=originals, predictions=predictions)
+        src.models.bert.metrics.Metrics().exc(originals=originals, predictions=predictions)
