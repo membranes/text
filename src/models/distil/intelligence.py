@@ -29,11 +29,12 @@ class Intelligence:
         self.__model = transformers.AutoModelForTokenClassification.from_pretrained(
             pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
             **{'num_labels': len(enumerator)})
+        self.__model.to(self.__parameters.device)
 
         # https://huggingface.co/docs/transformers/v4.41.3/en/main_classes/trainer#transformers.TrainingArguments
         self.__args = transformers.TrainingArguments(
             output_dir=self.__parameters.pretrained_model_name.split('/')[-1],
-            evaluation_strategy='epoch',
+            eval_strategy='epoch',
             learning_rate=self.__variable.LEARNING_RATE,
             per_device_train_batch_size=self.__variable.TRAIN_BATCH_SIZE,
             per_device_eval_batch_size=self.__variable.VALID_BATCH_SIZE,
