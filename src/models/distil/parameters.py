@@ -1,5 +1,6 @@
 """Module parameters.py"""
 import torch
+import transformers
 
 
 class Parameters:
@@ -15,7 +16,13 @@ class Parameters:
         """
 
         self.task = 'ner'
-        self.model_checkpoint = 'distilbert_base_uncased'
 
         # The device for computation
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+        # Pretrained model
+        self.pretrained_model_name = 'distilbert_base_uncased'
+
+        # Tokenizer
+        transformers.AutoTokenizer.from_pretrained(
+            pretrained_model_name_or_path=self.pretrained_model_name)
