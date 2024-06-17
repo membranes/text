@@ -1,6 +1,7 @@
 transformers
 dask[complete]>2023.*
 seqeval[gpu]
+evaluate
 pandas>=2.*
 numpy>=1.26.*
 scikit-learn>=1.4.*
