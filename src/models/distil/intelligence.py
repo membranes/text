@@ -1,4 +1,6 @@
 """Module intelligence.py"""
+import logging
+
 import torch.utils.data as tu
 import transformers
 
@@ -39,6 +41,12 @@ class Intelligence:
             num_train_epochs=self.__variable.EPOCHS,
             weight_decay=0.01)
 
+        # Logging
+        logging.basicConfig(level=logging.INFO,
+                            format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
+                            datefmt='%Y-%m-%d %H:%M:%S')
+        self.__logger = logging.getLogger(__name__)
+
     def __call__(self, training: sr.Structures, validating: sr.Structures):
         """
         https://huggingface.co/docs/transformers/v4.41.3/en/main_classes/trainer#transformers.Trainer
@@ -46,7 +54,10 @@ class Intelligence:
         :return:
         """
 
-        transformers.Trainer(model=self.__model,
-                             args=self.__args,
-                             train_dataset=training.dataset,
-                             eval_dataset=validating.dataset)
+        trainer = transformers.Trainer(
+            model=self.__model, args=self.__args, train_dataset=training.dataset,
+            eval_dataset=validating.dataset, tokenizer=self.__parameters.tokenizer)
+
+        trainer.train()
+
+        self.__logger.info(trainer.evaluate())
