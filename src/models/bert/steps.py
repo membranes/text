@@ -8,7 +8,7 @@ import src.elements.frames as fr
 import src.models.bert.modelling
 import src.models.bert.validation
 import src.models.bert.metrics
-import src.models.bert.structures
+import src.models.structures
 
 
 class Steps:
@@ -33,7 +33,7 @@ class Steps:
         self.__variable = self.__variable._replace(EPOCHS=2)
 
         # Instances
-        self.__structures = src.models.bert.structures.Structures(
+        self.__structures = src.models.structures.Structures(
             enumerator=self.__enumerator, variable=self.__variable, frames=frames)
 
         # Logging
