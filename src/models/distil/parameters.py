@@ -24,6 +24,5 @@ class Parameters:
         self.pretrained_model_name = 'distilbert_base_uncased'
 
         # Tokenizer
-        self.tokenizer = transformers.AutoTokenizer.from_pretrained(
+        self.tokenizer = transformers.DistilBertTokenizerFast.from_pretrained(
             pretrained_model_name_or_path=self.pretrained_model_name)
-        assert isinstance(self.tokenizer, transformers.PreTrainedTokenizerFast), 'The tokenizer is not a fast tokenizer.'
