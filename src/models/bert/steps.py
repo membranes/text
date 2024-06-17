@@ -3,11 +3,12 @@ import logging
 
 import transformers
 
-import src.elements.variable as vr
 import src.elements.frames as fr
+import src.elements.variable as vr
+import src.models.bert.metrics
 import src.models.bert.modelling
 import src.models.bert.validation
-import src.models.bert.metrics
+import src.models.bert.parameters
 import src.models.structures
 
 
@@ -33,8 +34,9 @@ class Steps:
         self.__variable = self.__variable._replace(EPOCHS=2)
 
         # Instances
+        parameters = src.models.bert.parameters.Parameters()
         self.__structures = src.models.structures.Structures(
-            enumerator=self.__enumerator, variable=self.__variable, frames=frames)
+            enumerator=self.__enumerator, variable=self.__variable, frames=frames, tokenizer=parameters.tokenizer)
 
         # Logging
         logging.basicConfig(level=logging.INFO,
