@@ -1,7 +1,6 @@
 """Module intelligence.py"""
 import logging
 
-import torch.utils.data as tu
 import transformers
 
 import src.elements.structures as sr
