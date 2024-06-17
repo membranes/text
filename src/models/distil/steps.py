@@ -3,8 +3,7 @@ import logging
 
 import pandas as pd
 
-import src.elements.variable
-import src.models.structures
+import src.elements.variable as vr
 
 
 class Steps:
@@ -27,13 +26,8 @@ class Steps:
         self.__archetype = archetype
 
         # A set of values for machine learning model development
-        self.__variable = src.elements.variable.Variable()
+        self.__variable = vr.Variable()
         self.__variable = self.__variable._replace(EPOCHS=2, TRAIN_BATCH_SIZE=16, VALID_BATCH_SIZE=16)
-
-        # Instances
-        self.__structures = src.models.structures.Structures(
-            enumerator=self.__enumerator, variable=self.__variable,
-            training=training, validating=validating)
 
         # Logging
         logging.basicConfig(level=logging.INFO,
@@ -47,5 +41,5 @@ class Steps:
         :return:
         """
 
-        training = self.__structures.training()
-        validating = self.__structures.validating()
+        # training = self.__structures.training()
+        # validating = self.__structures.validating()
