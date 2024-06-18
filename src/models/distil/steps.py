@@ -7,6 +7,7 @@ import src.elements.variable as vr
 import src.models.distil.intelligence
 import src.models.distil.parameters
 import src.models.distil.validation
+import src.models.distil.metrics
 import src.models.structures
 
 
@@ -63,3 +64,7 @@ class Steps:
             validating=validating, archetype=self.__archetype).exc(model=model)
         self.__logger.info(originals)
         self.__logger.info(predictions)
+
+        # Evaluation Metrics
+        src.models.distil.metrics.Metrics().exc(
+            originals=originals, predictions=predictions)
