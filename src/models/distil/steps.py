@@ -1,4 +1,5 @@
 """Module steps.py"""
+import os
 import logging
 
 import src.elements.frames as fr
@@ -30,6 +31,7 @@ class Steps:
         self.__variable = vr.Variable()
         self.__variable = self.__variable._replace(EPOCHS=8, TRAIN_BATCH_SIZE=16, VALID_BATCH_SIZE=16)
 
+        # Instances
         parameters = src.models.distil.parameters.Parameters()
         self.__structures = src.models.structures.Structures(
             enumerator=self.__enumerator, variable=self.__variable,
@@ -47,12 +49,15 @@ class Steps:
         :return:
         """
 
+        # The data
         training = self.__structures.training()
         validating = self.__structures.validating()
 
+        # Modelling
         intelligence = src.models.distil.intelligence.Intelligence(
             variable=self.__variable, enumerator=self.__enumerator)
         model = intelligence(training=training, validating=validating)
 
+        # Evaluating
         src.models.distil.validation.Validation(
             validating=validating).exc(model=model)
