@@ -14,8 +14,8 @@ import src.models.loadings
 
 class Structures:
     """
-    Collecting
-    ----------
+    Collecting<br>
+    ----------<br>
 
     Builds and delivers the data structures per modelling stage
     """
@@ -29,7 +29,7 @@ class Structures:
         :param frames:
         """
 
-        # A set of values for machine learning model development
+        # A set of values, and data, for machine learning model development
         self.__enumerator = enumerator
         self.__variable = variable
         self.__frames = frames
@@ -47,12 +47,12 @@ class Structures:
 
     def __structure(self, frame: pd.DataFrame, parameters: dict) -> sr.Structures:
         """
-        self.__logger.info('%s dataset:\n%s', name, dataset.__dict__)
-        self.__logger.info('%s dataloader:\n%s', name, dataloader.__dict__)
 
-        :param frame:
-        :param parameters:
+        :param frame: A data frame
+        :param parameters: The data frame's corresponding modelling stage parameters
         :return:
+            NamedTuple consisting of a torch.util.data.Dataset, and a
+            torch.util.data.DataLoader
         """
 
         dataset = src.models.dataset.Dataset(
@@ -71,6 +71,7 @@ class Structures:
         :return:
         """
 
+        # Modelling parameters
         parameters = {'batch_size': self.__variable.TRAIN_BATCH_SIZE,
                       'shuffle': True, 'num_workers': 0}
 
@@ -83,6 +84,7 @@ class Structures:
         :return:
         """
 
+        # Modelling parameters
         parameters = {'batch_size': self.__variable.VALID_BATCH_SIZE,
                       'shuffle': True, 'num_workers': 0}
 
@@ -95,7 +97,7 @@ class Structures:
         :return:
         """
 
-        # The modelling parameters
+        # Modelling parameters
         parameters = {'batch_size': self.__variable.TEST_BATCH_SIZE,
                       'shuffle': True, 'num_workers': 0}
 
