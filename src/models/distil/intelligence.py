@@ -47,7 +47,7 @@ class Intelligence:
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
 
-    def __call__(self, training: sr.Structures, validating: sr.Structures):
+    def __call__(self, training: sr.Structures, validating: sr.Structures) -> transformers.Trainer:
         """
         https://huggingface.co/docs/transformers/v4.41.3/en/main_classes/trainer#transformers.Trainer
 
@@ -60,4 +60,4 @@ class Intelligence:
 
         trainer.train()
 
-        self.__logger.info(trainer.evaluate())
+        return trainer
