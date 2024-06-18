@@ -15,13 +15,14 @@ class Validation:
 
     """
 
-    def __init__(self, validating: sr.Structures):
+    def __init__(self, validating: sr.Structures, archetype: dict):
         """
 
         :param validating:
         """
 
         self.__validating = validating
+        self.__archetype = archetype
 
         # Logging
         logging.basicConfig(level=logging.INFO, format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
@@ -49,10 +50,14 @@ class Validation:
         matrix = __predictions.reshape(-1, model.model.config.num_labels)
         est = np.argmax(matrix, axis=1)
 
+        # Active
         self.__logger.info('Determining active labels & predictions')
         active = np.not_equal(ref, -100)
         labels = ref[active]
         predictions = est[active]
 
+        # Code -> tag
+        labels_ = [self.__archetype[code.item()] for code in labels]
+        predictions_ = [self.__archetype[code.item()] for code in predictions]
 
-        return labels, predictions
+        return labels_, predictions_
