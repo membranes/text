@@ -1,6 +1,7 @@
 import logging
 
 import transformers
+import numpy as np
 
 import src.elements.structures as sr
 
@@ -35,7 +36,15 @@ class Validation:
 
         bucket = model.predict(self.__validating.dataset)
 
-        self.__logger.info(bucket.metrics)
+        __predictions: np.ndarray = bucket.predictions
+        __labels: np.ndarray = bucket.label_ids
+
+        p = __predictions.reshape(-1)
+        l = __labels.reshape(-1)
+        self.__logger.info(p)
+        self.__logger.info(l)
+
         self.__logger.info(bucket.predictions)
         self.__logger.info(bucket.label_ids)
+
         self.__logger.info(bucket.__doc__)
