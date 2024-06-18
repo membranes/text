@@ -44,10 +44,14 @@ class Validation:
         self.__logger.info('Predictions: %s', __predictions.shape)
 
         l = __labels.reshape(-1)
-        p = __predictions.reshape(-1, model.model.config.num_labels)
+        matrix = __predictions.reshape(-1, model.model.config.num_labels)
+        p = np.argmax(matrix, axis=1)
 
         self.__logger.info('Labels: %s', l.shape)
         self.__logger.info('Predictions: %s', p.shape)
+
+        self.__logger.info('Labels: %s', l)
+        self.__logger.info('Predictions: %s', p)
 
         '''
         active = np.not_equal(l, -100)
