@@ -32,8 +32,8 @@ class Interface:
         """
 
         # bert
-        # src.models.bert.steps.Steps(
-        #     enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
+        src.models.bert.steps.Steps(
+            enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
 
         # electra
         # src.models.electra.steps
