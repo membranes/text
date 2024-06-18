@@ -59,5 +59,5 @@ class Steps:
         model = intelligence(training=training, validating=validating)
 
         # Evaluating
-        src.models.distil.validation.Validation(
+        originals, predictions = src.models.distil.validation.Validation(
             validating=validating).exc(model=model)
