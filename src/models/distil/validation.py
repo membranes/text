@@ -36,15 +36,29 @@ class Validation:
 
         bucket = model.predict(self.__validating.dataset)
 
-        __predictions: np.ndarray = bucket.predictions
+        self.__logger.info('Determining active labels & predictions')
         __labels: np.ndarray = bucket.label_ids
+        __predictions: np.ndarray = bucket.predictions
 
-        p = __predictions.reshape(-1)
+        self.__logger.info('Labels: %s', __labels.shape)
+        self.__logger.info('Predictions: %s', __predictions.shape)
+
         l = __labels.reshape(-1)
-        self.__logger.info(p)
-        self.__logger.info(l)
+        p = __predictions.reshape(-1, model.model.config.num_labels)
 
-        self.__logger.info(bucket.predictions)
-        self.__logger.info(bucket.label_ids)
+        self.__logger.info('Labels: %s', l.shape)
+        self.__logger.info('Predictions: %s', p.shape)
+
+        '''
+        active = np.not_equal(l, -100)
+        labels = l[active]
+        predictions = p[active]
+
+        self.__logger.info(labels.shape)
+        self.__logger.info(predictions.shape)
+
+        self.__logger.info(labels)
+        self.__logger.info(predictions)
+        '''
 
         self.__logger.info(bucket.__doc__)
