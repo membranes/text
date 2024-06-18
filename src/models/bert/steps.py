@@ -20,9 +20,10 @@ class Steps:
     def __init__(self, enumerator: dict, archetype: dict, frames: fr.Frames):
         """
 
-        :param enumerator:
-        :param archetype:
-        :param frames:
+        :param enumerator: Code -> tag mapping
+        :param archetype: Tag -> code mapping
+        :param frames: The data frames for modelling stages, i.e., the
+                       training, validating, and testing stages
         """
 
         # Inputs
