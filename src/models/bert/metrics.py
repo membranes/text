@@ -27,11 +27,14 @@ class Metrics:
         :return:
         """
 
+        self.__logger.info(originals)
+        self.__logger.info(predictions)
+
         y_true = [originals]
         y_pred = [predictions]
 
         self.__logger.info(
-            sme.classification_report(y_true=y_true, y_pred=y_pred))
+            sme.classification_report(y_true=y_true, y_pred=y_pred, zero_division=0.0))
 
         self.__logger.info(
             sme.accuracy_score(y_true=y_true, y_pred=y_pred))
