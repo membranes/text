@@ -1,4 +1,5 @@
 import logging
+import typing
 
 import transformers
 import numpy as np
@@ -27,42 +28,31 @@ class Validation:
                             datefmt='%Y-%m-%d %H-%M-%S')
         self.__logger = logging.getLogger(__name__)
 
-    def exc(self, model: transformers.Trainer):
+    def exc(self, model: transformers.Trainer) -> typing.Tuple[list, list]:
         """
 
         :param model:
         :return:
+            labels: The codes of the original labels<br>
+            predictions: The predicted codes
         """
 
+        # The outputs bucket
         bucket = model.predict(self.__validating.dataset)
-
-        self.__logger.info('Determining active labels & predictions')
         __labels: np.ndarray = bucket.label_ids
         __predictions: np.ndarray = bucket.predictions
-
         self.__logger.info('Labels: %s', __labels.shape)
         self.__logger.info('Predictions: %s', __predictions.shape)
 
-        l = __labels.reshape(-1)
+        # Reshaping
+        ref = __labels.reshape(-1)
         matrix = __predictions.reshape(-1, model.model.config.num_labels)
-        p = np.argmax(matrix, axis=1)
+        est = np.argmax(matrix, axis=1)
 
-        self.__logger.info('Labels: %s', l.shape)
-        self.__logger.info('Predictions: %s', p.shape)
+        self.__logger.info('Determining active labels & predictions')
+        active = np.not_equal(ref, -100)
+        labels = ref[active]
+        predictions = est[active]
 
-        self.__logger.info('Labels: %s', l)
-        self.__logger.info('Predictions: %s', p)
 
-        '''
-        active = np.not_equal(l, -100)
-        labels = l[active]
-        predictions = p[active]
-
-        self.__logger.info(labels.shape)
-        self.__logger.info(predictions.shape)
-
-        self.__logger.info(labels)
-        self.__logger.info(predictions)
-        '''
-
-        self.__logger.info(bucket.__doc__)
+        return labels, predictions
