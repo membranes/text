@@ -1,6 +1,9 @@
 """Module parameters.py"""
+import os
 import torch
 import transformers
+
+import src.functions.directories
 
 
 class Parameters:
@@ -22,6 +25,11 @@ class Parameters:
 
         # Pretrained model
         self.pretrained_model_name = 'distilbert-base-uncased'
+
+        # Directories
+        path = os.path.join(os.getcwd(), self.pretrained_model_name)
+        directories = src.functions.directories.Directories()
+        directories.cleanup(path=path)
 
         # Tokenizer
         self.tokenizer = transformers.DistilBertTokenizerFast.from_pretrained(
