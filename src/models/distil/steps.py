@@ -5,6 +5,7 @@ import src.elements.frames as fr
 import src.elements.variable as vr
 import src.models.distil.intelligence
 import src.models.distil.parameters
+import src.models.distil.validation
 import src.models.structures
 
 
@@ -27,7 +28,7 @@ class Steps:
 
         # A set of values for machine learning model development
         self.__variable = vr.Variable()
-        self.__variable = self.__variable._replace(EPOCHS=10, TRAIN_BATCH_SIZE=16, VALID_BATCH_SIZE=16)
+        self.__variable = self.__variable._replace(EPOCHS=8, TRAIN_BATCH_SIZE=16, VALID_BATCH_SIZE=16)
 
         parameters = src.models.distil.parameters.Parameters()
         self.__structures = src.models.structures.Structures(
@@ -51,4 +52,7 @@ class Steps:
 
         intelligence = src.models.distil.intelligence.Intelligence(
             variable=self.__variable, enumerator=self.__enumerator)
-        intelligence(training=training, validating=validating)
+        model = intelligence(training=training, validating=validating)
+
+        src.models.distil.validation.Validation(
+            validating=validating).exc(model=model)
