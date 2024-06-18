@@ -60,4 +60,6 @@ class Steps:
 
         # Evaluating
         originals, predictions = src.models.distil.validation.Validation(
-            validating=validating).exc(model=model)
+            validating=validating, archetype=self.__archetype).exc(model=model)
+        self.__logger.info(originals)
+        self.__logger.info(predictions)
