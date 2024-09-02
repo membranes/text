@@ -38,6 +38,18 @@ docker run --rm --gpus all -i -t -p 127.0.0.1:10000:8888 pytorch/pytorch:2.2.2-c
 <br>
 <br>
 
+### Data
+
+* [WNUT 2017 (WNUT 2017 Emerging and Rare entity recognition)](https://paperswithcode.com/dataset/wnut-2017-emerging-and-rare-entity)
+* [Token Classification & WNUT 2017](https://huggingface.co/docs/transformers/tasks/token_classification)
+* [get](https://huggingface.co/datasets/leondz/wnut_17)
+
+* [Few-NERD](https://paperswithcode.com/dataset/few-nerd)
+* [get Few-NERD](https://huggingface.co/datasets/DFKI-SLT/few-nerd?library=datasets)
+
+<br>
+<br>
+
 ### Modelling Notes
 
 * Word level annotation scheme: <abbr title="Inside, Outside, Beginning">IOB</abbr> Tagging
@@ -69,6 +81,28 @@ docker run --rm --gpus all -i -t -p 127.0.0.1:10000:8888 pytorch/pytorch:2.2.2-c
     * [example](https://www.geeksforgeeks.org/extract-text-from-pdf-file-using-python/)
   * [PyMuPDF](https://pymupdf.readthedocs.io/en/latest/), [pip](https://pypi.org/project/PyMuPDF/)
     * [example](https://www.geeksforgeeks.org/extract-text-from-pdf-file-using-python/)
+
+
+* File Formats (Note $\rightarrow$ GPT: Generative Pre-trained Transformer)
+  * GGUF: GPT-Generated Unified Format
+  * GGML: GPT-Generated Model Language
+  * [What is GGUF and GGML?](https://medium.com/@phillipgimmi/what-is-gguf-and-ggml-e364834d241c)
+  * [About GGUF](https://github.com/ggerganov/ggml/blob/master/docs/gguf.md)
+  * [to GGUF](https://medium.com/@qdrddr/the-easiest-way-to-convert-a-model-to-gguf-and-quantize-91016e97c987)
+  * [to GGUF discussion](https://github.com/ggerganov/llama.cpp/discussions/2948)
+  * [Hugging Face & GGUF](https://huggingface.co/docs/hub/gguf)
+
+<br>
+<br>
+
+### And
+
+* [Freedom of information (FOI) Improvement Plan 2024](https://www.gov.scot/publications/freedom-of-information-foi-improvement-plan-2024/)
+* [ELECTRA](https://research.google/blog/more-efficient-nlp-model-pre-training-with-electra/)
+* [Large Language Models: A Survey](https://arxiv.org/pdf/2402.06196v1)
+* [New LLM Pre-training and Post-training Paradigms](https://magazine.sebastianraschka.com/p/new-llm-pre-training-and-post-training)
+* [A survey on recent advances in Named Entity Recognition](https://arxiv.org/html/2401.10825v1)
+* [END-TO-END NAMED ENTITY RECOGNITION AND RELATION EXTRACTION USING PRE-TRAINED LANGUAGE MODELS](https://arxiv.org/pdf/1912.13415)
 
 <br>
 <br>
