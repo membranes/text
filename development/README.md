@@ -34,6 +34,6 @@ Named Entity Recognition
 	* [More](https://doccano.github.io/doccano/)
 * [NER (Named Entity Recognition) Annotator](https://github.com/tecoholic/ner-annotator)
 * [Acharya for NER (Named Entity Recognition)](https://acharya.astutic.com/docs/intro)
-
+* [gradio & NER (Named Entity Recognition)](https://www.gradio.app/guides/named-entity-recognition)
 
 
