@@ -14,7 +14,7 @@ docker build . --file .devcontainer/Dockerfile --tag entities
 
 <br>
 
-For a built image ...
+An instance of the image
 
 ```bash
 docker run --rm --gpus all -i -t -p 127.0.0.1:10000:8888 -w /app \
