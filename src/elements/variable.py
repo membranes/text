@@ -24,6 +24,9 @@ class Variable(typing.NamedTuple):
     LEARNING_RATE : float
         The learning rate
 
+    WEIGHT_DECAY : float
+        Weight decay
+
     MAX_GRADIENT_NORM : int
         The maximum gradient norm
     """
@@ -33,5 +36,6 @@ class Variable(typing.NamedTuple):
     VALID_BATCH_SIZE: int = 2
     TEST_BATCH_SIZE: int = 2
     EPOCHS: int = 1
-    LEARNING_RATE: float = 1e-05
+    LEARNING_RATE: float = 0.001
+    WEIGHT_DECAY: float = 0.01
     MAX_GRADIENT_NORM: int = 10
