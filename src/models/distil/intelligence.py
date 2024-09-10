@@ -20,6 +20,15 @@ class Intelligence:
         # Parameters
         self.__parameters = pr.Parameters()
 
+    @staticmethod
+    def collator(tokenizer: transformers.PreTrainedTokenizerBase) -> transformers.DataCollatorForTokenClassification:
+        """
+
+        :param tokenizer:
+        :return:
+        """
+
+        return transformers.DataCollatorForTokenClassification(tokenizer=tokenizer)
 
     def model(self):
         """
