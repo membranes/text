@@ -57,11 +57,15 @@ Word level annotation scheme: <abbr title="Inside, Outside, Beginning">IOB</abbr
 * [tagtog](https://docs.tagtog.com)
 * [doccano](https://github.com/doccano/doccano)
 
+<br>
+
 STEPS
 * The Data
 * Format vis-à-vis annotation scheme.
 * Investigate tag categories imbalances, i.e., cf. the categories tags frequencies vis-à-vis <abbr title="inside">I</abbr>, <abbr title="outside">O</abbr>, & <abbr title="beginning">B</abbr>.
 * Beware of token encoding approaches.
+
+<br>
 
 GUIDES
 * [transformers](https://huggingface.co/docs/transformers/index)
@@ -75,12 +79,15 @@ GUIDES
 * For tensors that have a single value: [torch.Tensor.item()](https://pytorch.org/docs/stable/generated/torch.Tensor.item.html#torch.Tensor.item)
 * Optimisation: [torch.optim](https://pytorch.org/docs/stable/optim.html#module-torch.optim)
 
+<br>
+
 EXTRACTORS
 * [pypdf](https://pypdf.readthedocs.io/en/stable/user/extract-text.html), [pip](https://pypi.org/project/pypdf/)
   * [example](https://www.geeksforgeeks.org/extract-text-from-pdf-file-using-python/)
 * [PyMuPDF](https://pymupdf.readthedocs.io/en/latest/), [pip](https://pypi.org/project/PyMuPDF/)
   * [example](https://www.geeksforgeeks.org/extract-text-from-pdf-file-using-python/)
 
+<br>
 
 File Formats (Note $\rightarrow$ GPT: Generative Pre-trained Transformer)
 * GGUF: GPT-Generated Unified Format
