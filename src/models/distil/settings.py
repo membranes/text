@@ -1,10 +1,8 @@
 """Module settings"""
-import os
 
 import ray
 import ray.tune
 import ray.tune.schedulers as rts
-import transformers
 
 import src.elements.variable as vr
 
