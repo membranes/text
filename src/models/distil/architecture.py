@@ -1,4 +1,5 @@
 import logging
+import os
 
 import transformers
 
@@ -8,6 +9,7 @@ import src.models.distil.intelligence
 import src.models.distil.parameters as pr
 import src.models.distil.storage
 import src.models.distil.metrics
+import config
 
 
 class Architecture:
@@ -38,11 +40,21 @@ class Architecture:
             eval_strategy='epoch',
             save_strategy='epoch',
             learning_rate=self.__variable.LEARNING_RATE,
-
+            weight_decay=self.__variable.WEIGHT_DECAY,
             per_device_train_batch_size=self.__variable.TRAIN_BATCH_SIZE,
             per_device_eval_batch_size=self.__variable.VALID_BATCH_SIZE,
             num_train_epochs=self.__variable.EPOCHS,
-            weight_decay=0.01)
+            max_steps=-1,
+            warmup_steps=0,
+            logging_dir=os.path.join(self.__parameters.path, 'tensorboard'),
+            no_cuda=False,
+            seed=config.Config().seed,
+            save_total_limit=5,
+            skip_memory_metrics=True,
+            load_best_model_at_end=True,
+            fp16=True,
+            push_to_hub=False
+            )
 
 
     def __call__(self, training: sr.Structures, validating: sr.Structures,
