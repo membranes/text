@@ -34,10 +34,10 @@
 * [Pattern Recognition & Machine Learning](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)
 * [Deep Learning](https://www.bishopbook.com)
 
-<br>
+
 <br>
 
-## Applications
+### Applications
 
 Named Entity Recognition
 
@@ -48,17 +48,17 @@ Named Entity Recognition
 * [Acharya for NER (Named Entity Recognition)](https://acharya.astutic.com/docs/intro)
 * [gradio & NER (Named Entity Recognition)](https://www.gradio.app/guides/named-entity-recognition)
 
-<br>
+
 <br>
 
-## Data Sets
+### Data Sets
 
 [A Broad-Coverage Challenge Corpus for Sentence Understanding through Inference](https://arxiv.org/abs/1704.05426)
 
-<br>
+
 <br>
 
-## Surveys
+### Surveys
 
 [AMMUS : A Survey of Transformer-based Pretrained Models in Natural Language Processing](https://arxiv.org/abs/2108.05542)
 [A review of pre-trained language models: from BERT, RoBERTa, to ELECTRA, DeBERTa, BigBird, and more](https://tungmphung.com/a-review-of-pre-trained-language-models-from-bert-roberta-to-electra-deberta-bigbird-and-more/)
