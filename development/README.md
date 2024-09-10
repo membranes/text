@@ -1,7 +1,8 @@
 <br>
 
+## Mathematics, Pre-trained Models, etc
 
-Mathematics:
+### Mathematics
 
 * [Transformers: Attention is all you need](https://arxiv.org/abs/1706.03762): Re-visit this paper for a basic reminder of the underlying mathematics of [BERT (Bidirectional Encoder Representations from Transformers)](https://arxiv.org/abs/1810.04805)
   * [Annotated @ 2022](https://nlp.seas.harvard.edu/annotated-transformer/)
@@ -11,11 +12,19 @@ Mathematics:
 * [Adam $\odot$ PyTorch](https://pytorch.org/docs/stable/generated/torch.optim.Adam.html#torch.optim.Adam)
 * [ADAM: A METHOD FOR STOCHASTIC OPTIMIZATION](https://arxiv.org/abs/1412.6980)
 * [KLDivLoss](https://pytorch.org/docs/stable/generated/torch.nn.KLDivLoss.html#torch.nn.KLDivLoss)
-
+* [Graph Transformer Networks](https://arxiv.org/abs/1911.06455)
+* [Knowledge graph extension with a pre-trained language model via unified learning method](https://dl.acm.org/doi/10.1016/j.knosys.2022.110245)
 
 <br>
 
-Additionally:
+### Models
+
+[XLNet: Generalized Autoregressive Pretraining for Language Understanding](https://arxiv.org/abs/1906.08237)
+[DeBERTaV3: Improving DeBERTa using ELECTRA-Style Pre-Training with Gradient-Disentangled Embedding Sharing](https://arxiv.org/abs/2111.09543)
+
+<br>
+
+### Additionally
 
 * [Wordpieces: Google's Neural Machine Translation System: Bridging the Gap between Human and Machine Translation](https://arxiv.org/abs/1609.08144)
 * [Minimisation Algorithms](https://era.ed.ac.uk/handle/1842/4109)
@@ -26,6 +35,9 @@ Additionally:
 * [Deep Learning](https://www.bishopbook.com)
 
 <br>
+<br>
+
+## Applications
 
 Named Entity Recognition
 
@@ -36,4 +48,30 @@ Named Entity Recognition
 * [Acharya for NER (Named Entity Recognition)](https://acharya.astutic.com/docs/intro)
 * [gradio & NER (Named Entity Recognition)](https://www.gradio.app/guides/named-entity-recognition)
 
+<br>
+<br>
 
+## Data Sets
+
+[A Broad-Coverage Challenge Corpus for Sentence Understanding through Inference](https://arxiv.org/abs/1704.05426)
+
+<br>
+<br>
+
+## Surveys
+
+[AMMUS : A Survey of Transformer-based Pretrained Models in Natural Language Processing](https://arxiv.org/abs/2108.05542)
+[A review of pre-trained language models: from BERT, RoBERTa, to ELECTRA, DeBERTa, BigBird, and more](https://tungmphung.com/a-review-of-pre-trained-language-models-from-bert-roberta-to-electra-deberta-bigbird-and-more/)
+[Graph Transformers: A Survey](https://arxiv.org/abs/2407.09777)
+
+<br>
+<br>
+
+<br>
+<br>
+
+<br>
+<br>
+
+<br>
+<br>
