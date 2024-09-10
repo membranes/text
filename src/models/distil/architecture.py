@@ -7,6 +7,7 @@ import src.elements.variable as vr
 import src.models.distil.intelligence
 import src.models.distil.parameters as pr
 import src.models.distil.storage
+import src.models.distil.metrics
 
 
 class Architecture:
@@ -19,6 +20,7 @@ class Architecture:
         """
 
         self.__variable = variable
+        self.__enumerator = enumerator
 
         # Parameters
         self.__parameters = pr.Parameters()
@@ -26,9 +28,7 @@ class Architecture:
         # Directory preparation
         src.models.distil.storage.Storage().exc(path=self.__parameters.path)
 
-        # Intelligence
-        intelligence = src.models.distil.intelligence.Intelligence(enumerator=enumerator)
-        self.__model = intelligence.model()
+
 
     def __args(self):
 
@@ -36,7 +36,9 @@ class Architecture:
         return transformers.TrainingArguments(
             output_dir=self.__parameters.path,
             eval_strategy='epoch',
+            save_strategy='epoch',
             learning_rate=self.__variable.LEARNING_RATE,
+
             per_device_train_batch_size=self.__variable.TRAIN_BATCH_SIZE,
             per_device_eval_batch_size=self.__variable.VALID_BATCH_SIZE,
             num_train_epochs=self.__variable.EPOCHS,
@@ -51,14 +53,22 @@ class Architecture:
         :return:
         """
 
-        self.__model.to(self.__parameters.device)
+        # Intelligence
+        intelligence = src.models.distil.intelligence.Intelligence(enumerator=self.__enumerator)
+        model = intelligence.model()
+        model.to(self.__parameters.device)
+        metrics = src.models.distil.metrics.Metrics()
 
         trainer = transformers.Trainer(
-            model=self.__model, args=self.__args(), train_dataset=training.dataset,
-            eval_dataset=validating.dataset, tokenizer=tokenizer)
+            model=model,
+            args=self.__args(),
+            train_dataset=training.dataset,
+            eval_dataset=validating.dataset,
+            tokenizer=tokenizer,
+            compute_metrics=metrics.exc)
 
         best = trainer.hyperparameter_search(
-
+            n_trials=2
         )
 
         return best
