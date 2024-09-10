@@ -18,8 +18,6 @@ class Config:
         # Addressing category imbalance ...
         self.minimum_category_frequency = 1000
 
-        '''Modelling'''
-
         # Splitting fractions:
         # * 80% of the data for training
         # * A tenth of the remaining 20% for testing, i.e., 18%
