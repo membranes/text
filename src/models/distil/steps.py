@@ -3,8 +3,8 @@ import logging
 
 import src.elements.frames as fr
 import src.elements.variable as vr
-import src.models.distil.intelligence
-import src.models.distil.metrics
+import src.models.distil.architecture
+import src.models.distil.measurements
 import src.models.distil.tokenizer
 import src.models.distil.validation
 import src.models.structures
@@ -66,16 +66,16 @@ class Steps:
         training, validating = self.__structures()
 
         # Modelling
-        intelligence = src.models.distil.intelligence.Intelligence(
-            variable=self.__variable, enumerator=self.__enumerator)
-        model = intelligence(training=training, validating=validating, tokenizer=self.__tokenizer)
+        architecture = src.models.distil.architecture.Architecture(variable=self.__variable, enumerator=self.__enumerator)
+        model = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
+        self.__logger.info(model.__dir__())
 
-        # Evaluating
+        # Evaluating: vis-à-vis best model
         originals, predictions = src.models.distil.validation.Validation(
             validating=validating, archetype=self.__archetype).exc(model=model)
         self.__logger.info(originals)
         self.__logger.info(predictions)
 
         # Evaluation Metrics
-        src.models.distil.metrics.Metrics().exc(
+        src.models.distil.measurements.Measurements().exc(
             originals=originals, predictions=predictions)
