@@ -33,7 +33,8 @@ docker run --rm --gpus all -i -t -p 127.0.0.1:10000:8888
 or
 
 ```bash
-docker run --rm --gpus all -i -t -p 127.0.0.1:10000:8888 pytorch/pytorch:2.2.2-cuda12.1-cudnn8-devel
+docker run --rm --gpus all -i -t -p 127.0.0.1:10000:8888 
+	pytorch/pytorch:2.2.2-cuda12.1-cudnn8-devel
 ```
 
 <br>
