@@ -68,12 +68,18 @@ class Architecture:
         # Intelligence
         intelligence = src.models.distil.intelligence.Intelligence(enumerator=self.__enumerator)
         model = intelligence.model()
-        model.to(self.__parameters.device)
+        data_collator = intelligence.collator(tokenizer=tokenizer)
+
         metrics = src.models.distil.metrics.Metrics()
+
+
+        # Hence
+        model.to(self.__parameters.device)
 
         trainer = transformers.Trainer(
             model=model,
             args=self.__args(),
+            data_collator=data_collator,
             train_dataset=training.dataset,
             eval_dataset=validating.dataset,
             tokenizer=tokenizer,
