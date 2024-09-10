@@ -5,7 +5,7 @@ import seqeval.metrics as sme
 import sklearn.metrics as sm
 
 
-class Metrics:
+class Measurements:
     """
     For classification metrics calculations
     """
