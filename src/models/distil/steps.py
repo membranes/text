@@ -1,13 +1,12 @@
 """Module steps.py"""
-import os
 import logging
 
 import src.elements.frames as fr
 import src.elements.variable as vr
 import src.models.distil.intelligence
-import src.models.distil.parameters
-import src.models.distil.validation
 import src.models.distil.metrics
+import src.models.distil.tokenizer
+import src.models.distil.validation
 import src.models.structures
 
 
@@ -27,16 +26,14 @@ class Steps:
         # Inputs
         self.__enumerator = enumerator
         self.__archetype = archetype
+        self.__frames = frames
 
         # A set of values for machine learning model development
         self.__variable = vr.Variable()
         self.__variable = self.__variable._replace(EPOCHS=8, TRAIN_BATCH_SIZE=16, VALID_BATCH_SIZE=16)
 
-        # Instances
-        parameters = src.models.distil.parameters.Parameters()
-        self.__structures = src.models.structures.Structures(
-            enumerator=self.__enumerator, variable=self.__variable,
-            frames=frames, tokenizer=parameters.tokenizer)
+        # ...
+        self.__tokenizer = src.models.distil.tokenizer.Tokenizer()()
 
         # Logging
         logging.basicConfig(level=logging.INFO,
@@ -44,20 +41,34 @@ class Steps:
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
 
+    def __structures(self):
+        """
+
+        :return:
+        """
+
+        structures = src.models.structures.Structures(
+            enumerator=self.__enumerator, variable=self.__variable,
+            frames=self.__frames, tokenizer=self.__tokenizer)
+
+        # The data
+        training = structures.training()
+        validating = structures.validating()
+
+        return training, validating
+
     def exc(self):
         """
 
         :return:
         """
 
-        # The data
-        training = self.__structures.training()
-        validating = self.__structures.validating()
+        training, validating = self.__structures()
 
         # Modelling
         intelligence = src.models.distil.intelligence.Intelligence(
             variable=self.__variable, enumerator=self.__enumerator)
-        model = intelligence(training=training, validating=validating)
+        model = intelligence(training=training, validating=validating, tokenizer=self.__tokenizer)
 
         # Evaluating
         originals, predictions = src.models.distil.validation.Validation(
