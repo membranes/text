@@ -66,7 +66,8 @@ class Steps:
         training, validating = self.__structures()
 
         # Modelling
-        architecture = src.models.distil.architecture.Architecture(variable=self.__variable, enumerator=self.__enumerator)
+        architecture = src.models.distil.architecture.Architecture(
+            variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype)
         model = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
         self.__logger.info(model.__dir__())
 
