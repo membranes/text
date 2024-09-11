@@ -23,6 +23,15 @@ class Parameters(typing.NamedTuple):
     path : str
         The directory of the model's outputs during training
 
+    n_trials : int
+        The number of trial runs
+
+    n_cpu : int
+        The number of central processing units for computation
+
+    n_gpu : int
+        The number of graphics processing units for computation
+
     Notes
     -----
     [from_pretrained](https://huggingface.co/docs/transformers/main_classes/model#transformers.PreTrainedModel.from_pretrained)
@@ -33,3 +42,6 @@ class Parameters(typing.NamedTuple):
     pretrained_model_name: str = 'distilbert-base-uncased'
     device: str = 'cuda' if torch.cuda.is_available() else 'cpu'
     path: str = os.path.join(config.Config().warehouse, 'distil')
+    n_trials: int = 2
+    n_cpu: int = 8
+    n_gpu: int = 1
