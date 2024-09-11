@@ -15,15 +15,17 @@ import src.models.distil.storage
 
 class Architecture:
 
-    def __init__(self, variable: vr.Variable, enumerator: dict):
+    def __init__(self, variable: vr.Variable, enumerator: dict, archetype: dict):
         """
 
         :param variable:
         :param enumerator:
+        :param archetype:
         """
 
         self.__variable = variable
         self.__enumerator = enumerator
+        self.__archetype = archetype
 
         # Parameters
         self.__parameters = pr.Parameters()
@@ -35,8 +37,12 @@ class Architecture:
         src.models.distil.storage.Storage().exc(path=self.__parameters.path)
 
     def __args(self):
+        """
+        https://huggingface.co/docs/transformers/v4.41.3/en/main_classes/trainer#transformers.TrainingArguments
 
-        # https://huggingface.co/docs/transformers/v4.41.3/en/main_classes/trainer#transformers.TrainingArguments
+        :return:
+        """
+
         return transformers.TrainingArguments(
             output_dir=self.__parameters.path,
             eval_strategy='epoch',
@@ -58,6 +64,15 @@ class Architecture:
             push_to_hub=False
             )
 
+    def __model(self):
+        """
+
+        :return:
+        """
+
+        return transformers.AutoModelForTokenClassification.from_pretrained(
+            pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
+            **{'num_labels': len(self.__enumerator)})
 
     def __call__(self, training: sr.Structures, validating: sr.Structures,
                  tokenizer: transformers.PreTrainedTokenizerBase):
@@ -67,19 +82,17 @@ class Architecture:
         :return:
         """
 
-        # Intelligence
+        # Collator
         intelligence = src.models.distil.intelligence.Intelligence(enumerator=self.__enumerator)
-        model = intelligence.model()
         data_collator = intelligence.collator(tokenizer=tokenizer)
 
-        metrics = src.models.distil.metrics.Metrics()
-
+        # Metrics
+        metrics = src.models.distil.metrics.Metrics(archetype=self.__archetype)
 
         # Hence
-        model.to(self.__parameters.device)
-
         trainer = transformers.Trainer(
-            model=model,
+            model=None,
+            model_init=self.__model,
             args=self.__args(),
             data_collator=data_collator,
             train_dataset=training.dataset,
