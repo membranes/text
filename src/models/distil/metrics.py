@@ -1,4 +1,4 @@
-"""Mudule metrics.py"""
+"""Module metrics.py"""
 import logging
 import numpy as np
 import evaluate
@@ -11,15 +11,22 @@ class Metrics:
     https://huggingface.co/spaces/evaluate-metric/seqeval/blob/main/seqeval.py
     """
 
-    def __init__(self):
+    def __init__(self, archetype: dict):
         """
 
+        :param archetype:
         """
 
+        self.__archetype = archetype
         self.__seqeval = evaluate.load('seqeval')
 
     def exc(self, bucket: transformers.trainer_utils.PredictionOutput):
         """
+        logging.info('Determining active labels & predictions')
+        active = np.not_equal(labels, -100)
+
+        true_labels = labels[active]
+        true_predictions = predictions[active]
 
         :param bucket:
         :return:
@@ -29,13 +36,19 @@ class Metrics:
         predictions = np.argmax(predictions, axis=2)
         labels = bucket.label_ids
 
-        # Active
-        logging.info('Determining active labels & predictions')
-        active = np.not_equal(labels, -100)
+        # Or
+        true_predictions = [
+            [self.__archetype[p] for (p, l) in zip(prediction, label) if l != -100]
+            for prediction, label in zip(predictions, labels)
+        ]
+        true_labels = [
+            [self.__archetype[l] for (p, l) in zip(prediction, label) if l != -100]
+            for prediction, label in zip(predictions, labels)
+        ]
 
-        true_labels = labels[active]
-        true_predictions = predictions[active]
-
+        # Hence
+        logging.info(true_predictions)
+        logging.info(true_labels)
         results = self.__seqeval.compute(predictions=true_predictions, references=true_labels)
 
         return {
