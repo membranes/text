@@ -3,13 +3,14 @@ import os
 
 import transformers
 
+import config
 import src.elements.structures as sr
 import src.elements.variable as vr
 import src.models.distil.intelligence
-import src.models.distil.parameters as pr
-import src.models.distil.storage
 import src.models.distil.metrics
-import config
+import src.models.distil.parameters as pr
+import src.models.distil.settings
+import src.models.distil.storage
 
 
 class Architecture:
@@ -27,10 +28,11 @@ class Architecture:
         # Parameters
         self.__parameters = pr.Parameters()
 
+        # Settings
+        self.__settings = src.models.distil.settings.Settings(variable=self.__variable)
+
         # Directory preparation
         src.models.distil.storage.Storage().exc(path=self.__parameters.path)
-
-
 
     def __args(self):
 
@@ -86,7 +88,17 @@ class Architecture:
             compute_metrics=metrics.exc)
 
         best = trainer.hyperparameter_search(
-            n_trials=2
+            hp_space=lambda _: self.__settings.hp_space(),
+            n_trials=self.__parameters.n_trials,
+            resources_per_trial={'cpu': self.__parameters.n_cpu, 'gpu': self.__parameters.n_gpu},
+            backend='ray',
+            scheduler=self.__settings.scheduler(),
+            keep_checkpoints_num=2,
+            checkpoint_score_attr='training_iteration',
+            progress_reporter=self.__settings.reporting(),
+            storage_path=os.path.join(self.__parameters.path, 'optimal'),
+            name='optimal',
+            log_to_file=True
         )
 
         return best
