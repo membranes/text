@@ -72,7 +72,7 @@ class Architecture:
 
         return transformers.AutoModelForTokenClassification.from_pretrained(
             pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
-            **{'num_labels': len(self.__enumerator)})
+            **{'num_labels': len(self.__enumerator), 'id2label': self.__enumerator, 'label2id': self.__archetype})
 
     def __call__(self, training: sr.Structures, validating: sr.Structures,
                  tokenizer: transformers.PreTrainedTokenizerBase):
