@@ -109,6 +109,7 @@ IDEA** set up involves connecting to a machine's Docker [daemon](https://www.jet
 > [!NOTE]
 > Details upcoming; TensorBoard is the observation tool.
 
+*  Using `CheckpointConfig.num_to_keep <= 2` with <abbr title="Population Based Training">PBT</abbr> can lead to restoration problems when checkpoint are deleted too early for other trials to exploit them. If this happens, increase the value of `num_to_keep`.
 
 <br>
 
