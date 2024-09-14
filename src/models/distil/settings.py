@@ -52,8 +52,8 @@ class Settings:
             perturbation_interval=self.__perturbation_interval,
             hyperparam_mutations={
                 'learning_rate': ray.tune.uniform(lower=0.002, upper=0.1),
-                'weight_decay': ray.tune.uniform(lower=0.02, upper=0.2),
-                'per_device_train_batch_size': [32, 64]
+                'weight_decay': ray.tune.uniform(lower=0.02, upper=0.1),
+                'per_device_train_batch_size': ray.tune.choice([32])
             },
             quantile_fraction=0.25,
             resample_probability=0.25
