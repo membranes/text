@@ -17,6 +17,7 @@ class Intelligence:
         """
 
         self.__enumerator = enumerator
+        self.__archetype = archetype
 
         # Parameters
         self.__parameters = pr.Parameters()
@@ -40,4 +41,4 @@ class Intelligence:
 
         return transformers.AutoModelForTokenClassification.from_pretrained(
             pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
-            **{'num_labels': len(self.__enumerator)})
+            **{'num_labels': len(self.__enumerator), 'id2label': self.__enumerator, 'label2id': self.__archetype})
