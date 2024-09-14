@@ -49,7 +49,7 @@ class Metrics:
         # Hence
         logging.info(true_predictions)
         logging.info(true_labels)
-        results = self.__seqeval.compute(predictions=true_predictions, references=true_labels)
+        results = self.__seqeval.compute(predictions=true_predictions, references=true_labels, zero_division=0.0)
 
         return {
             "precision": results["overall_precision"],
