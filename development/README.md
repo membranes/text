@@ -2,6 +2,8 @@
 
 ## Development Environment
 
+### Remote Development
+
 For this Python project/template, the remote development environment requires
 
 * [Dockerfile](../.devcontainer/Dockerfile)
@@ -67,6 +69,22 @@ docker ps --all
 ```
 
 Never deploy a root container.
+
+<br>
+
+### Remote Development & Integrated Development Environments
+
+An IDE (integrated development environment) is a helpful remote development tool.  The **IntelliJ
+IDEA** set up involves connecting to a machine's Docker [daemon](https://www.jetbrains.com/help/idea/docker.html#connect_to_docker), the steps are
+
+<br>
+
+> * **Settings** $\rightarrow$ **Build, Execution, Deployment** $\rightarrow$ **Docker** $\rightarrow$ **WSL:** {select the linux operating system}
+> * **View** $\rightarrow$ **Tool Window** $\rightarrow$ **Services** <br>Within the **Containers** section connect to the running instance of interest, or ascertain connection to the running instance of interest.
+
+<br>
+
+**Visual Studio Code** has its container attachment instructions; study [Attach Container](https://code.visualstudio.com/docs/devcontainers/attach-container).
 
 
 <br>
