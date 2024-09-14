@@ -99,16 +99,19 @@ class Architecture:
             compute_metrics=metrics.exc)
 
         best = trainer.hyperparameter_search(
-            hp_space=lambda _: settings.hp_space(),
-            n_trials=self.__parameters.n_trials,
+            hp_space=lambda _: settings.hp_space(), n_trials=self.__parameters.n_trials,
             resources_per_trial={'cpu': self.__parameters.n_cpu, 'gpu': self.__parameters.n_gpu},
             backend='ray',
+
+            # tune configuration
             scheduler=settings.scheduler(),
-            keep_checkpoints_num=2,
-            checkpoint_score_attr='training_iteration',
-            progress_reporter=settings.reporting(),
-            name='detecting',
-            log_to_file=True
+
+            # check point configuration
+            num_to_keep=2, checkpoint_score_attribute='training_iteration',
+
+            # run configuration
+            name='modelling', storage_path='',
+            progress_reporter=settings.reporting(), log_to_file=True
         )
 
         return best
