@@ -9,10 +9,11 @@ class Intelligence:
     Intelligence
     """
 
-    def __init__(self, enumerator: dict):
+    def __init__(self, enumerator: dict, archetype: dict):
         """
 
-        :param enumerator:
+        :param enumerator: key -> identifier, value -> label
+        :param archetype: key -> label, value -> identifier
         """
 
         self.__enumerator = enumerator
