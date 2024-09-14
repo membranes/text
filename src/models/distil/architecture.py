@@ -64,16 +64,6 @@ class Architecture:
             push_to_hub=False
             )
 
-    def __model(self):
-        """
-
-        :return:
-        """
-
-        return transformers.AutoModelForTokenClassification.from_pretrained(
-            pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
-            **{'num_labels': len(self.__enumerator), 'id2label': self.__enumerator, 'label2id': self.__archetype})
-
     def __call__(self, training: sr.Structures, validating: sr.Structures,
                  tokenizer: transformers.PreTrainedTokenizerBase):
         """
@@ -83,8 +73,7 @@ class Architecture:
         """
 
         # Collator
-        intelligence = src.models.distil.intelligence.Intelligence(enumerator=self.__enumerator)
-        data_collator = intelligence.collator(tokenizer=tokenizer)
+        intelligence = src.models.distil.intelligence.Intelligence(enumerator=self.__enumerator, archetype=self.__archetype)
 
         # Metrics
         metrics = src.models.distil.metrics.Metrics(archetype=self.__archetype)
@@ -92,9 +81,9 @@ class Architecture:
         # Hence
         trainer = transformers.Trainer(
             model=None,
-            model_init=self.__model,
+            model_init=intelligence.model,
             args=self.__args(),
-            data_collator=data_collator,
+            data_collator=intelligence.collator(tokenizer=tokenizer),
             train_dataset=training.dataset,
             eval_dataset=validating.dataset,
             tokenizer=tokenizer,
