@@ -1,3 +1,4 @@
+"""Module architecture.py"""
 import logging
 import os
 
@@ -14,6 +15,9 @@ import src.models.distil.storage
 
 
 class Architecture:
+    """
+    Architecture
+    """
 
     def __init__(self, variable: vr.Variable, enumerator: dict, archetype: dict):
         """
@@ -66,6 +70,9 @@ class Architecture:
         """
         https://huggingface.co/docs/transformers/v4.41.3/en/main_classes/trainer#transformers.Trainer
 
+        :param training:
+        :param validating:
+        :param tokenizer:
         :return:
         """
 
@@ -98,8 +105,7 @@ class Architecture:
             keep_checkpoints_num=2,
             checkpoint_score_attr='training_iteration',
             progress_reporter=settings.reporting(),
-            storage_path=os.path.join(self.__parameters.path, 'optimal'),
-            name='optimal',
+            name='detecting',
             log_to_file=True
         )
 
