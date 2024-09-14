@@ -29,6 +29,15 @@ class Variable(typing.NamedTuple):
 
     MAX_GRADIENT_NORM : int
         The maximum gradient norm
+
+    N_TRAIN : int
+        The number of training instances
+
+    N_VALID : int
+        The number of validation instances
+
+    N_TEST : int
+        The number of testing instances
     """
 
     MAX_LENGTH: int = 128
@@ -39,3 +48,6 @@ class Variable(typing.NamedTuple):
     LEARNING_RATE: float = 0.001
     WEIGHT_DECAY: float = 0.01
     MAX_GRADIENT_NORM: int = 10
+    N_TRAIN: int = None
+    N_VALID: int = None
+    N_TEST: int = None
