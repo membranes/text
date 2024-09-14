@@ -1,6 +1,6 @@
 <br>
 
-Entity Recognition
+**Entity Recognition**
 
 <br>
 <br>
