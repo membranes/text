@@ -1,6 +1,5 @@
 """Module architecture.py"""
 import logging
-import os
 
 import transformers
 
@@ -41,6 +40,10 @@ class Architecture:
         """
         https://huggingface.co/docs/transformers/v4.41.3/en/main_classes/trainer#transformers.TrainingArguments
 
+        TensorBoard logging directory: output_dir/runs/CURRENT_DATETIME_HOSTNAME*
+            https://huggingface.co/docs/transformers/v4.44.2/en/main_classes/
+                &amp;num;transformers.TrainingArguments.logging_dir
+
         :return:
         """
 
@@ -55,7 +58,6 @@ class Architecture:
             num_train_epochs=self.__variable.EPOCHS,
             max_steps=-1,
             warmup_steps=0,
-            logging_dir=os.path.join(self.__parameters.path, 'tensorboard'),
             no_cuda=False,
             seed=config.Config().seed,
             save_total_limit=5,
