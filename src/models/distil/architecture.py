@@ -1,5 +1,6 @@
 """Module architecture.py"""
 import logging
+import os
 
 import transformers
 
@@ -63,6 +64,7 @@ class Architecture:
             save_total_limit=5,
             skip_memory_metrics=True,
             load_best_model_at_end=True,
+            logging_dir=self.__parameters.path,
             fp16=True,
             push_to_hub=False
             )
@@ -104,14 +106,15 @@ class Architecture:
             backend='ray',
 
             # tune configuration
-            scheduler=settings.scheduler(),
+            scheduler=settings.scheduler(), reuse_actors=True,
 
             # check point configuration
-            num_to_keep=2, checkpoint_score_attribute='training_iteration',
+            keep_checkpoints_num=8, checkpoint_score_attr='training_iteration',
 
-            # run configuration
-            name='modelling', storage_path='',
-            progress_reporter=settings.reporting(), log_to_file=True
+            # run configuration: local_dir -> storage_path
+            name='modelling',
+            storage_path=os.path.join(self.__parameters.path, 'persist'),
+            verbose=0, progress_reporter=settings.reporting(), log_to_file=True
         )
 
         return best
