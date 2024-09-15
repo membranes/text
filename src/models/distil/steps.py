@@ -73,11 +73,9 @@ class Steps:
         self.__logger.info(model.__dir__())
 
         # Evaluating: vis-à-vis best model
-        originals, predictions = src.models.distil.validation.Validation(
-            validating=validating, archetype=self.__archetype).exc(model=model)
-        self.__logger.info(originals)
-        self.__logger.info(predictions)
+        # originals, predictions = src.models.distil.validation.Validation(
+        #     validating=validating, archetype=self.__archetype).exc(model=model)
 
         # Evaluation Metrics
-        src.models.distil.measurements.Measurements().exc(
-            originals=originals, predictions=predictions)
+        # src.models.distil.measurements.Measurements().exc(
+        #     originals=originals, predictions=predictions)
