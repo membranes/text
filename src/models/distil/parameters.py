@@ -39,7 +39,7 @@ class Parameters(typing.NamedTuple):
     """
 
     task: str = 'ner'
-    pretrained_model_name: str = 'distilbert-base-uncased'
+    pretrained_model_name: str = 'distilbert/distilbert-base-uncased'
     device: str = 'cuda' if torch.cuda.is_available() else 'cpu'
     path: str = os.path.join(config.Config().warehouse, 'distil')
     n_trials: int = 2
