@@ -36,9 +36,19 @@ class Intelligence:
         """
         https://huggingface.co/docs/transformers/v4.41.3/en/model_doc/auto#transformers.AutoModel
 
+        transformers.AutoModelForTokenClassification.from_pretrained(
+            pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
+            config=config
+        )
+
         :return:
         """
 
-        return transformers.AutoModelForTokenClassification.from_pretrained(
+        config = transformers.DistilBertConfig(dropout=0.2, activation='gelu').from_pretrained(
             pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
-            **{'num_labels': len(self.__enumerator), 'id2label': self.__enumerator, 'label2id': self.__archetype})
+            **{'num_labels': len(self.__enumerator)})
+
+        return transformers.DistilBertForTokenClassification.from_pretrained(
+            pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
+            config=config
+        )
