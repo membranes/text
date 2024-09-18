@@ -1,13 +1,14 @@
 """Module steps.py"""
 import logging
 
-import pandas as pd
 import transformers
 
+import src.elements.frames as fr
 import src.elements.variable as vr
+import src.models.bert.metrics
 import src.models.bert.modelling
 import src.models.bert.validation
-import src.models.metrics
+import src.models.bert.parameters
 import src.models.structures
 
 
@@ -16,14 +17,13 @@ class Steps:
     The BERT steps.
     """
 
-    def __init__(self, enumerator: dict, archetype: dict,
-                 training: pd.DataFrame, validating: pd.DataFrame):
+    def __init__(self, enumerator: dict, archetype: dict, frames: fr.Frames):
         """
 
-        :param enumerator:
-        :param archetype:
-        :param training:
-        :param validating:
+        :param enumerator: Code -> tag mapping
+        :param archetype: Tag -> code mapping
+        :param frames: The data frames for modelling stages, i.e., the
+                       training, validating, and testing stages
         """
 
         # Inputs
@@ -35,9 +35,10 @@ class Steps:
         self.__variable = self.__variable._replace(EPOCHS=2)
 
         # Instances
+        parameters = src.models.bert.parameters.Parameters()
         self.__structures = src.models.structures.Structures(
             enumerator=self.__enumerator, variable=self.__variable,
-            training=training, validating=validating)
+            frames=frames, tokenizer=parameters.tokenizer)
 
         # Logging
         logging.basicConfig(level=logging.INFO,
@@ -65,4 +66,5 @@ class Steps:
             dataloader=validating.dataloader).exc()
 
         self.__logger.info('Metrics')
-        src.models.metrics.Metrics().exc(originals=originals, predictions=predictions)
+        src.models.bert.metrics.Metrics().exc(
+            originals=originals, predictions=predictions)

@@ -1,9 +1,12 @@
 """Module steps.py"""
 import logging
 
-import pandas as pd
-
-import src.elements.variable
+import src.elements.frames as fr
+import src.elements.variable as vr
+import src.models.distil.architecture
+import src.models.distil.measurements
+import src.models.distil.tokenizer
+import src.models.distil.validation
 import src.models.structures
 
 
@@ -12,28 +15,26 @@ class Steps:
     Steps
     """
 
-    def __init__(self, enumerator: dict, archetype: dict,
-                 training: pd.DataFrame, validating: pd.DataFrame):
+    def __init__(self, enumerator: dict, archetype: dict, frames: fr.Frames):
         """
 
         :param enumerator:
         :param archetype:
-        :param training:
-        :param validating:
+        :param frames:
         """
 
         # Inputs
         self.__enumerator = enumerator
         self.__archetype = archetype
+        self.__frames = frames
 
         # A set of values for machine learning model development
-        self.__variable = src.elements.variable.Variable()
-        self.__variable = self.__variable._replace(EPOCHS=2, TRAIN_BATCH_SIZE=16, VALID_BATCH_SIZE=16)
+        self.__variable = vr.Variable()
+        self.__variable = self.__variable._replace(
+            EPOCHS=2, TRAIN_BATCH_SIZE=16, VALID_BATCH_SIZE=16, N_TRAIN=self.__frames.training.shape[0])
 
-        # Instances
-        self.__structures = src.models.structures.Structures(
-            enumerator=self.__enumerator, variable=self.__variable,
-            training=training, validating=validating)
+        # ...
+        self.__tokenizer = src.models.distil.tokenizer.Tokenizer()()
 
         # Logging
         logging.basicConfig(level=logging.INFO,
@@ -41,11 +42,40 @@ class Steps:
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
 
+    def __structures(self):
+        """
+
+        :return:
+        """
+
+        structures = src.models.structures.Structures(
+            enumerator=self.__enumerator, variable=self.__variable,
+            frames=self.__frames, tokenizer=self.__tokenizer)
+
+        # The data
+        training = structures.training()
+        validating = structures.validating()
+
+        return training, validating
+
     def exc(self):
         """
 
         :return:
         """
 
-        training = self.__structures.training()
-        validating = self.__structures.validating()
+        training, validating = self.__structures()
+
+        # Modelling
+        architecture = src.models.distil.architecture.Architecture(
+            variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype)
+        model = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
+        self.__logger.info(model.__dir__())
+
+        # Evaluating: vis-à-vis best model
+        # originals, predictions = src.models.distil.validation.Validation(
+        #     validating=validating, archetype=self.__archetype).exc(model=model)
+
+        # Evaluation Metrics
+        # src.models.distil.measurements.Measurements().exc(
+        #     originals=originals, predictions=predictions)

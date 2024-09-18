@@ -4,8 +4,18 @@ import pandas as pd
 
 
 class Demarcations:
+    """
+    Description
+    -----------
+
+    This class builds the expected data structure for ...
+    """
 
     def __init__(self, data: pd.DataFrame) -> None:
+        """
+
+        :param data:
+        """
         
         self.__data: pd.DataFrame = data
 
@@ -17,6 +27,11 @@ class Demarcations:
 
     @staticmethod
     def __sentences(blob: pd.DataFrame) -> pd.DataFrame:
+        """
+
+        :param blob:
+        :return:
+        """
 
         sentences: pd.DataFrame = blob.copy().drop(columns='tag').groupby(
             by=['sentence_identifier'])['word'].apply(lambda x: ' '.join(x)).to_frame()
@@ -25,6 +40,11 @@ class Demarcations:
 
     @staticmethod
     def __labels(blob: pd.DataFrame) -> pd.DataFrame:
+        """
+
+        :param blob:
+        :return:
+        """
 
         labels: pd.DataFrame = blob.copy().drop(columns='word').groupby(
             by=['sentence_identifier'])['tag'].apply(lambda x: ','.join(x)).to_frame()
@@ -32,6 +52,10 @@ class Demarcations:
         return labels
 
     def exc(self) -> pd.DataFrame:
+        """
+
+        :return:
+        """
 
         blob = self.__data[['sentence_identifier', 'word', 'tag']].copy()
         blob.info()

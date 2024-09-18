@@ -1,10 +1,7 @@
 """Module intelligence.py"""
-import torch.utils.data as tu
 import transformers
 
-import src.elements.variable
-import src.models.distil.parameters
-import src.models.distil.parameters
+import src.models.distil.parameters as pr
 
 
 class Intelligence:
@@ -12,39 +9,46 @@ class Intelligence:
     Intelligence
     """
 
-    def __init__(self, variable: src.elements.variable.Variable,
-                 enumerator: dict, dataloader: tu.DataLoader):
+    def __init__(self, enumerator: dict, archetype: dict):
         """
 
-        :param variable:
-        :param enumerator:
-        :param dataloader:
+        :param enumerator: key -> identifier, value -> label
+        :param archetype: key -> label, value -> identifier
         """
 
-        self.__variable = variable
-        self.__dataloader = dataloader
+        self.__enumerator = enumerator
+        self.__archetype = archetype
 
         # Parameters
-        self.__parameters = src.models.distil.parameters.Parameters()
+        self.__parameters = pr.Parameters()
 
-        # https://huggingface.co/docs/transformers/v4.41.3/en/model_doc/auto#transformers.AutoModel
-        model = transformers.AutoModelForTokenClassification.from_pretrained(
-            pretrained_model_name_or_path=self.__parameters.model_checkpoint,
-            **{'num_labels': len(enumerator)})
-
-        # https://huggingface.co/docs/transformers/v4.41.3/en/main_classes/trainer#transformers.TrainingArguments
-        transformers.TrainingArguments(
-            output_dir=self.__parameters.model_checkpoint.split('/')[-1],
-            evaluation_strategy='epoch',
-            learning_rate=self.__variable.LEARNING_RATE,
-            per_device_train_batch_size=self.__variable.TRAIN_BATCH_SIZE,
-            per_device_eval_batch_size=self.__variable.VALID_BATCH_SIZE,
-            num_train_epochs=self.__variable.EPOCHS,
-            weight_decay=0.01)
-
-    def __call__(self):
+    @staticmethod
+    def collator(tokenizer: transformers.PreTrainedTokenizerBase) -> transformers.DataCollatorForTokenClassification:
         """
-        https://huggingface.co/docs/transformers/v4.41.3/en/main_classes/trainer#transformers.Trainer
+
+        :param tokenizer:
+        :return:
+        """
+
+        return transformers.DataCollatorForTokenClassification(tokenizer=tokenizer)
+
+    def model(self):
+        """
+        https://huggingface.co/docs/transformers/v4.41.3/en/model_doc/auto#transformers.AutoModel
+
+        transformers.AutoModelForTokenClassification.from_pretrained(
+            pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
+            config=config
+        )
 
         :return:
         """
+
+        config = transformers.DistilBertConfig(dropout=0.2, activation='gelu').from_pretrained(
+            pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
+            **{'num_labels': len(self.__enumerator)})
+
+        return transformers.DistilBertForTokenClassification.from_pretrained(
+            pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
+            config=config
+        )

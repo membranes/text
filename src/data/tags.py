@@ -49,6 +49,12 @@ class Tags:
     
     @staticmethod
     def __coding(series: pd.Series) -> typing.Tuple[dict, dict]:
+        """
+        Tags enumeration, and their inverse mappings.
+
+        :param series:
+        :return:
+        """
 
         enumerator = {k: v for v, k in enumerate(iterable=series)}
 
@@ -58,8 +64,9 @@ class Tags:
 
 
     def exc(self) -> typing.Tuple[pd.DataFrame, dict, dict]:
-        """"
-        
+        """
+
+        :return:
         """
 
         # Frequencies

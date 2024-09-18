@@ -3,6 +3,8 @@ import pandas as pd
 
 import src.models.splittings
 import src.models.bert.steps
+import src.models.distil.steps
+import src.elements.frames
 
 
 class Interface:
@@ -19,6 +21,7 @@ class Interface:
         """
 
         self.__training, self.__validating, _ = src.models.splittings.Splittings(frame=frame).exc()
+        self.__frames = src.elements.frames.Frames(training=self.__training, validating=self.__validating)
         self.__enumerator = enumerator
         self.__archetype = archetype
 
@@ -29,14 +32,15 @@ class Interface:
         """
 
         # bert
-        src.models.bert.steps.Steps(enumerator=self.__enumerator, archetype=self.__archetype,
-                                    training=self.__training, validating=self.__validating).exc()
+        # src.models.bert.steps.Steps(
+        #     enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
 
         # electra
-        # src.structures.electra.steps
+        # src.models.electra.steps
 
         # distil
-        # src.structure.distil.steps
+        src.models.distil.steps.Steps(
+            enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
 
         # Transfer Learning with BiLSTM, BERT and CRF
         # https://link.springer.com/article/10.1007/s42979-024-02835-z

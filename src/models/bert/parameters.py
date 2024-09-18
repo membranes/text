@@ -18,9 +18,9 @@ class Parameters:
         # The device for computation
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-        # Name
+        # Pretrained model
         self.pretrained_model_name: str = 'google-bert/bert-base-uncased'
 
-        # Bases
+        # Tokenizer
         self.tokenizer = transformers.BertTokenizerFast.from_pretrained(
             pretrained_model_name_or_path=self.pretrained_model_name)

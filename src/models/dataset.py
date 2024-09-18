@@ -2,15 +2,15 @@ import numpy as np
 import pandas as pd
 import torch
 import torch.utils.data
+import transformers
 
 import src.elements.variable as vr
-import src.models.bert.parameters
 
 
 class Dataset(torch.utils.data.Dataset):
 
     def __init__(self, frame: pd.DataFrame, variable: vr.Variable,
-                 enumerator: dict) -> None:
+                 enumerator: dict, tokenizer: transformers.tokenization_utils_base) -> None:
         """
 
         :param frame:
@@ -25,7 +25,7 @@ class Dataset(torch.utils.data.Dataset):
 
         self.__variable = variable
         self.__enumerator = enumerator
-        self.__tokenizer = src.models.bert.parameters.Parameters().tokenizer
+        self.__tokenizer = tokenizer
     
     def __getitem__(self, index) -> dict:
         """
