@@ -24,17 +24,17 @@ class Settings:
         # Re-visit
         self.__perturbation_interval = 2
 
-    def hp_space(self):
+    @staticmethod
+    def hp_space():
         """
-        Initialises
+        'learning_rate': self.__variable.LEARNING_RATE,
+        'weight_decay': self.__variable.WEIGHT_DECAY
 
         :return:
         """
 
-        return {
-            'learning_rate': self.__variable.LEARNING_RATE,
-            'weight_decay': self.__variable.WEIGHT_DECAY
-        }
+        return {'learning_rate': ray.tune.qloguniform(lower=0.001, upper=0.1, q=0.0005),
+                'weight_decay': ray.tune.uniform(lower=0.01, upper=0.1)}
 
     def scheduler(self):
         """
