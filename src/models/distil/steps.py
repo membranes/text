@@ -7,7 +7,7 @@ import src.models.distil.architecture
 import src.models.distil.measurements
 import src.models.distil.tokenizer
 import src.models.distil.validation
-import src.models.structures
+import src.models.distil.structures
 
 
 class Steps:
@@ -48,15 +48,13 @@ class Steps:
         :return:
         """
 
-        structures = src.models.structures.Structures(
+        structures = src.models.distil.structures.Structures(
             enumerator=self.__enumerator, variable=self.__variable,
             frames=self.__frames, tokenizer=self.__tokenizer)
 
         # The data
-        training = structures.training()
-        validating = structures.validating()
-
-        return training, validating
+        structures.training()
+        structures.validating()
 
     def exc(self):
         """
@@ -64,13 +62,13 @@ class Steps:
         :return:
         """
 
-        training, validating = self.__structures()
+        self.__structures()
 
         # Modelling
-        architecture = src.models.distil.architecture.Architecture(
-            variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype)
-        model = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
-        self.__logger.info(model.__dir__())
+        # architecture = src.models.distil.architecture.Architecture(
+        #     variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype)
+        # model = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
+        # self.__logger.info(model.__dir__())
 
         # Evaluating: vis-à-vis best model
         # originals, predictions = src.models.distil.validation.Validation(
