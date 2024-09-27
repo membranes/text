@@ -53,8 +53,11 @@ class Steps:
             frames=self.__frames, tokenizer=self.__tokenizer)
 
         # The data
-        structures.training()
-        structures.validating()
+        training = structures.training()
+        self.__logger.info(training.dataset)
+
+        validating = structures.validating()
+        self.__logger.info(validating.dataset)
 
     def exc(self):
         """
