@@ -54,10 +54,9 @@ class Steps:
 
         # The data
         training = structures.training()
-        self.__logger.info(training.dataset.__getitem__(0))
-
         validating = structures.validating()
-        self.__logger.info(validating.dataset.__getitem__(0))
+
+        return training, validating
 
     def exc(self):
         """
@@ -65,7 +64,7 @@ class Steps:
         :return:
         """
 
-        self.__structures()
+        training, validating = self.__structures()
 
         # Modelling
         # architecture = src.models.distil.architecture.Architecture(
