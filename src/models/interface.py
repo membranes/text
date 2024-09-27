@@ -1,4 +1,5 @@
 """Module interface.py"""
+import logging
 import pandas as pd
 
 import src.models.splittings
@@ -25,22 +26,23 @@ class Interface:
         self.__enumerator = enumerator
         self.__archetype = archetype
 
-    def exc(self) -> None:
+    def exc(self, architecture: str = 'distil') -> None:
         """
 
         :return:
         """
 
-        # bert
-        # src.models.bert.steps.Steps(
-        #      enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
-
-        # electra
-        # src.models.electra.steps
-
-        # distil
-        src.models.distil.steps.Steps(
-           enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
-
-        # Transfer Learning with BiLSTM, BERT and CRF
-        # https://link.springer.com/article/10.1007/s42979-024-02835-z
+        match architecture:
+            case 'bert':
+                src.models.bert.steps.Steps(
+                    enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
+            case 'electra':
+                logging.info('ELECTRA: Future')
+            case 'distil':
+                src.models.distil.steps.Steps(
+                    enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
+            case 'ensemble':
+                logging.info('BiLSTM, BERT, & CRF: Future\nhttps://link.springer.com/article/10.1007/s42979-024-02835-z')
+            case _:
+                logging.info('Unknown architecture')
+    
