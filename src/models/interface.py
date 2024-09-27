@@ -33,14 +33,14 @@ class Interface:
 
         # bert
         # src.models.bert.steps.Steps(
-        #     enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
+        #      enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
 
         # electra
         # src.models.electra.steps
 
         # distil
         src.models.distil.steps.Steps(
-            enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
+           enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
 
         # Transfer Learning with BiLSTM, BERT and CRF
         # https://link.springer.com/article/10.1007/s42979-024-02835-z
