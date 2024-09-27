@@ -1,6 +1,7 @@
 import logging
 import pandas as pd
 import transformers
+import torch.utils.data as tu
 
 import src.elements.frames as fr
 import src.elements.variable as vr
@@ -36,12 +37,18 @@ class Structures:
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
 
-    def __structure(self, frame: pd.DataFrame, parameters: dict):
+    def __structure(self, frame: pd.DataFrame, parameters: dict) -> sr.Structures:
+        """
 
+        :param frame:
+        :param parameters:
+        :return:
+        """
 
-        self.__logger.info(parameters)
+        dataset = src.models.distil.dataset.Dataset(frame=frame, tokenizer=self.__tokenizer)
+        dataloader: tu.DataLoader = self.__loadings.exc(dataset=dataset, parameters=parameters)
 
-        src.models.distil.dataset.Dataset(frame=frame, tokenizer=self.__tokenizer)
+        return sr.Structures(dataset=dataset, dataloader=dataloader)
 
     def training(self):
         """
