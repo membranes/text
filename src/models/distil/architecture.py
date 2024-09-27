@@ -35,7 +35,7 @@ class Architecture:
         self.__parameters = pr.Parameters()
 
         # Directory preparation
-        src.models.distil.storage.Storage().exc(path=self.__parameters.path)
+        src.models.distil.storage.Storage().exc(path=self.__parameters.storage_path)
 
     def __args(self):
         """
@@ -49,7 +49,7 @@ class Architecture:
         """
 
         return transformers.TrainingArguments(
-            output_dir=self.__parameters.path,
+            output_dir=self.__parameters.MODEL_OUTPUT_DIRECTORY,
             eval_strategy='epoch',
             save_strategy='epoch',
             learning_rate=self.__variable.LEARNING_RATE,
@@ -64,7 +64,7 @@ class Architecture:
             save_total_limit=5,
             skip_memory_metrics=True,
             load_best_model_at_end=True,
-            logging_dir=os.path.join(self.__parameters.path, 'logs'),
+            logging_dir=os.path.join(self.__parameters.MODEL_OUTPUT_DIRECTORY, 'logs'),
             fp16=True,
             push_to_hub=False
             )
@@ -100,9 +100,9 @@ class Architecture:
             compute_metrics=metrics.exc)
 
         best = trainer.hyperparameter_search(
-            n_trials=self.__parameters.n_trials,
+            n_trials=self.__variable.N_TRIALS,
             direction='minimize',
-            resources_per_trial={'cpu': self.__parameters.n_cpu, 'gpu': self.__parameters.n_gpu},
+            resources_per_trial={'cpu': self.__variable.N_CPU, 'gpu': self.__variable.N_GPU},
             backend='ray',
 
             # tune configuration
@@ -112,8 +112,7 @@ class Architecture:
             # keep_checkpoints_num=8, checkpoint_score_attr='training_iteration',
 
             # run configuration: local_dir -> storage_path
-            # name='modelling',
-            # storage_path=os.path.join(self.__parameters.path, 'persist'),
+            name='distil', storage_path=os.path.join(self.__parameters.storage_path, 'ray'),
             verbose=0, progress_reporter=settings.reporting(), log_to_file=True
         )
 
