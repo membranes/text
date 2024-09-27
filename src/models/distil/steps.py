@@ -1,6 +1,8 @@
 """Module steps.py"""
 import logging
 
+import transformers.tokenization_utils_base
+
 import src.elements.frames as fr
 import src.elements.variable as vr
 import src.models.distil.architecture
@@ -34,7 +36,8 @@ class Steps:
             EPOCHS=2, TRAIN_BATCH_SIZE=16, VALID_BATCH_SIZE=16, N_TRAIN=self.__frames.training.shape[0])
 
         # ...
-        self.__tokenizer = src.models.distil.tokenizer.Tokenizer()()
+        self.__tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase = (
+            src.models.distil.tokenizer.Tokenizer()())
 
         # Logging
         logging.basicConfig(level=logging.INFO,
@@ -67,10 +70,12 @@ class Steps:
         training, validating = self.__structures()
 
         # Modelling
-        # architecture = src.models.distil.architecture.Architecture(
-        #     variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype)
-        # model = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
-        # self.__logger.info(model.__dir__())
+        architecture = src.models.distil.architecture.Architecture(
+            variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype)
+        model = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
+        self.__logger.info(type(model))
+        self.__logger.info(model)
+        self.__logger.info(model.__dir__())
 
         # Evaluating: vis-à-vis best model
         # originals, predictions = src.models.distil.validation.Validation(
