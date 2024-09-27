@@ -12,7 +12,7 @@ class Tokenizer:
 
         self.__parameters = pr.Parameters()
 
-    def __call__(self):
+    def __call__(self) -> transformers.tokenization_utils_base.PreTrainedTokenizerBase:
         """
 
         :return:
