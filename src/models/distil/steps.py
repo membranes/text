@@ -54,10 +54,10 @@ class Steps:
 
         # The data
         training = structures.training()
-        self.__logger.info(training.dataset)
+        self.__logger.info(training.dataset.__getitem__(0))
 
         validating = structures.validating()
-        self.__logger.info(validating.dataset)
+        self.__logger.info(validating.dataset.__getitem__(0))
 
     def exc(self):
         """
