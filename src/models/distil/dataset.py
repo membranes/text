@@ -4,10 +4,12 @@ import pandas as pd
 import torch.utils.data
 import transformers
 
+import src.elements.variable as vr
+
 
 class Dataset(torch.utils.data.Dataset):
 
-    def __init__(self, frame: pd.DataFrame,
+    def __init__(self, frame: pd.DataFrame, variable: vr.Variable, enumerator: dict,
                  tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
         """
 
@@ -20,7 +22,8 @@ class Dataset(torch.utils.data.Dataset):
         self.__frame = frame
         self.__length = len(self.__frame)
 
-        # Tokenizer
+        self.__variable = variable
+        self.__enumerator = enumerator
         self.__tokenizer = tokenizer
 
         # Logging
@@ -32,8 +35,10 @@ class Dataset(torch.utils.data.Dataset):
     def __getitem__(self, index):
 
         words: list[str] = self.__frame['sentence'][index].strip().split()
-        encodings = self.__tokenizer(words, truncation=True, is_split_into_words=True)
+        encodings = self.__tokenizer(words, truncation=True, is_split_into_words=True, padding='max_length', max_length=self.__length)
+
         tags: list[str] = self.__frame['tagstr'][index].split(',')
+        numerals: list[int] = [self.__enumerator[tag] for tag in tags]
 
         identifiers = encodings.word_ids()
 
@@ -43,14 +48,16 @@ class Dataset(torch.utils.data.Dataset):
             if identifier is None:
                 register.append(-100)
             elif identifier != previous:
-                register.append(tags[identifier])
+                register.append(numerals[identifier])
             else:
                 register.append(-100)
             previous = identifier
 
         encodings['labels'] = register
 
-        return encodings
+        item = {key: torch.as_tensor(value) for key, value in encodings.items()}
+
+        return item
 
     def __len__(self):
         """
