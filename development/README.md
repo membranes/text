@@ -106,10 +106,40 @@ IDEA** set up involves connecting to a machine's Docker [daemon](https://www.jet
 
 ### Optimisation, etc.
 
-> [!NOTE]
-> Details upcoming; TensorBoard is the observation tool.
+The progress of a model training exercise is observable via TensorBoard
 
-*  Using `CheckpointConfig.num_to_keep <= 2` with <abbr title="Population Based Training">PBT</abbr> can lead to restoration problems when checkpoint are deleted too early for other trials to exploit them. If this happens, increase the value of `num_to_keep`.
+```shell
+tensorboard --logdir /tmp/ray/session_{datetime}_{host.code}/artifacts/{datetime}/tuning/driver_artifacts --bind_all
+```
+
+Subsequently, a link of the form `http://...:6007/` or `http://...:6006/` is printed.  Access the underlying pages via a browser.  It might be necessary to switch to `http://localhost:6007/` or `http://localhost:6006/`. [^hyper]
+
+
+<br>
+
+### Computation Metrics
+
+Via [Ray Dashboard](https://docs.ray.io/en/latest/ray-observability/getting-started.html), aided by Prometheus & Grafana[^tracking]; the set-up for the latter pair is upcoming.  Ensure [usage statistics sharing/collection is disabled](https://docs.ray.io/en/latest/cluster/usage-stats.html).  Options
+
+* os.environ['RAY_USAGE_STATS_ENABLED']='0'
+* Either
+  * ray start --disable-usage-stats --head --dashboard-host=0.0.0.0 --dashboard-port=8265
+  * ray start --disable-usage-stats --head --dashboard-host=172.17.0.2 --dashboard-port=8265
+  * etc.
+
+The computation metrics will be accessible via
+* localhost:8265
+* localhost:6379
+
+<br>
+
+### Steps & Epochs
+
+The formulae in focus are
+
+> * max_steps_per_epoch = self.__source['train'].shape[0] // (variable.TRAIN_BATCH_SIZE * variable.N_GPU)
+> * max_steps = max_steps_per_epoch * self.__n_epochs
+
 
 <br>
 
@@ -307,5 +337,6 @@ inspects complexity.
 [^w-nut]: W-NUT: [Workshop on Noisy User-generated Text](https://noisy-text.github.io)
 [^nerd]: A [Few-shot NERD (Named Entity Recognition Dataset)](https://aclanthology.org/2021.acl-long.248/)
 [^gpt]: GPT: Generative Pre-trained Transformer
+[^hyper]: Using `CheckpointConfig.num_to_keep <= 2` with <abbr title="Population Based Training">PBT</abbr> can lead to restoration problems when checkpoints are deleted too early, too early for other trials to exploit them. If this happens, increase the value of `num_to_keep`.
 
 
