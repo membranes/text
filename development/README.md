@@ -309,8 +309,8 @@ inspects complexity.
 #### Optimisation
 
 * [2.2 Transformer Model $\odot$ Position Information in Transformers: An Overview](https://direct.mit.edu/coli/article/48/3/733/111478/Position-Information-in-Transformers-An-Overview): Study this paper for an understanding of an *unknown* transformer model function.
-* [Adam $\odot$ Dive into Deep Learning](https://d2l.ai/chapter_optimization/adam.html)
-* [Adam $\odot$ PyTorch](https://pytorch.org/docs/stable/generated/torch.optim.Adam.html#torch.optim.Adam)
+* [ADAM: Dive into Deep Learning](https://d2l.ai/chapter_optimization/adam.html)
+* [ADAM $\in$ PyTorch](https://pytorch.org/docs/stable/generated/torch.optim.Adam.html#torch.optim.Adam)
 * [ADAM: A METHOD FOR STOCHASTIC OPTIMIZATION](https://arxiv.org/abs/1412.6980)
 * [KLDivLoss](https://pytorch.org/docs/stable/generated/torch.nn.KLDivLoss.html#torch.nn.KLDivLoss)
 
@@ -319,6 +319,11 @@ inspects complexity.
 #### Miscellaneous
 
 * [Freedom of information (FOI) Improvement Plan 2024](https://www.gov.scot/publications/freedom-of-information-foi-improvement-plan-2024/)
+* [Text Classification Notebook](https://github.com/huggingface/notebooks/blob/main/examples/text_classification.ipynb)
+* [Using Huggingface Transformers with Tune, <abbr title="Population Based Training">PBT</abbr>](https://docs.ray.io/en/latest/tune/examples/pbt_transformers.html)
+* [Fine-tune a Hugging Face Transformers Model](https://docs.ray.io/en/latest/train/examples/transformers/huggingface_text_classification.html)
+* [Tune Trial Schedulers (tune.schedulers)](https://docs.ray.io/en/latest/tune/api/schedulers.html)
+* [Tune Search Algorithms (tune.search)](https://docs.ray.io/en/latest/tune/api/suggestion.html)
 
 
 <br>
