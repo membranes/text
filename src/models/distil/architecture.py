@@ -93,7 +93,7 @@ class Architecture:
         trainer = transformers.Trainer(
             model=None,
             model_init=intelligence.model,
-            args=self.__args(),
+            args=self.__args(), data_collator=intelligence.collator(tokenizer),
             train_dataset=training.dataset,
             eval_dataset=validating.dataset,
             tokenizer=tokenizer,
