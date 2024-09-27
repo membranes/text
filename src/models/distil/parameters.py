@@ -37,7 +37,3 @@ class Parameters(typing.NamedTuple):
     device: str = 'cuda' if torch.cuda.is_available() else 'cpu'
     MODEL_OUTPUT_DIRECTORY: str = os.path.join(config.Config().warehouse, 'distil')
     storage_path: str = os.path.join(config.Config().warehouse, 'distil')
-    # path: str = os.path.join(config.Config().warehouse, 'distil')
-    # n_trials: int = 2
-    # n_cpu: int = 8
-    # n_gpu: int = 1
