@@ -1,13 +1,14 @@
 import logging
+
 import pandas as pd
-import transformers
 import torch.utils.data as tu
+import transformers
 
 import src.elements.frames as fr
-import src.elements.variable as vr
 import src.elements.structures as sr
-import src.models.loadings
+import src.elements.variable as vr
 import src.models.distil.dataset
+import src.models.loadings
 
 
 class Structures:
@@ -50,7 +51,7 @@ class Structures:
 
         return sr.Structures(dataset=dataset, dataloader=dataloader)
 
-    def training(self):
+    def training(self) -> sr.Structures:
         """
         Delivers the training data's Dataset & DataLoader
 
@@ -63,7 +64,7 @@ class Structures:
 
         return self.__structure(frame=self.__frames.training, parameters=parameters)
 
-    def validating(self):
+    def validating(self) -> sr.Structures:
         """
         Delivers the validation data's Dataset & DataLoader
 
@@ -76,7 +77,7 @@ class Structures:
 
         return self.__structure(frame=self.__frames.validating, parameters=parameters)
 
-    def testing(self):
+    def testing(self) -> sr.Structures:
         """
         Delivers the testing data's Dataset & DataLoader
 
