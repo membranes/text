@@ -21,6 +21,7 @@ class Dataset(torch.utils.data.Dataset):
 
         words: list[str] = self.__frame['sentence'][index].strip().split()
         encodings = self.__tokenizer(words, truncation=True, is_split_into_words=True)
+        tags: list[str] = self.__frame['tagstr'][index].split(',')
 
 
 
