@@ -1,12 +1,14 @@
 import logging
+
+import pandas as pd
 import torch.utils.data
 import transformers
 
-import pandas as pd
 
 class Dataset(torch.utils.data.Dataset):
 
-    def __init__(self, frame: pd.DataFrame, tokenizer: transformers.tokenization_utils_base):
+    def __init__(self, frame: pd.DataFrame,
+                 tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
         """
 
         :param frame:
@@ -16,6 +18,9 @@ class Dataset(torch.utils.data.Dataset):
         super().__init__()
 
         self.__frame = frame
+        self.__length = len(self.__frame)
+
+        # Tokenizer
         self.__tokenizer = tokenizer
 
         # Logging
@@ -30,6 +35,27 @@ class Dataset(torch.utils.data.Dataset):
         encodings = self.__tokenizer(words, truncation=True, is_split_into_words=True)
         tags: list[str] = self.__frame['tagstr'][index].split(',')
 
-        self.__logger.info(words)
-        self.__logger.info(encodings)
-        self.__logger.info(tags)
+        identifiers = encodings.word_ids()
+
+        previous = None
+        register = []
+        for identifier in identifiers:
+            if identifier is None:
+                register.append(-100)
+            elif identifier != previous:
+                register.append(tags[identifier])
+            else:
+                register.append(-100)
+            previous = identifier
+
+        encodings['labels'] = register
+
+        return encodings
+
+    def __len__(self):
+        """
+
+        :return:
+        """
+
+        return self.__length
