@@ -14,7 +14,7 @@ import src.models.loadings
 class Structures:
 
     def __init__(self, enumerator: dict, variable: vr.Variable, frames: fr.Frames,
-                 tokenizer: transformers.tokenization_utils_base):
+                 tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
         """
 
         :param enumerator:
@@ -46,7 +46,8 @@ class Structures:
         :return:
         """
 
-        dataset = src.models.distil.dataset.Dataset(frame=frame, tokenizer=self.__tokenizer)
+        dataset = src.models.distil.dataset.Dataset(
+            frame=frame, variable=self.__variable, enumerator=self.__enumerator, tokenizer=self.__tokenizer)
         dataloader: tu.DataLoader = self.__loadings.exc(dataset=dataset, parameters=parameters)
 
         return sr.Structures(dataset=dataset, dataloader=dataloader)
