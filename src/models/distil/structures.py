@@ -1,4 +1,3 @@
-"""Module structures.py"""
 import logging
 
 import pandas as pd
@@ -8,20 +7,14 @@ import transformers
 import src.elements.frames as fr
 import src.elements.structures as sr
 import src.elements.variable as vr
-import src.models.dataset
+import src.models.distil.dataset
 import src.models.loadings
 
 
 class Structures:
-    """
-    Collecting<br>
-    ----------<br>
-
-    Builds and delivers the data structures per modelling stage
-    """
 
     def __init__(self, enumerator: dict, variable: vr.Variable, frames: fr.Frames,
-                 tokenizer: transformers.tokenization_utils_base):
+                 tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
         """
 
         :param enumerator:
@@ -48,19 +41,14 @@ class Structures:
     def __structure(self, frame: pd.DataFrame, parameters: dict) -> sr.Structures:
         """
 
-        :param frame: A data frame
-        :param parameters: The data frame's corresponding modelling stage parameters
+        :param frame:
+        :param parameters:
         :return:
-            NamedTuple consisting of a torch.util.data.Dataset, and a
-            torch.util.data.DataLoader
         """
 
-        dataset = src.models.dataset.Dataset(
-            frame=frame, variable=self.__variable, enumerator=self.__enumerator,
-            tokenizer=self.__tokenizer)
-
-        dataloader: tu.DataLoader = self.__loadings.exc(
-            dataset=dataset, parameters=parameters)
+        dataset = src.models.distil.dataset.Dataset(
+            frame=frame, variable=self.__variable, enumerator=self.__enumerator, tokenizer=self.__tokenizer)
+        dataloader: tu.DataLoader = self.__loadings.exc(dataset=dataset, parameters=parameters)
 
         return sr.Structures(dataset=dataset, dataloader=dataloader)
 

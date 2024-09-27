@@ -9,7 +9,7 @@ import src.models.bert.metrics
 import src.models.bert.modelling
 import src.models.bert.validation
 import src.models.bert.parameters
-import src.models.structures
+import src.models.bert.structures
 
 
 class Steps:
@@ -36,7 +36,7 @@ class Steps:
 
         # Instances
         parameters = src.models.bert.parameters.Parameters()
-        self.__structures = src.models.structures.Structures(
+        self.__structures = src.models.bert.structures.Structures(
             enumerator=self.__enumerator, variable=self.__variable,
             frames=frames, tokenizer=parameters.tokenizer)
 

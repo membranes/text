@@ -33,8 +33,7 @@ class Settings:
 
         return {
             'learning_rate': self.__variable.LEARNING_RATE,
-            'weight_decay': self.__variable.WEIGHT_DECAY,
-            'per_device_train_batch_size': self.__variable.TRAIN_BATCH_SIZE
+            'weight_decay': self.__variable.WEIGHT_DECAY
         }
 
     def scheduler(self):
@@ -51,9 +50,8 @@ class Settings:
             metric='eval_loss', mode='min',
             perturbation_interval=self.__perturbation_interval,
             hyperparam_mutations={
-                'learning_rate': ray.tune.uniform(lower=0.002, upper=0.1),
-                'weight_decay': ray.tune.uniform(lower=0.02, upper=0.1),
-                'per_device_train_batch_size': ray.tune.grid_search([32])
+                'learning_rate': ray.tune.uniform(lower=0.001, upper=0.1),
+                'weight_decay': ray.tune.uniform(lower=0.01, upper=0.1)
             },
             quantile_fraction=0.25,
             resample_probability=0.25

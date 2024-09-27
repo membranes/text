@@ -42,7 +42,7 @@ def main():
     logger.info(frame.head())
 
     # Temporary
-    frame = frame.loc[:1000, :]
+    frame = frame.loc[:500, :]
     src.models.interface.Interface(frame=frame, enumerator=enumerator, archetype=archetype).exc()
 
     # Delete Cache Points

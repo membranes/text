@@ -64,13 +64,13 @@ class Architecture:
             save_total_limit=5,
             skip_memory_metrics=True,
             load_best_model_at_end=True,
-            logging_dir=self.__parameters.path,
+            logging_dir=os.path.join(self.__parameters.path, 'logs'),
             fp16=True,
             push_to_hub=False
             )
 
     def __call__(self, training: sr.Structures, validating: sr.Structures,
-                 tokenizer: transformers.PreTrainedTokenizerBase):
+                 tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
         """
         https://huggingface.co/docs/transformers/v4.41.3/en/main_classes/trainer#transformers.Trainer
 
@@ -94,26 +94,26 @@ class Architecture:
             model=None,
             model_init=intelligence.model,
             args=self.__args(),
-            data_collator=intelligence.collator(tokenizer=tokenizer),
             train_dataset=training.dataset,
             eval_dataset=validating.dataset,
             tokenizer=tokenizer,
             compute_metrics=metrics.exc)
 
         best = trainer.hyperparameter_search(
-            hp_space=lambda _: settings.hp_space(), n_trials=self.__parameters.n_trials,
+            n_trials=self.__parameters.n_trials,
+            direction='minimize',
             resources_per_trial={'cpu': self.__parameters.n_cpu, 'gpu': self.__parameters.n_gpu},
             backend='ray',
 
             # tune configuration
-            scheduler=settings.scheduler(), reuse_actors=True,
+            # scheduler=settings.scheduler(), reuse_actors=True,
 
             # check point configuration
-            keep_checkpoints_num=8, checkpoint_score_attr='training_iteration',
+            # keep_checkpoints_num=8, checkpoint_score_attr='training_iteration',
 
             # run configuration: local_dir -> storage_path
-            name='modelling',
-            storage_path=os.path.join(self.__parameters.path, 'persist'),
+            # name='modelling',
+            # storage_path=os.path.join(self.__parameters.path, 'persist'),
             verbose=0, progress_reporter=settings.reporting(), log_to_file=True
         )
 
