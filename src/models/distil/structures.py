@@ -1,8 +1,9 @@
 
 import transformers
 
-import src.elements.variable as vr
 import src.elements.frames as fr
+import src.elements.variable as vr
+import src.models.loadings
 
 
 class Structures:
@@ -22,3 +23,6 @@ class Structures:
         self.__frames = frames
 
         self.__tokenizer = tokenizer
+
+        # For DataLoader creation
+        self.__loadings = src.models.loadings.Loadings()
