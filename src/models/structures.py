@@ -8,7 +8,7 @@ import transformers
 import src.elements.frames as fr
 import src.elements.structures as sr
 import src.elements.variable as vr
-import src.models.dataset
+import src.models.bert.dataset
 import src.models.loadings
 
 
@@ -55,7 +55,7 @@ class Structures:
             torch.util.data.DataLoader
         """
 
-        dataset = src.models.dataset.Dataset(
+        dataset = src.models.bert.dataset.Dataset(
             frame=frame, variable=self.__variable, enumerator=self.__enumerator,
             tokenizer=self.__tokenizer)
 
