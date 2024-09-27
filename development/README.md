@@ -327,6 +327,7 @@ inspects complexity.
 
 * [.hyperparameter_search(compute_objective=...)](https://www.sbert.net/examples/training/hpo/README.html#compute-objective)
   * And much more.
+  * [class](https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Trainer.hyperparameter_search)
   * [cf.](https://discuss.huggingface.co/t/using-hyperparameter-search-in-trainer/785/10)
 * [Analyzing Tune Experiment Results](https://docs.ray.io/en/latest/tune/examples/tune_analyze_results.html)
 * [Get Started with Distributed Training using Hugging Face Transformers](https://docs.ray.io/en/latest/train/getting-started-transformers.html)
