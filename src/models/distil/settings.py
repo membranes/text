@@ -37,7 +37,8 @@ class Settings:
         """
 
         return {'learning_rate': ray.tune.quniform(lower=0.001, upper=0.002, q=0.001),
-                'weight_decay': ray.tune.quniform(lower=0.01, upper=0.02, q=0.01)}
+                'weight_decay': ray.tune.quniform(lower=0.01, upper=0.02, q=0.01),
+                'per_device_train_batch_size': ray.tune.choice([4, 16])}
 
     def scheduler(self):
         """
@@ -69,6 +70,5 @@ class Settings:
         """
 
         return ray.tune.CLIReporter(
-            parameter_columns=['learning_rate', 'weight_decay', 'per_device_training_batch_size'],
-            metric_columns=['eval_loss', 'precision', 'recall', 'f1']
-        )
+            parameter_columns=['learning_rate', 'weight_decay', 'per_device_training_batch_size', 'per_device_eval_batch_size'],
+            metric_columns=['eval_loss', 'precision', 'recall', 'f1'])
