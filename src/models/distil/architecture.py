@@ -66,8 +66,7 @@ class Architecture:
             load_best_model_at_end=True,
             logging_dir=os.path.join(self.__parameters.MODEL_OUTPUT_DIRECTORY, 'logs'),
             fp16=True,
-            push_to_hub=False
-            )
+            push_to_hub=False)
 
     def __call__(self, training: sr.Structures, validating: sr.Structures,
                  tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
@@ -91,15 +90,14 @@ class Architecture:
 
         # Hence
         trainer = transformers.Trainer(
-            model=None,
             model_init=intelligence.model,
             args=self.__args(), data_collator=intelligence.collator(tokenizer),
-            train_dataset=training.dataset,
-            eval_dataset=validating.dataset,
+            train_dataset=training.dataset, eval_dataset=validating.dataset,
             tokenizer=tokenizer,
             compute_metrics=metrics.exc)
 
         best = trainer.hyperparameter_search(
+            # hp_space=settings.hp_space,
             n_trials=self.__variable.N_TRIALS,
             direction='minimize',
             resources_per_trial={'cpu': self.__variable.N_CPU, 'gpu': self.__variable.N_GPU},
@@ -112,8 +110,7 @@ class Architecture:
             # keep_checkpoints_num=8, checkpoint_score_attr='training_iteration',
 
             # run configuration: local_dir -> storage_path
-            name='distil', storage_path=os.path.join(self.__parameters.storage_path, 'ray'),
-            verbose=0, progress_reporter=settings.reporting(), log_to_file=True
-        )
+            name='default', storage_path=os.path.join(self.__parameters.storage_path, 'ray'),
+            verbose=0, progress_reporter=settings.reporting(), log_to_file=True)
 
         return best
