@@ -3,6 +3,7 @@ import transformers
 
 import src.models.distil.parameters as pr
 
+
 class Tokenizer:
 
     def __init__(self):
@@ -17,7 +18,6 @@ class Tokenizer:
 
         :return:
         """
-
 
         # Tokenizer
         return transformers.DistilBertTokenizerFast.from_pretrained(
