@@ -1,16 +1,14 @@
 """Module steps.py"""
-import logging
-
 import transformers
 
 import src.elements.frames as fr
 import src.elements.variable as vr
 import src.models.bert.metrics
 import src.models.bert.modelling
-import src.models.bert.validation
 import src.models.bert.parameters
 import src.models.bert.structures
 import src.models.bert.tokenizer
+import src.models.bert.validation
 
 
 class Steps:
@@ -42,12 +40,6 @@ class Steps:
         self.__structures = src.models.bert.structures.Structures(
             enumerator=self.__enumerator, variable=self.__variable,
             frames=frames, tokenizer=self.__tokenizer)
-
-        # Logging
-        logging.basicConfig(level=logging.INFO,
-                            format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
-                            datefmt='%Y-%m-%d %H:%M:%S')
-        self.__logger = logging.getLogger(__name__)
 
     def exc(self):
         """
