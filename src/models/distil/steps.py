@@ -65,6 +65,9 @@ class Steps:
 
     def exc(self):
         """
+        a. Training
+        b. Evaluating
+        c. Testing
 
         :return:
         """
@@ -81,7 +84,7 @@ class Steps:
         # Training via the best hyperparameters set
         # model = ...
 
-        # Evaluating: vis-à-vis best model
+        # Evaluating: vis-à-vis model & validation data
         # originals, predictions = src.models.distil.validation.Validation(
         #     validating=validating, archetype=self.__archetype).exc(model=model)
 
