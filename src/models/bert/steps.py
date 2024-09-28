@@ -54,7 +54,7 @@ class Steps:
     def exc(self):
         """
         a. Training
-        b. Validation Details
+        b. Evaluating
         c. Testing
 
         :return:
@@ -65,12 +65,12 @@ class Steps:
         # Hyperparameter search
         # best = ...
 
-        # Training: In future, via the best hyperparameter set
+        # Training: In future, via the best hyperparameters set
         model: transformers.PreTrainedModel = src.models.bert.modelling.Modelling(
             variable = self.__variable, enumerator=self.__enumerator,
             dataloader=training.dataloader).exc()
 
-        # Validation Details
+        # Evaluating: vis-à-vis model & validation data
         originals, predictions = src.models.bert.validation.Validation(
             model=model, archetype=self.__archetype,
             dataloader=validating.dataloader).exc()
