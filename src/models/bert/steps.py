@@ -36,10 +36,20 @@ class Steps:
             EPOCHS=4, N_TRAIN=self.__frames.training.shape[0], N_TRIALS=8)
 
         # Instances
-        self.__tokenizer = src.models.bert.tokenizer.Tokenizer()()
-        self.__structures = src.models.bert.structures.Structures(
+        self.__tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase = (
+            src.models.bert.tokenizer.Tokenizer()())
+
+    def __structures(self):
+        """
+
+        :return:
+        """
+
+        structures = src.models.bert.structures.Structures(
             enumerator=self.__enumerator, variable=self.__variable,
-            frames=frames, tokenizer=self.__tokenizer)
+            frames=self.__frames, tokenizer=self.__tokenizer)
+
+        return structures.training(), structures.validating(), structures.testing()
 
     def exc(self):
         """
@@ -50,8 +60,7 @@ class Steps:
         :return:
         """
 
-        training = self.__structures.training()
-        validating = self.__structures.validating()
+        training, validating, _ = self.__structures()
 
         # Training
         model: transformers.PreTrainedModel = src.models.bert.modelling.Modelling(
