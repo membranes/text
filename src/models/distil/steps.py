@@ -34,7 +34,7 @@ class Steps:
         # A set of values for machine learning model development
         self.__variable = vr.Variable()
         self.__variable = self.__variable._replace(
-            EPOCHS=2, TRAIN_BATCH_SIZE=16, VALID_BATCH_SIZE=16, N_TRAIN=self.__frames.training.shape[0])
+            EPOCHS=8, N_TRAIN=self.__frames.training.shape[0])
 
         # ...
         self.__tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase = (
