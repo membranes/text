@@ -29,6 +29,7 @@ class Steps:
         # Inputs
         self.__enumerator = enumerator
         self.__archetype = archetype
+        self.__frames = frames
 
         # A set of values for machine learning model development
         self.__variable = vr.Variable()
