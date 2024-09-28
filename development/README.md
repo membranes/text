@@ -93,9 +93,15 @@ IDEA** set up involves connecting to a machine's Docker [daemon](https://www.jet
 
 ## Model Development
 
-Note: The default
-* Search Algorithm: [BasicVariantGenerator](https://docs.ray.io/en/latest/tune/api/suggestion.html#random-search-and-grid-search-tune-search-basic-variant-basicvariantgenerator)
-* Scheduler: [FIFOScheduler](https://docs.ray.io/en/latest/tune/api/schedulers.html#fifoscheduler-default-scheduler)
+**Hyperparameter Search**
+* Default Search Algorithm: [BasicVariantGenerator](https://docs.ray.io/en/latest/tune/api/suggestion.html#random-search-and-grid-search-tune-search-basic-variant-basicvariantgenerator)
+* Default Scheduler: [FIFOScheduler](https://docs.ray.io/en/latest/tune/api/schedulers.html#fifoscheduler-default-scheduler)
+* [trainer_utils](https://github.com/huggingface/transformers/blob/main/src/transformers/trainer_utils.py)
+* [default_compute_objective](https://github.com/huggingface/transformers/blob/main/src/transformers/trainer_utils.py#L267)
+* [BestRun](https://github.com/huggingface/transformers/blob/main/src/transformers/trainer_utils.py#L245)
+* [An example of next steps](https://christianjmills.com/posts/transformers-book-notes/chapter-8/index.html)
+
+<br>
 
 ### Data
 
