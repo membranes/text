@@ -62,7 +62,10 @@ class Steps:
 
         training, validating, _ = self.__structures()
 
-        # Training
+        # Hyperparameter search
+        # best = ...
+
+        # Training: In future, via the best hyperparameter set
         model: transformers.PreTrainedModel = src.models.bert.modelling.Modelling(
             variable = self.__variable, enumerator=self.__enumerator,
             dataloader=training.dataloader).exc()
