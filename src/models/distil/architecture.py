@@ -4,6 +4,8 @@ import os
 
 import transformers
 
+import ray.tune.search.bayesopt as rtb
+
 import config
 import src.elements.structures as sr
 import src.elements.variable as vr
@@ -30,6 +32,9 @@ class Architecture:
         self.__variable = variable
         self.__enumerator = enumerator
         self.__archetype = archetype
+
+        # Search algorithm
+        self.__bayesopt = rtb.BayesOptSearch(metric='eval_loss', mode='min')
 
         # Parameters
         self.__parameters = pr.Parameters()
@@ -104,7 +109,7 @@ class Architecture:
             backend='ray',
 
             # tune configuration
-            # scheduler=settings.scheduler(), reuse_actors=True,
+            # scheduler=settings.scheduler(), reuse_actors=True, search_alg=self.__bayesopt,
 
             # check point configuration
             # keep_checkpoints_num=8, checkpoint_score_attr='training_iteration',
