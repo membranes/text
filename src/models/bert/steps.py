@@ -33,7 +33,8 @@ class Steps:
 
         # A set of values for machine learning model development
         self.__variable = vr.Variable()
-        self.__variable = self.__variable._replace(EPOCHS=2)
+        self.__variable = self.__variable._replace(
+            EPOCHS=4, N_TRAIN=self.__frames.training.shape[0], N_TRIALS=8)
 
         # Instances
         parameters = src.models.bert.parameters.Parameters()
