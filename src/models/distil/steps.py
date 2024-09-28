@@ -74,13 +74,16 @@ class Steps:
         # Modelling
         architecture = src.models.distil.architecture.Architecture(
             variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype)
-        model = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
-        self.__logger.info(type(model))
-        self.__logger.info(model)
+        best = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
+        self.__logger.info(type(best))
+        self.__logger.info(best)
+
+        # Training via the best hyperparameters set
+        # model = ...
 
         # Evaluating: vis-à-vis best model
-        originals, predictions = src.models.distil.validation.Validation(
-            validating=validating, archetype=self.__archetype).exc(model=model)
+        # originals, predictions = src.models.distil.validation.Validation(
+        #     validating=validating, archetype=self.__archetype).exc(model=model)
 
-        src.models.distil.measurements.Measurements().exc(
-            originals=originals, predictions=predictions)
+        # src.models.distil.measurements.Measurements().exc(
+        #     originals=originals, predictions=predictions)
