@@ -15,6 +15,7 @@ import src.models.distil.structures
 class Steps:
     """
     Steps
+    ref. https://huggingface.co/docs/transformers/tasks/token_classification
     """
 
     def __init__(self, enumerator: dict, archetype: dict, frames: fr.Frames):
@@ -75,7 +76,6 @@ class Steps:
         model = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
         self.__logger.info(type(model))
         self.__logger.info(model)
-        self.__logger.info(model.__dir__())
 
         # Evaluating: vis-à-vis best model
         # originals, predictions = src.models.distil.validation.Validation(
