@@ -93,6 +93,10 @@ IDEA** set up involves connecting to a machine's Docker [daemon](https://www.jet
 
 ## Model Development
 
+Note: The default 
+* Search Algorithm: [BasicVariantGenerator](https://docs.ray.io/en/latest/tune/api/suggestion.html#random-search-and-grid-search-tune-search-basic-variant-basicvariantgenerator)
+* Scheduler: [FIFOScheduler](https://docs.ray.io/en/latest/tune/api/schedulers.html#fifoscheduler-default-scheduler)
+
 ### Data
 
 [W-NUT 2017 (W-NUT 2017 Emerging and Rare entity recognition)](https://paperswithcode.com/dataset/wnut-2017-emerging-and-rare-entity)[^w-nut]
