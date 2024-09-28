@@ -10,6 +10,7 @@ import src.models.bert.modelling
 import src.models.bert.validation
 import src.models.bert.parameters
 import src.models.bert.structures
+import src.models.bert.tokenizer
 
 
 class Steps:
@@ -37,10 +38,10 @@ class Steps:
             EPOCHS=4, N_TRAIN=self.__frames.training.shape[0], N_TRIALS=8)
 
         # Instances
-        parameters = src.models.bert.parameters.Parameters()
+        self.__tokenizer = src.models.bert.tokenizer.Tokenizer()()
         self.__structures = src.models.bert.structures.Structures(
             enumerator=self.__enumerator, variable=self.__variable,
-            frames=frames, tokenizer=parameters.tokenizer)
+            frames=frames, tokenizer=self.__tokenizer)
 
         # Logging
         logging.basicConfig(level=logging.INFO,
@@ -50,6 +51,9 @@ class Steps:
 
     def exc(self):
         """
+        a. Training
+        b. Validation Details
+        c. Testing
 
         :return:
         """
@@ -57,16 +61,15 @@ class Steps:
         training = self.__structures.training()
         validating = self.__structures.validating()
 
-        self.__logger.info('Modelling: Training Stage')
+        # Training
         model: transformers.PreTrainedModel = src.models.bert.modelling.Modelling(
             variable = self.__variable, enumerator=self.__enumerator,
             dataloader=training.dataloader).exc()
 
-        self.__logger.info('Modelling: Validation Stage')
+        # Validation Details
         originals, predictions = src.models.bert.validation.Validation(
             model=model, archetype=self.__archetype,
             dataloader=validating.dataloader).exc()
 
-        self.__logger.info('Metrics')
         src.models.bert.metrics.Metrics().exc(
             originals=originals, predictions=predictions)
