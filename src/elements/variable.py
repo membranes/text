@@ -50,9 +50,9 @@ class Variable(typing.NamedTuple):
     """
 
     MAX_LENGTH: int = 128
-    TRAIN_BATCH_SIZE: int = 4
-    VALID_BATCH_SIZE: int = 2
-    TEST_BATCH_SIZE: int = 2
+    TRAIN_BATCH_SIZE: int = 16
+    VALID_BATCH_SIZE: int = 16
+    TEST_BATCH_SIZE: int = 4
     EPOCHS: int = 1
     LEARNING_RATE: float = 0.001
     WEIGHT_DECAY: float = 0.01
