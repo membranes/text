@@ -34,7 +34,7 @@ class Steps:
         # A set of values for machine learning model development
         self.__variable = vr.Variable()
         self.__variable = self.__variable._replace(
-            EPOCHS=8, N_TRAIN=self.__frames.training.shape[0])
+            EPOCHS=4, N_TRAIN=self.__frames.training.shape[0], N_TRIALS=8)
 
         # ...
         self.__tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase = (
@@ -78,9 +78,9 @@ class Steps:
         self.__logger.info(model)
 
         # Evaluating: vis-à-vis best model
-        # originals, predictions = src.models.distil.validation.Validation(
-        #     validating=validating, archetype=self.__archetype).exc(model=model)
+        originals, predictions = src.models.distil.validation.Validation(
+            validating=validating, archetype=self.__archetype).exc(model=model)
 
         # Evaluation Metrics
-        # src.models.distil.measurements.Measurements().exc(
-        #     originals=originals, predictions=predictions)
+        src.models.distil.measurements.Measurements().exc(
+            originals=originals, predictions=predictions)
