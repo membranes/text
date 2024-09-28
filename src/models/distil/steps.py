@@ -59,8 +59,9 @@ class Steps:
         # The data
         training = structures.training()
         validating = structures.validating()
+        testing = structures.testing()
 
-        return training, validating
+        return training, validating, testing
 
     def exc(self):
         """
@@ -68,7 +69,7 @@ class Steps:
         :return:
         """
 
-        training, validating = self.__structures()
+        training, validating, _ = self.__structures()
 
         # Modelling
         architecture = src.models.distil.architecture.Architecture(
@@ -81,6 +82,5 @@ class Steps:
         originals, predictions = src.models.distil.validation.Validation(
             validating=validating, archetype=self.__archetype).exc(model=model)
 
-        # Evaluation Metrics
         src.models.distil.measurements.Measurements().exc(
             originals=originals, predictions=predictions)
