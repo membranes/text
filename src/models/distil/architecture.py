@@ -31,9 +31,6 @@ class Architecture:
         self.__enumerator = enumerator
         self.__archetype = archetype
 
-        # Arguments
-        self.__args = src.models.distil.arguments.Arguments(variable=self.__variable).exc()
-
         # Parameters
         self.__parameters = pr.Parameters()
 
@@ -41,7 +38,7 @@ class Architecture:
         src.models.distil.storage.Storage().exc(path=self.__parameters.storage_path)
 
     def __call__(self, training: sr.Structures, validating: sr.Structures,
-                 tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
+                 tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase) -> transformers.trainer_utils.BestRun:
         """
         https://huggingface.co/docs/transformers/v4.41.3/en/main_classes/trainer#transformers.Trainer
         https://docs.ray.io/en/latest/tune/api/doc/ray.tune.run.html
@@ -51,6 +48,9 @@ class Architecture:
         :param tokenizer:
         :return:
         """
+
+        # Arguments
+        args = src.models.distil.arguments.Arguments(variable=self.__variable).exc()
 
         # Collator
         intelligence = src.models.distil.intelligence.Intelligence(enumerator=self.__enumerator, archetype=self.__archetype)
@@ -64,7 +64,7 @@ class Architecture:
         # Hence
         trainer = transformers.Trainer(
             model_init=intelligence.model,
-            args=self.__args, data_collator=intelligence.collator(tokenizer),
+            args=args, data_collator=intelligence.collator(tokenizer),
             train_dataset=training.dataset, eval_dataset=validating.dataset,
             tokenizer=tokenizer,
             compute_metrics=metrics.exc)
