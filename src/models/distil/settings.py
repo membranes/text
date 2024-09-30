@@ -26,7 +26,7 @@ class Settings:
         self.__perturbation_interval = 2
 
         # Space
-        self.__space = {'learning_rate': ray.tune.uniform(lower=0.000016, upper=0.000018),
+        self.__space = {'learning_rate': ray.tune.uniform(lower=0.000016, upper=0.000017),
                         'weight_decay': ray.tune.choice([0.0, 0.00001]),
                         'per_device_train_batch_size': ray.tune.choice([4, 16])}
 
@@ -74,7 +74,8 @@ class Settings:
         return rts.ASHAScheduler(
             time_attr='training_iteration', metric='eval_loss', mode='min')
 
-    def algorithm(self):
+    @staticmethod
+    def algorithm():
         """
 
         :return:
@@ -91,5 +92,5 @@ class Settings:
         """
 
         return ray.tune.CLIReporter(
-            parameter_columns=['learning_rate', 'weight_decay', 'per_device_training_batch_size', 'per_device_eval_batch_size'],
+            parameter_columns=['learning_rate', 'weight_decay', 'per_device_training_batch_size'],
             metric_columns=['eval_loss', 'precision', 'recall', 'f1'])
