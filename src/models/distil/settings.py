@@ -40,6 +40,16 @@ class Settings:
                 'weight_decay': ray.tune.quniform(lower=0.01, upper=0.02, q=0.01),
                 'per_device_train_batch_size': ray.tune.choice([4, 16])}
 
+    @staticmethod
+    def compute_objective(metric):
+        """
+
+        :param metric:
+        :return:
+        """
+
+        return metric['eval_loss']
+
     def scheduler(self):
         """
         https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.PopulationBasedTraining.html
