@@ -22,8 +22,9 @@ class Interface:
         :param archetype:
         """
 
-        self.__training, self.__validating, _ = src.models.splittings.Splittings(frame=frame).exc()
-        self.__frames = src.elements.frames.Frames(training=self.__training, validating=self.__validating)
+        self.__training, self.__validating, self.__testing = src.models.splittings.Splittings(frame=frame).exc()
+        self.__frames = src.elements.frames.Frames(
+            training=self.__training, validating=self.__validating, testing=self.__testing)
         self.__enumerator = enumerator
         self.__archetype = archetype
 
