@@ -103,7 +103,7 @@ class Architecture:
             compute_metrics=metrics.exc)
 
         best = trainer.hyperparameter_search(
-            # hp_space=settings.hp_space,
+            hp_space=settings.hp_space,
             compute_objective=settings.compute_objective,
             n_trials=self.__variable.N_TRIALS,
             direction='minimize',
