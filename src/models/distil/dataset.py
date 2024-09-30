@@ -20,7 +20,7 @@ class Dataset(torch.utils.data.Dataset):
         super().__init__()
 
         self.__frame = frame
-        self.__length = len(self.__frame)
+        self.__length = self.__frame.shape[0]
 
         self.__variable = variable
         self.__enumerator = enumerator
