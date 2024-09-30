@@ -113,7 +113,8 @@ class Architecture:
             resources_per_trial={'cpu': self.__variable.N_CPU, 'gpu': self.__variable.N_GPU},
 
             # tune configuration
-            # scheduler=settings.scheduler(), reuse_actors=True, search_alg=self.__bayesopt,
+            # search_alg=self.__bayesopt,
+            scheduler=settings.scheduler(), reuse_actors=True,
 
             # check point configuration
             # keep_checkpoints_num=8, checkpoint_score_attr='training_iteration',
