@@ -1,5 +1,5 @@
 """Module settings"""
-
+import logging
 import ray
 import ray.tune
 import ray.tune.schedulers as rts
@@ -33,11 +33,14 @@ class Settings:
         'per_device_train_batch_size': ray.tune.choice([4, 16, 32]),
         'num_train_epochs': ray.tune.choice([2, 4])
 
+        :param trial:
         :return:
         """
 
-        return {'learning_rate': ray.tune.quniform(lower=0.001, upper=0.002, q=0.001),
-                'weight_decay': ray.tune.quniform(lower=0.01, upper=0.02, q=0.01),
+        logging.info(trial)
+
+        return {'learning_rate': ray.tune.uniform(lower=0.000016, upper=0.000018),
+                'weight_decay': ray.tune.uniform(lower=0.01, upper=0.02),
                 'per_device_train_batch_size': ray.tune.choice([4, 16])}
 
     @staticmethod
@@ -50,16 +53,17 @@ class Settings:
 
         return metric['eval_loss']
 
-    def scheduler(self):
+    @staticmethod
+    def scheduler():
         """
         https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.PopulationBasedTraining.html
+        https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.AsyncHyperBandScheduler.html
 
+        Notes
+        -----
         Leads on from hp_space
 
-        :return:
-        """
-
-        return rts.PopulationBasedTraining(
+        rts.PopulationBasedTraining(
             time_attr='training_iteration',
             metric='eval_loss', mode='min',
             perturbation_interval=self.__perturbation_interval,
@@ -68,8 +72,13 @@ class Settings:
                 'weight_decay': ray.tune.uniform(lower=0.01, upper=0.1)
             },
             quantile_fraction=0.25,
-            resample_probability=0.25
-        )
+            resample_probability=0.25)
+
+        :return:
+        """
+
+        return rts.ASHAScheduler(
+            time_attr='training_iteration', metric='eval_loss', mode='min')
 
     @staticmethod
     def reporting():
