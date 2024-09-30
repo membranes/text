@@ -77,6 +77,7 @@ class Architecture:
                  tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
         """
         https://huggingface.co/docs/transformers/v4.41.3/en/main_classes/trainer#transformers.Trainer
+        https://docs.ray.io/en/latest/tune/api/doc/ray.tune.run.html
 
         :param training:
         :param validating:
@@ -103,10 +104,13 @@ class Architecture:
 
         best = trainer.hyperparameter_search(
             # hp_space=settings.hp_space,
+            compute_objective=settings.compute_objective,
             n_trials=self.__variable.N_TRIALS,
             direction='minimize',
-            resources_per_trial={'cpu': self.__variable.N_CPU, 'gpu': self.__variable.N_GPU},
             backend='ray',
+
+            # scaling configuration
+            resources_per_trial={'cpu': self.__variable.N_CPU, 'gpu': self.__variable.N_GPU},
 
             # tune configuration
             # scheduler=settings.scheduler(), reuse_actors=True, search_alg=self.__bayesopt,
