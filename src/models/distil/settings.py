@@ -40,7 +40,7 @@ class Settings:
         logging.info(trial)
 
         return {'learning_rate': ray.tune.uniform(lower=0.000016, upper=0.000018),
-                'weight_decay': ray.tune.uniform(lower=0.01, upper=0.02),
+                'weight_decay': ray.tune.uniform(lower=0.0, upper=0.01),
                 'per_device_train_batch_size': ray.tune.choice([4, 16])}
 
     @staticmethod
