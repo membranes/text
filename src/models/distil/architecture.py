@@ -4,15 +4,14 @@ import os
 
 import transformers
 
-import config
 import src.elements.structures as sr
 import src.elements.variable as vr
+import src.models.distil.arguments
 import src.models.distil.intelligence
 import src.models.distil.metrics
 import src.models.distil.parameters as pr
 import src.models.distil.settings
 import src.models.distil.storage
-import src.models.distil.arguments
 
 
 class Architecture:
