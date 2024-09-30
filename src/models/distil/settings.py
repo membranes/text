@@ -3,6 +3,7 @@ import logging
 import ray
 import ray.tune
 import ray.tune.schedulers as rts
+import ray.tune.search.optuna as opt
 
 import src.elements.variable as vr
 
@@ -24,44 +25,37 @@ class Settings:
         # Re-visit
         self.__perturbation_interval = 2
 
-    @staticmethod
-    def hp_space(trial):
-        """
-        If the search algorithm depends on a continuous distribution, e.g., BayesOpt,
-        do not use a categorical sample space, e.g., ray.tune.choice
-
-        'per_device_train_batch_size': ray.tune.choice([4, 16, 32]),
-        'num_train_epochs': ray.tune.choice([2, 4])
-
-        :param trial:
-        :return:
-        """
-
-        logging.info(trial)
-
-        return {'learning_rate': ray.tune.uniform(lower=0.000016, upper=0.000018),
-                'weight_decay': ray.tune.uniform(lower=0.0, upper=0.01),
-                'per_device_train_batch_size': ray.tune.choice([4, 16])}
+        # Space
+        self.__space = {'learning_rate': ray.tune.uniform(lower=0.000016, upper=0.000018),
+                        'weight_decay': ray.tune.choice([0.0, 0.00001]),
+                        'per_device_train_batch_size': ray.tune.choice([4, 16])}
 
     @staticmethod
     def compute_objective(metric):
         """
 
-        :param metric:
+        :param metric: A placeholder
         :return:
         """
 
         return metric['eval_loss']
+
+    def hp_space(self, trial):
+        """
+
+        :param trial: A placeholder
+        :return:
+        """
+
+        logging.info(trial)
+
+        return self.__space
 
     @staticmethod
     def scheduler():
         """
         https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.PopulationBasedTraining.html
         https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.AsyncHyperBandScheduler.html
-
-        Notes
-        -----
-        Leads on from hp_space
 
         rts.PopulationBasedTraining(
             time_attr='training_iteration',
@@ -79,6 +73,14 @@ class Settings:
 
         return rts.ASHAScheduler(
             time_attr='training_iteration', metric='eval_loss', mode='min')
+
+    def algorithm(self):
+        """
+
+        :return:
+        """
+
+        return opt.OptunaSearch(metric='eval_loss', mode='min')
 
     @staticmethod
     def reporting():
