@@ -1,7 +1,7 @@
 <br>
 
 > [!NOTE]
-> **IN PROGRESS:** Focusing on hyperparameter search via [Trainer](https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Trainer)
+> **IN PROGRESS:** Hyperparameter search via [Trainer](https://huggingface.co/docs/transformers/main_classes/trainer#transformers.Trainer)
 
 <br>
 <br>
