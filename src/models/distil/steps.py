@@ -10,11 +10,13 @@ import src.models.distil.measurements
 import src.models.distil.tokenizer
 import src.models.distil.validation
 import src.models.distil.structures
+import src.models.distil.operating
 
 
 class Steps:
     """
     Steps
+    ref. https://huggingface.co/docs/transformers/tasks/token_classification
     """
 
     def __init__(self, enumerator: dict, archetype: dict, frames: fr.Frames):
@@ -33,9 +35,10 @@ class Steps:
         # A set of values for machine learning model development
         self.__variable = vr.Variable()
         self.__variable = self.__variable._replace(
-            EPOCHS=2, TRAIN_BATCH_SIZE=16, VALID_BATCH_SIZE=16, N_TRAIN=self.__frames.training.shape[0])
+            N_TRAIN=self.__frames.training.shape[0], N_VALID=self.__frames.validating.shape[0],
+            N_TEST=self.__frames.testing.shape[0], EPOCHS=2, N_TRIALS=2)
 
-        # ...
+        # Get tokenizer
         self.__tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase = (
             src.models.distil.tokenizer.Tokenizer()())
 
@@ -55,32 +58,41 @@ class Steps:
             enumerator=self.__enumerator, variable=self.__variable,
             frames=self.__frames, tokenizer=self.__tokenizer)
 
-        # The data
-        training = structures.training()
-        validating = structures.validating()
-
-        return training, validating
+        return structures.training(), structures.validating(), structures.testing()
 
     def exc(self):
         """
+        a. Training
+        b. Evaluating
+        c. Testing
 
         :return:
         """
 
-        training, validating = self.__structures()
+        training, validating, _ = self.__structures()
+        self.__logger.info(self.__variable)
 
         # Modelling
         architecture = src.models.distil.architecture.Architecture(
             variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype)
-        model = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
-        self.__logger.info(type(model))
-        self.__logger.info(model)
-        self.__logger.info(model.__dir__())
+        best = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
+        self.__logger.info(best)
 
-        # Evaluating: vis-à-vis best model
+        # Hence, update the modelling variables
+        self.__variable = self.__variable._replace(
+            LEARNING_RATE=best.hyperparameters.get('learning_rate'), WEIGHT_DECAY=best.hyperparameters.get('weight_decay'),
+            TRAIN_BATCH_SIZE=best.hyperparameters.get('per_device_train_batch_size'))
+        self.__logger.info(self.__variable)
+
+        # Training via the best hyperparameters set
+        operating = src.models.distil.operating.Operating(
+            variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype)
+        model = operating.exc(training=training, validating=validating, tokenizer=self.__tokenizer)
+        self.__logger.info(dir(model))
+
+        # Evaluating: vis-à-vis model & validation data
         # originals, predictions = src.models.distil.validation.Validation(
         #     validating=validating, archetype=self.__archetype).exc(model=model)
 
-        # Evaluation Metrics
         # src.models.distil.measurements.Measurements().exc(
         #     originals=originals, predictions=predictions)

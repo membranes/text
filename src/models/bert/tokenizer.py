@@ -1,7 +1,7 @@
-"""Module tokenizer"""
+"""Module tokenizer.py"""
 import transformers
 
-import src.models.distil.parameters as pr
+import src.models.bert.parameters
 
 
 class Tokenizer:
@@ -11,7 +11,7 @@ class Tokenizer:
         Constructor
         """
 
-        self.__parameters = pr.Parameters()
+        self.__parameters = src.models.bert.parameters.Parameters()
 
     def __call__(self) -> transformers.tokenization_utils_base.PreTrainedTokenizerBase:
         """
@@ -20,6 +20,6 @@ class Tokenizer:
         """
 
         # Tokenizer
-        return transformers.DistilBertTokenizerFast.from_pretrained(
+        return transformers.BertTokenizerFast.from_pretrained(
             pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
             clean_up_tokenization_spaces=True)

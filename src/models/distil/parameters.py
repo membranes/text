@@ -20,17 +20,11 @@ class Parameters(typing.NamedTuple):
     device : str
         The processing unit device type
 
-    path : str
-        The directory of the model's outputs during training
+    MODEL_OUTPUT_DIRECTORY: str
+        A directory for model outputs.  For transformers.TrainingArguments
 
-    n_trials : int
-        The number of trial runs
-
-    n_cpu : int
-        The number of central processing units for computation
-
-    n_gpu : int
-        The number of graphics processing units for computation
+    storage_path : str
+        For ray.train.RunConfig
 
     Notes
     -----
@@ -41,7 +35,5 @@ class Parameters(typing.NamedTuple):
     task: str = 'ner'
     pretrained_model_name: str = 'distilbert/distilbert-base-uncased'
     device: str = 'cuda' if torch.cuda.is_available() else 'cpu'
-    path: str = os.path.join(config.Config().warehouse, 'distil')
-    n_trials: int = 2
-    n_cpu: int = 8
-    n_gpu: int = 1
+    MODEL_OUTPUT_DIRECTORY: str = os.path.join(config.Config().warehouse, 'distil')
+    storage_path: str = os.path.join(config.Config().warehouse, 'distil')

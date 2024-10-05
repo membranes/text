@@ -1,10 +1,12 @@
 """Module interface.py"""
+import logging
+
 import pandas as pd
 
-import src.models.splittings
+import src.elements.frames
 import src.models.bert.steps
 import src.models.distil.steps
-import src.elements.frames
+import src.models.splittings
 
 
 class Interface:
@@ -20,27 +22,28 @@ class Interface:
         :param archetype:
         """
 
-        self.__training, self.__validating, _ = src.models.splittings.Splittings(frame=frame).exc()
-        self.__frames = src.elements.frames.Frames(training=self.__training, validating=self.__validating)
+        self.__training, self.__validating, self.__testing = src.models.splittings.Splittings(frame=frame).exc()
+        self.__frames = src.elements.frames.Frames(
+            training=self.__training, validating=self.__validating, testing=self.__testing)
         self.__enumerator = enumerator
         self.__archetype = archetype
 
-    def exc(self) -> None:
+    def exc(self, architecture: str = 'distil') -> None:
         """
 
         :return:
         """
 
-        # bert
-        # src.models.bert.steps.Steps(
-        #      enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
-
-        # electra
-        # src.models.electra.steps
-
-        # distil
-        src.models.distil.steps.Steps(
-           enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
-
-        # Transfer Learning with BiLSTM, BERT and CRF
-        # https://link.springer.com/article/10.1007/s42979-024-02835-z
+        match architecture:
+            case 'bert':
+                src.models.bert.steps.Steps(
+                    enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
+            case 'electra':
+                logging.info('ELECTRA: Future')
+            case 'distil':
+                src.models.distil.steps.Steps(
+                    enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
+            case 'ensemble':
+                logging.info('BiLSTM, BERT, & CRF: Future\nhttps://link.springer.com/article/10.1007/s42979-024-02835-z')
+            case _:
+                logging.info('Unknown architecture')

@@ -1,15 +1,14 @@
 """Module steps.py"""
-import logging
-
 import transformers
 
 import src.elements.frames as fr
 import src.elements.variable as vr
 import src.models.bert.metrics
 import src.models.bert.modelling
-import src.models.bert.validation
 import src.models.bert.parameters
 import src.models.bert.structures
+import src.models.bert.tokenizer
+import src.models.bert.validation
 
 
 class Steps:
@@ -29,42 +28,52 @@ class Steps:
         # Inputs
         self.__enumerator = enumerator
         self.__archetype = archetype
+        self.__frames = frames
 
         # A set of values for machine learning model development
         self.__variable = vr.Variable()
-        self.__variable = self.__variable._replace(EPOCHS=2)
+        self.__variable = self.__variable._replace(
+            EPOCHS=4, N_TRAIN=self.__frames.training.shape[0], N_TRIALS=8)
 
         # Instances
-        parameters = src.models.bert.parameters.Parameters()
-        self.__structures = src.models.bert.structures.Structures(
-            enumerator=self.__enumerator, variable=self.__variable,
-            frames=frames, tokenizer=parameters.tokenizer)
+        self.__tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase = (
+            src.models.bert.tokenizer.Tokenizer()())
 
-        # Logging
-        logging.basicConfig(level=logging.INFO,
-                            format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
-                            datefmt='%Y-%m-%d %H:%M:%S')
-        self.__logger = logging.getLogger(__name__)
-
-    def exc(self):
+    def __structures(self):
         """
 
         :return:
         """
 
-        training = self.__structures.training()
-        validating = self.__structures.validating()
+        structures = src.models.bert.structures.Structures(
+            enumerator=self.__enumerator, variable=self.__variable,
+            frames=self.__frames, tokenizer=self.__tokenizer)
 
-        self.__logger.info('Modelling: Training Stage')
+        return structures.training(), structures.validating(), structures.testing()
+
+    def exc(self):
+        """
+        a. Training
+        b. Evaluating
+        c. Testing
+
+        :return:
+        """
+
+        training, validating, _ = self.__structures()
+
+        # Hyperparameter search
+        # best = ...
+
+        # Training: In future, via the best hyperparameters set
         model: transformers.PreTrainedModel = src.models.bert.modelling.Modelling(
             variable = self.__variable, enumerator=self.__enumerator,
             dataloader=training.dataloader).exc()
 
-        self.__logger.info('Modelling: Validation Stage')
+        # Evaluating: vis-à-vis model & validation data
         originals, predictions = src.models.bert.validation.Validation(
             model=model, archetype=self.__archetype,
             dataloader=validating.dataloader).exc()
 
-        self.__logger.info('Metrics')
         src.models.bert.metrics.Metrics().exc(
             originals=originals, predictions=predictions)
