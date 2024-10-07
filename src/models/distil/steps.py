@@ -72,7 +72,7 @@ class Steps:
         training, validating, _ = self.__structures()
         self.__logger.info(self.__variable)
 
-        # Modelling
+        # Hyperparameter search
         architecture = src.models.distil.architecture.Architecture(
             variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype)
         best = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
