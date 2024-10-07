@@ -67,7 +67,8 @@ class Architecture:
             args=args, data_collator=intelligence.collator(tokenizer),
             train_dataset=training.dataset, eval_dataset=validating.dataset,
             tokenizer=tokenizer,
-            compute_metrics=metrics.exc)
+            compute_metrics=metrics.exc
+        )
 
         best = trainer.hyperparameter_search(
             hp_space=settings.hp_space,
@@ -88,6 +89,7 @@ class Architecture:
 
             # run configuration: local_dir -> storage_path
             name='default', storage_path=os.path.join(self.__parameters.storage_path, 'ray'),
-            verbose=0, progress_reporter=settings.reporting, log_to_file=True)
+            verbose=0, progress_reporter=settings.reporting, log_to_file=True
+        )
 
         return best
