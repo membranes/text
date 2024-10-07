@@ -22,9 +22,9 @@ class Steps:
     def __init__(self, enumerator: dict, archetype: dict, frames: fr.Frames):
         """
 
-        :param enumerator:
-        :param archetype:
-        :param frames:
+        :param enumerator: The tags and their identification codes.
+        :param archetype: The inverse dict of enumerator.
+        :param frames: An object of dataframes, consisting of the training, validating, and testing data sets.
         """
 
         # Inputs
