@@ -1,40 +1,55 @@
 """Module metrics.py"""
-import logging
-
-import seqeval.metrics as sme
+import evaluate
+import numpy as np
+import transformers.trainer_utils
 
 
 class Metrics:
     """
-    For classification metrics calculations
+
+    https://huggingface.co/spaces/evaluate-metric/seqeval/blob/main/seqeval.py
     """
 
-    def __init__(self):
-        """
-        Constructor
+    def __init__(self, archetype: dict):
         """
 
-        # Logging
-        logging.basicConfig(level=logging.INFO, format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
-                            datefmt='%Y-%m-%d %H:%M:%S')
-        self.__logger = logging.getLogger(__name__)
-
-    def exc(self, originals: list, predictions: list):
+        :param archetype:
         """
 
-        :param originals: The true values
-        :param predictions: The predictions
+        self.__archetype = archetype
+        self.__seqeval = evaluate.load('seqeval')
+
+    def exc(self, bucket: transformers.trainer_utils.PredictionOutput):
+        """
+        logging.info('Determining active labels & predictions')
+        active = np.not_equal(labels, -100)
+
+        true_labels = labels[active]
+        true_predictions = predictions[active]
+
+        :param bucket:
         :return:
         """
 
-        self.__logger.info(originals)
-        self.__logger.info(predictions)
+        predictions = bucket.predictions
+        predictions = np.argmax(predictions, axis=2)
+        labels = bucket.label_ids
 
-        y_true = [originals]
-        y_pred = [predictions]
+        # Or
+        true_predictions = [
+            [self.__archetype[p] for (p, l) in zip(prediction, label) if l != -100]
+            for prediction, label in zip(predictions, labels)
+        ]
+        true_labels = [
+            [self.__archetype[l] for (p, l) in zip(prediction, label) if l != -100]
+            for prediction, label in zip(predictions, labels)
+        ]
 
-        self.__logger.info(
-            sme.classification_report(y_true=y_true, y_pred=y_pred, zero_division=0.0))
+        # Hence
+        results = self.__seqeval.compute(predictions=true_predictions, references=true_labels, zero_division=0.0)
 
-        self.__logger.info(
-            sme.accuracy_score(y_true=y_true, y_pred=y_pred))
+        return {
+            "precision": results['PER']['precision'],
+            "recall": results['PER']['recall'],
+            "f1": results['PER']['f1'],
+        }
