@@ -18,8 +18,8 @@ class Interface:
         """
 
         :param frame: The data set for the training, validating, etc., stages
-        :param enumerator:
-        :param archetype:
+        :param enumerator: The tags and their identification codes.
+        :param archetype: The inverse dict of enumerator.
         """
 
         self.__training, self.__validating, self.__testing = src.models.splittings.Splittings(frame=frame).exc()
