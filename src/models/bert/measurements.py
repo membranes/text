@@ -1,4 +1,4 @@
-
+"""Module measurements.py"""
 import logging
 
 import seqeval.metrics as sme
