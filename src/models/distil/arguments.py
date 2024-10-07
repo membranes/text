@@ -1,12 +1,11 @@
 """Module arguments.py"""
 import os
+
 import transformers
 
-import src.elements.variable as vr
-
-import src.models.distil.parameters
-
 import config
+import src.elements.variable as vr
+import src.models.distil.parameters
 
 
 class Arguments:
