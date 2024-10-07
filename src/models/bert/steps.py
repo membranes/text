@@ -3,8 +3,6 @@ import transformers
 
 import src.elements.frames as fr
 import src.elements.variable as vr
-import src.models.bert.metrics
-import src.models.bert.modelling
 import src.models.bert.parameters
 import src.models.bert.structures
 import src.models.bert.tokenizer
@@ -65,15 +63,3 @@ class Steps:
         # Hyperparameter search
         # best = ...
 
-        # Training: In future, via the best hyperparameters set
-        model: transformers.PreTrainedModel = src.models.bert.modelling.Modelling(
-            variable = self.__variable, enumerator=self.__enumerator,
-            dataloader=training.dataloader).exc()
-
-        # Evaluating: vis-à-vis model & validation data
-        originals, predictions = src.models.bert.validation.Validation(
-            model=model, archetype=self.__archetype,
-            dataloader=validating.dataloader).exc()
-
-        src.models.bert.metrics.Metrics().exc(
-            originals=originals, predictions=predictions)
