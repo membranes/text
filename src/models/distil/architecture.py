@@ -11,7 +11,7 @@ import src.models.distil.intelligence
 import src.models.distil.metrics
 import src.models.distil.parameters as pr
 import src.models.distil.settings
-import src.models.distil.storage
+import src.functions.directories
 
 
 class Architecture:
@@ -35,7 +35,7 @@ class Architecture:
         self.__parameters = pr.Parameters()
 
         # Directory preparation
-        src.models.distil.storage.Storage().exc(path=self.__parameters.storage_path)
+        src.functions.directories.Directories().cleanup(path=self.__parameters.storage_path)
 
     def __call__(self, training: sr.Structures, validating: sr.Structures,
                  tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase) -> transformers.trainer_utils.BestRun:
