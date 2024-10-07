@@ -19,27 +19,25 @@ def main():
 
     # Device Selection: Setting a graphics processing unit as the default device
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    logger.info(msg=device)
+    logger.info('Device: %s', device)
 
     # Ray
     ray.init(dashboard_host='172.17.0.2', dashboard_port=8265)
 
     # The Data
     data: pd.DataFrame = src.data.source.Source().exc()
-    logger.info(data.head())
     
     # Tags
     elements, enumerator, archetype = src.data.tags.Tags(data=data).exc()
-    logger.info(elements)
-    logger.info(enumerator)
-    logger.info(archetype)
+    logger.info('Enumerator: %s', enumerator)
+    logger.info('Archetype: %s', archetype)
     
     # Balance/Imbalance
     data = data.copy().loc[data['category'].isin(values=elements['category'].unique()), :]
 
     # Sentences & Labels
     frame: pd.DataFrame = src.data.demarcations.Demarcations(data=data).exc()
-    logger.info(frame.head())
+    logger.info('Data:\n%s', frame.head())
 
     # Temporary
     frame = frame.loc[:500, :]
