@@ -52,7 +52,7 @@ class Architecture:
         # Arguments
         args = src.models.distil.arguments.Arguments(variable=self.__variable).exc()
 
-        # Collator
+        # Collator, Model, ETC.
         intelligence = src.models.distil.intelligence.Intelligence(enumerator=self.__enumerator, archetype=self.__archetype)
 
         # Metrics
