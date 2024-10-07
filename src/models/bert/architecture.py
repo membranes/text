@@ -6,6 +6,10 @@ import src.elements.structures as sr
 import src.elements.variable as vr
 import src.functions.directories
 import src.models.bert.parameters as pr
+import src.models.bert.arguments
+import src.models.bert.intelligence
+import src.models.bert.metrics
+import src.models.bert.settings
 
 
 class Architecture:
@@ -43,6 +47,14 @@ class Architecture:
         :return:
         """
 
+        # Arguments
+        args = src.models.bert.arguments.Arguments(variable=self.__variable).exc()
 
+        # Collator, Model, ETC.
+        intelligence = src.models.bert.intelligence.Intelligence(enumerator=self.__enumerator, archetype=self.__archetype)
 
+        # Metrics
+        metrics = src.models.bert.metrics.Metrics(archetype=self.__archetype)
 
+        # Settings
+        settings = src.models.bert.settings.Settings(variable=self.__variable)
