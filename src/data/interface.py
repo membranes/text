@@ -26,7 +26,7 @@ class Interface:
         # Configurations
         self.__configurations = config.Config()
 
-    def __tags(self, node: str):
+    def __tags(self, node: str) -> pd.DataFrame:
         """
 
         :param node: In relation to s3:// {bucket.name} / {prefix.root} + {prefix.name} / {key.name}
@@ -59,7 +59,7 @@ class Interface:
 
         return frame.compute()
 
-    def enumerator(self):
+    def enumerator(self) -> dict:
         """
 
         :return:
@@ -70,7 +70,7 @@ class Interface:
 
         return enumerator
 
-    def archetype(self):
+    def archetype(self) -> dict:
         """
 
         :return:
