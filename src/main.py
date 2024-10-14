@@ -39,22 +39,10 @@ def main():
     logger.info(data.head())
     logger.info(enumerator)
     logger.info(archetype)
-    
-    # Tags
-    # elements, enumerator, archetype = src.data.tags.Tags(data=data).exc()
-    # logger.info('Enumerator: %s', enumerator)
-    # logger.info('Archetype: %s', archetype)
-    
-    # Balance/Imbalance
-    # data = data.copy().loc[data['category'].isin(values=elements['category'].unique()), :]
-
-    # Sentences & Labels
-    # frame: pd.DataFrame = src.data.demarcations.Demarcations(data=data).exc()
-    # logger.info('Data:\n%s', frame.head())
 
     # Temporary
-    # frame = frame.loc[:500, :]
-    # src.models.interface.Interface(frame=frame, enumerator=enumerator, archetype=archetype).exc()
+    # data = data.loc[:500, :]
+    # src.models.interface.Interface(data=data, enumerator=enumerator, archetype=archetype).exc()
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
