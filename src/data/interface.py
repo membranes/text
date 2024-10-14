@@ -3,7 +3,6 @@ import dask.dataframe as dfr
 import pandas as pd
 
 import src.elements.s3_parameters as s3p
-import src.functions.objects
 import config
 
 
@@ -21,8 +20,6 @@ class Interface:
 
         self.__s3_parameters = s3_parameters
 
-        self.__objects = src.functions.objects.Objects()
-
         # Endpoint
         self.__endpoint = 's3://' + self.__s3_parameters.internal + '/' + self.__s3_parameters.path_internal_data
 
@@ -30,6 +27,12 @@ class Interface:
         self.__configurations = config.Config()
 
     def __tags(self, node: str):
+        """
+
+        :param node: In relation to s3:// {bucket.name} / {prefix.root} + {prefix.name} / {key.name}
+                     node ≡ {prefix.name} / {key.name}
+        :return:
+        """
 
         path = self.__endpoint + node
 
@@ -57,9 +60,17 @@ class Interface:
         return frame.compute()
 
     def enumerator(self):
+        """
+
+        :return:
+        """
 
         return self.__tags(node=self.__configurations.enumerator_)
 
     def archetype(self):
+        """
+
+        :return:
+        """
 
         return self.__tags(node=self.__configurations.archetype_)
