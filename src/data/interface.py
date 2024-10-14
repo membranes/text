@@ -1,3 +1,4 @@
+"""Module interface.py"""
 import dask.dataframe as dfr
 import pandas as pd
 
@@ -6,11 +7,20 @@ import config
 
 
 class Interface:
+    """
+    Class Interface
+    """
 
     def __init__(self, s3_parameters: s3p.S3Parameters):
+        """
+
+        :param s3_parameters: s3_parameters: The overarching S3 (Simple Storage Service) parameters
+                              settings of this project, e.g., region code name, buckets, etc.
+        """
 
         self.__s3_parameters = s3_parameters
 
+        # Configurations
         self.__configurations = config.Config()
 
     def data(self) -> pd.DataFrame:
