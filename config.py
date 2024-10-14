@@ -17,10 +17,9 @@ class Config:
         self.warehouse = os.path.join(os.getcwd(), 'warehouse')
         self.artefacts_ = os.path.join(self.warehouse, 'artefacts')
 
-        # The prepared data s3:// {bucket.name} / {prefix.name} / {key.name}
+        # The prepared data s3:// {bucket.name} / {prefix.root} + {prefix.name} / {key.name}
         # Herein
-        #   * {prefix.name} / {key.name} -> prepared / data.csv
-        #   * etc.
+        #   * node ≡ {prefix.name} / {key.name}
         self.data_ = 'prepared/data.csv'
         self.enumerator_ = 'prepared/enumerator.json'
         self.archetype_ = 'prepared/archetype.json'
