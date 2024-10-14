@@ -2,8 +2,8 @@
 import dask.dataframe as dfr
 import pandas as pd
 
-import src.elements.s3_parameters as s3p
 import config
+import src.elements.s3_parameters as s3p
 
 
 class Interface:
