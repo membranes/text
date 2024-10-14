@@ -3,6 +3,7 @@ import logging
 import typing
 
 import pandas as pd
+import numpy as np
 
 import config
 
@@ -45,9 +46,6 @@ class Splittings:
         parent.reset_index(drop=True, inplace=True)
         child.reset_index(drop=True, inplace=True)
 
-        self.__logger.info('parent: %s', parent.shape)
-        self.__logger.info('child: %s', child.shape)
-
         return parent, child
 
     def exc(self, data: pd.DataFrame) -> typing.Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
@@ -69,6 +67,10 @@ class Splittings:
             frac = 1 - self.__configurations.aside
             validating, testing = self.__split(data=validating, frac=frac)
         else:
-            testing = None
+            testing = pd.DataFrame()
+
+        self.__logger.info('training: %s', training.shape)
+        self.__logger.info('validating: %s', validating.shape)
+        self.__logger.info('testing: %s', testing.shape if not testing.empty else np.nan)
 
         return training, validating, testing
