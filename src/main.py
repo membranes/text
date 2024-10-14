@@ -31,9 +31,8 @@ def main():
     ray.init(dashboard_host='172.17.0.2', dashboard_port=8265)
 
     # The Data
-    # data: pd.DataFrame = src.data.source.Source().exc()
     interface = src.data.interface.Interface(s3_parameters=s3_parameters)
-    data = interface.data()
+    data: pd.DataFrame = interface.data()
     enumerator = interface.enumerator()
     archetype = interface.archetype()
     logger.info(data.head())
@@ -41,8 +40,8 @@ def main():
     logger.info(archetype)
 
     # Temporary
-    # data = data.loc[:500, :]
-    # src.models.interface.Interface(data=data, enumerator=enumerator, archetype=archetype).exc()
+    data = data.loc[:500, :]
+    src.models.interface.Interface(data=data, enumerator=enumerator, archetype=archetype).exc(architecture='roberta')
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
@@ -66,9 +65,6 @@ if __name__ == '__main__':
     os.environ['RAY_USAGE_STATS_ENABLED']='0'
     
     # Modules
-    import src.data.source
-    import src.data.tags
-    import src.data.demarcations
     import src.data.interface
 
     import src.elements.s3_parameters as s3p
