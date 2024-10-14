@@ -19,6 +19,9 @@ def main():
 
     # Set up
     setup: bool = src.setup.Setup(service=service, s3_parameters=s3_parameters).exc()
+    if not setup:
+        src.functions.cache.Cache().exc()
+        sys.exit('No Executions')
 
     # Device Selection: Setting a graphics processing unit as the default device
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -29,11 +32,13 @@ def main():
 
     # The Data
     # data: pd.DataFrame = src.data.source.Source().exc()
-    if setup:
-        interface = src.data.interface.Interface(s3_parameters=s3_parameters)
-        data = interface.data()
-        logger.info(data.head())
-        data.info()
+    interface = src.data.interface.Interface(s3_parameters=s3_parameters)
+    data = interface.data()
+    enumerator = interface.enumerator()
+    archetype = interface.archetype()
+    logger.info(data.head())
+    logger.info(enumerator)
+    logger.info(archetype)
     
     # Tags
     # elements, enumerator, archetype = src.data.tags.Tags(data=data).exc()
