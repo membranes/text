@@ -42,6 +42,7 @@ class Interface:
             case 'electra':
                 logging.info('ELECTRA: Future')
             case 'roberta':
+                logging.info(self.__frames.training)
                 logging.info('ROBERTA: Future')
             case 'distil':
                 src.models.distil.steps.Steps(
