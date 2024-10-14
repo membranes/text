@@ -35,9 +35,6 @@ def main():
     data: pd.DataFrame = interface.data()
     enumerator = interface.enumerator()
     archetype = interface.archetype()
-    logger.info(data.head())
-    logger.info(enumerator)
-    logger.info(archetype)
 
     # Temporary
     data = data.loc[:500, :]
