@@ -65,7 +65,10 @@ class Interface:
         :return:
         """
 
-        return self.__tags(node=self.__configurations.enumerator_)
+        frame: pd.DataFrame = self.__tags(node=self.__configurations.enumerator_)
+        enumerator: dict = frame.to_dict()[0]
+
+        return enumerator
 
     def archetype(self):
         """
@@ -73,4 +76,7 @@ class Interface:
         :return:
         """
 
-        return self.__tags(node=self.__configurations.archetype_)
+        frame: pd.DataFrame = self.__tags(node=self.__configurations.archetype_)
+        archetype: dict = frame.to_dict()[0]
+
+        return archetype
