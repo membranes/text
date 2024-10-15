@@ -83,6 +83,10 @@ class Steps:
         model = operating.exc(training=training, validating=validating, tokenizer=self.__tokenizer)
         logging.info(dir(model))
 
+        # Evaluating: vis-à-vis model & validation data
+        originals, predictions = src.models.bert.validation.Validation(
+            validating=validating, archetype=self.__archetype).exc(model=model)
+
 
 
 
