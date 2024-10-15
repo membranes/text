@@ -1,103 +1,63 @@
-"""Module validation.py"""
 import logging
 import typing
 
-import sklearn.metrics as sm
-import torch
-import torch.utils.data as tu
 import transformers
-import transformers.modeling_outputs as tm
+import numpy as np
 
-import src.models.bert.parameters
+import src.elements.structures as sr
 
 
 class Validation:
     """
-    For validation stage calculations
+    Validation Class<br>
+    ----------------<br>
+
+    Determines the prediction values w.r.t. (with respect to) a validation data set
     """
 
-    def __init__(self, model: transformers.PreTrainedModel, archetype: dict, dataloader: tu.DataLoader):
+    def __init__(self, validating: sr.Structures, archetype: dict):
         """
 
-        :param model: The trained model
-        :param archetype: The identifiers to label mappings
-        :param dataloader: The validation data DataLoader
+        :param validating:
         """
 
-        # Model, DataLoader, Tag Mappings
-        self.__model = model
+        self.__validating = validating
         self.__archetype = archetype
-        self.__dataloader = dataloader
 
-        # Parameters
-        self.__parameters = src.models.bert.parameters.Parameters()
+        # Logging
+        logging.basicConfig(level=logging.INFO, format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
+                            datefmt='%Y-%m-%d %H-%M-%S')
+        self.__logger = logging.getLogger(__name__)
 
-    def __validating(self) -> typing.Tuple[list, list]:
+    def exc(self, model: transformers.Trainer) -> typing.Tuple[list, list]:
         """
 
+        :param model:
         :return:
+            labels: The codes of the original labels<br>
+            predictions: The predicted codes
         """
 
-        # Preparing for validation stage ...
-        self.__model.eval()
+        # The outputs bucket
+        bucket = model.predict(self.__validating.dataset)
+        __labels: np.ndarray = bucket.label_ids
+        __predictions: np.ndarray = bucket.predictions
+        self.__logger.info('Labels: %s', __labels.shape)
+        self.__logger.info('Predictions: %s', __predictions.shape)
 
-        # For measures & metrics
-        step_ = 0
-        loss_ = 0
-        accuracy_ = 0
-        __originals: list[torch.Tensor] = []
-        __predictions: list[torch.Tensor] = []
+        # Reshaping
+        ref = __labels.reshape(-1)
+        matrix = __predictions.reshape(-1, model.model.config.num_labels)
+        est = np.argmax(matrix, axis=1)
 
-        with torch.no_grad():
+        # Active
+        self.__logger.info('Determining active labels & predictions')
+        active = np.not_equal(ref, -100)
+        labels = ref[active]
+        predictions = est[active]
 
-            # By batch
-            index: int
-            batch: dict
-            for index, batch in enumerate(self.__dataloader):
+        # Code -> tag
+        labels_ = [self.__archetype[code.item()] for code in labels]
+        predictions_ = [self.__archetype[code.item()] for code in predictions]
 
-                step_ += 1
-
-                # Parts of the dataset
-                inputs_: torch.Tensor = batch['input_ids'].to(self.__parameters.device, dtype = torch.long)
-                labels_: torch.Tensor = batch['labels'].to(self.__parameters.device, dtype = torch.long)
-                attention_mask_: torch.Tensor = batch['attention_mask'].to(self.__parameters.device, dtype = torch.long)
-
-                # https://huggingface.co/docs/transformers/main_classes/output#transformers.modeling_outputs.TokenClassifierOutput
-                bucket: tm.TokenClassifierOutput = self.__model(input_ids=inputs_, attention_mask=attention_mask_, labels=labels_)
-
-                # Loss
-                loss = bucket.loss
-                loss_ += loss.item()
-
-                # Targets, active targets.
-                targets = labels_.view(-1)
-                active = labels_.view(-1).ne(-100)
-                original = torch.masked_select(targets, active)
-                __originals.extend(original)
-
-                # Predictions, of active targets
-                logits = bucket.logits.view(-1, self.__model.config.num_labels)
-                maxima = torch.argmax(logits, dim=1)
-                prediction = torch.masked_select(maxima, active)
-                __predictions.extend(prediction)
-
-                # Accuracy
-                # Replace this metric; inappropriate, and probably incorrect arithmetic.
-                score: float = sm.accuracy_score(original.cpu().numpy(), prediction.cpu().numpy())
-                accuracy_ += score
-
-        logging.info(loss_/step_)
-        logging.info(accuracy_/step_)
-
-        originals_ = [self.__archetype[code.item()] for code in __originals]
-        predictions_ = [self.__archetype[code.item()] for code in __predictions]
-
-        return originals_, predictions_
-
-    def exc(self) -> typing.Tuple[list, list]:
-        """
-
-        :return:
-        """
-
-        return self.__validating()
+        return labels_, predictions_
