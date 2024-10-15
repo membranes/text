@@ -13,8 +13,8 @@ import src.models.loadings
 
 class Structures:
     """
-    Collecting<br>
-    ----------<br>
+    Class Structures<br>
+    ----------------<br>
 
     Builds and delivers the data structures per modelling stage
     """
