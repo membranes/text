@@ -1,4 +1,7 @@
 """Module metrics.py"""
+import collections
+import logging
+
 import evaluate
 import numpy as np
 import transformers.trainer_utils
@@ -19,11 +22,41 @@ class Metrics:
         self.__archetype = archetype
         self.__seqeval = evaluate.load('seqeval')
 
-    def __restructure(self):
-        pass
+        # Logging
+        logging.basicConfig(level=logging.INFO,
+                        format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
+                        datefmt='%Y-%m-%d %H:%M:%S')
+        self.__logger = logging.getLogger(__name__)
 
-    def __decompose(self):
-        pass
+    def __restructure(self, key: str, dictionary: dict):
+        """
+
+        :param key:
+        :param dictionary:
+        :return:
+        """
+
+        return {f'{key}_{k}': v for k, v in dictionary.items()}
+
+    def __decompose(self, metrics: dict) -> dict:
+        """
+
+        :param metrics:{<br>
+                    &nbsp; 'class<sub>1</sub>': {'metric<sub>1</sub>': value, 'metric<sub>2</sub>': value, ...},<br>
+                    &nbsp; 'class<sub>2</sub>': {'metric<sub>1</sub>': value, 'metric<sub>2</sub>': value, ...}, ...}
+        :return:
+        """
+
+        # Class level metrics
+        disaggregates = {k: v for k, v in metrics.items() if not k.startswith('overall')}
+
+        # Re-structuring the dictionary of class level metrics
+        metrics_per_class = list(map(lambda x: self.__restructure(x[0], x[1]), disaggregates.items()))
+
+        # Overarching metrics
+        aggregates = {k: v for k, v in metrics.items() if k.startswith('overall')}
+
+        return dict(collections.ChainMap(*metrics_per_class, aggregates))
 
     def exc(self, bucket: transformers.trainer_utils.PredictionOutput):
         """
@@ -49,11 +82,10 @@ class Metrics:
         ]
 
         # Hence
-        results = self.__seqeval.compute(predictions=true_predictions, references=true_labels, zero_division=0.0)
-        print(f'THE RESULTS:\n{results}')
+        metrics = self.__seqeval.compute(predictions=true_predictions, references=true_labels, zero_division=0.0)
+        self.__logger.info('The original metrics structure:\n%s', metrics)
 
-        return {
-            "precision": results['PER']['precision'],
-            "recall": results['PER']['recall'],
-            "f1": results['PER']['f1'],
-        }
+        decomposition = self.__decompose(metrics=metrics)
+        self.__logger.info('The restructured dictionary of metrics:\n%s', metrics)
+
+        return decomposition
