@@ -37,7 +37,7 @@ def main():
     # Temporary
     data = data.loc[:500, :]
     src.models.interface.Interface(
-        data=data, enumerator=interface.enumerator(), archetype=interface.archetype()).exc()
+        data=data, enumerator=interface.enumerator(), archetype=interface.archetype()).exc(architecture='bert')
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
