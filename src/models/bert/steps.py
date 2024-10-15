@@ -80,6 +80,8 @@ class Steps:
         operating = src.models.bert.operating.Operating(
             variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype
         )
+        model = operating.exc(training=training, validating=validating, tokenizer=self.__tokenizer)
+        logging.info(dir(model))
 
 
 
