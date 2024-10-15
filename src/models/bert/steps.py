@@ -71,3 +71,17 @@ class Steps:
         best = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
         logging.info(best)
 
+        # Hence, update the modelling variables
+        self.__variable = self.__variable._replace(
+            LEARNING_RATE=best.hyperparameters.get('learning_rate'), WEIGHT_DECAY=best.hyperparameters.get('weight_decay'))
+        logging.info(self.__variable)
+
+        # Training via the best hyperparameters set
+        operating = src.models.bert.operating.Operating(
+            variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype
+        )
+
+
+
+
+
