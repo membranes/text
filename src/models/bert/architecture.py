@@ -83,7 +83,8 @@ class Architecture:
             scheduler=settings.scheduler(), reuse_actors=True,
 
             # check point configuration
-            # keep_checkpoints_num=8, checkpoint_score_attr='training_iteration',
+            # keep_checkpoints_num=8,
+            checkpoint_score_attr='training_iteration',
 
             # run configuration: local_dir -> storage_path
             name='default', storage_path=os.path.join(self.__parameters.storage_path, 'ray'),
