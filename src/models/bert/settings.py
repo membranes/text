@@ -55,8 +55,7 @@ class Settings:
         https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.PopulationBasedTraining.html
         https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.AsyncHyperBandScheduler.html
 
-        :return:
-        """
+        Search algorithms cannot be used with PopulationBasedTraining schedulers.
 
         return rts.PopulationBasedTraining(
             time_attr='training_iteration',
@@ -68,6 +67,14 @@ class Settings:
             },
             quantile_fraction=0.25,
             resample_probability=0.25)
+
+        :return:
+        """
+
+        return rts.ASHAScheduler(
+            time_attr='training_iteration', metric='eval_loss', mode='min')
+
+
 
     @staticmethod
     def algorithm():
