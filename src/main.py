@@ -33,12 +33,11 @@ def main():
     # The Data
     interface = src.data.interface.Interface(s3_parameters=s3_parameters)
     data: pd.DataFrame = interface.data()
-    enumerator = interface.enumerator()
-    archetype = interface.archetype()
 
     # Temporary
     data = data.loc[:500, :]
-    src.models.interface.Interface(data=data, enumerator=enumerator, archetype=archetype).exc(architecture='roberta')
+    src.models.interface.Interface(
+        data=data, enumerator=interface.enumerator(), archetype=interface.archetype()).exc(architecture='roberta')
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
