@@ -24,9 +24,6 @@ class Metrics:
         logging.info('Determining active labels & predictions')
         active = np.not_equal(labels, -100)
 
-        true_labels = labels[active]
-        true_predictions = predictions[active]
-
         :param bucket:
         :return:
         """
