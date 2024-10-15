@@ -19,6 +19,12 @@ class Metrics:
         self.__archetype = archetype
         self.__seqeval = evaluate.load('seqeval')
 
+    def __restructure(self):
+        pass
+
+    def __decompose(self):
+        pass
+
     def exc(self, bucket: transformers.trainer_utils.PredictionOutput):
         """
         logging.info('Determining active labels & predictions')
@@ -44,6 +50,7 @@ class Metrics:
 
         # Hence
         results = self.__seqeval.compute(predictions=true_predictions, references=true_labels, zero_division=0.0)
+        print(f'THE RESULTS:\n{results}')
 
         return {
             "precision": results['PER']['precision'],
