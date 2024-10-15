@@ -1,8 +1,12 @@
 """Module steps.py"""
+import logging
 import transformers
 
 import src.elements.frames as fr
 import src.elements.variable as vr
+import src.models.bert.architecture
+import src.models.bert.measurements
+import src.models.bert.operating
 import src.models.bert.parameters
 import src.models.bert.structures
 import src.models.bert.tokenizer
@@ -61,5 +65,9 @@ class Steps:
         training, validating, _ = self.__structures()
 
         # Hyperparameter search
-        # best = ...
+        architecture = src.models.bert.architecture.Architecture(
+            variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype
+        )
+        best = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
+        logging.info(best)
 
