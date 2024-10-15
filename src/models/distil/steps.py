@@ -91,8 +91,8 @@ class Steps:
         self.__logger.info(dir(model))
 
         # Evaluating: vis-à-vis model & validation data
-        # originals, predictions = src.models.distil.validation.Validation(
-        #     validating=validating, archetype=self.__archetype).exc(model=model)
+        originals, predictions = src.models.distil.validation.Validation(
+            validating=validating, archetype=self.__archetype).exc(model=model)
 
-        # src.models.distil.measurements.Measurements().exc(
-        #     originals=originals, predictions=predictions)
+        src.models.distil.measurements.Measurements().exc(
+            originals=originals, predictions=predictions)
