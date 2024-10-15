@@ -66,8 +66,7 @@ class Steps:
 
         # Hyperparameter search
         architecture = src.models.bert.architecture.Architecture(
-            variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype
-        )
+            variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype)
         best = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
         logging.info(best)
 
@@ -78,8 +77,7 @@ class Steps:
 
         # Training via the best hyperparameters set
         operating = src.models.bert.operating.Operating(
-            variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype
-        )
+            variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype)
         model = operating.exc(training=training, validating=validating, tokenizer=self.__tokenizer)
         logging.info(dir(model))
 
@@ -87,7 +85,5 @@ class Steps:
         originals, predictions = src.models.bert.validation.Validation(
             validating=validating, archetype=self.__archetype).exc(model=model)
 
-
-
-
-
+        src.models.bert.measurements.Measurements().exc(
+            originals=originals, predictions=predictions)
