@@ -1,11 +1,12 @@
 """Module settings"""
 import logging
+
 import ray
 import ray.tune
 import ray.tune.schedulers as rts
 import ray.tune.search.optuna as opt
 
-import src.elements.variable as vr
+import src.elements.arguments as ag
 
 
 class Settings:
@@ -13,17 +14,14 @@ class Settings:
     Class Settings
     """
 
-    def __init__(self, variable: vr.Variable):
+    def __init__(self, arguments: ag.Arguments):
         """
 
-        :param variable: A suite of values for machine learning
+        :param arguments: A suite of values for machine learning
                          model development
         """
 
-        self.__variable = variable
-
-        # Re-visit
-        self.__perturbation_interval = 2
+        self.__arguments = arguments
 
         # Space
         self.__space = {'learning_rate': ray.tune.uniform(lower=0.000016, upper=0.000020),
@@ -50,7 +48,8 @@ class Settings:
 
         return self.__space
 
-    def scheduler(self):
+    @staticmethod
+    def scheduler():
         """
         https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.PopulationBasedTraining.html
         https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.AsyncHyperBandScheduler.html
@@ -60,13 +59,13 @@ class Settings:
         return rts.PopulationBasedTraining(
             time_attr='training_iteration',
             metric='eval_loss', mode='min',
-            perturbation_interval=self.__perturbation_interval,
+            perturbation_interval=self.__arguments.perturbation_interval,
             hyperparam_mutations={
-                'learning_rate': ray.tune.uniform(lower=0.000016, upper=0.000020),
-                'weight_decay': ray.tune.uniform(lower=0.0, upper=0.00001)
+                'learning_rate': ray.tune.uniform(lower=0.001, upper=0.1),
+                'weight_decay': ray.tune.uniform(lower=0.01, upper=0.1)
             },
-            quantile_fraction=0.25,
-            resample_probability=0.25)
+            quantile_fraction=self.__arguments.quantile_fraction,
+            resample_probability=self.__arguments.resample_probability)
 
         :return:
         """
