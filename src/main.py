@@ -17,33 +17,27 @@ def main():
 
     logger: logging.Logger = logging.getLogger(__name__)
 
+    # Set up
+    setup: bool = src.setup.Setup(service=service, s3_parameters=s3_parameters).exc()
+    if not setup:
+        src.functions.cache.Cache().exc()
+        sys.exit('No Executions')
+
     # Device Selection: Setting a graphics processing unit as the default device
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    logger.info(msg=device)
+    logger.info('Device: %s', device)
 
     # Ray
     ray.init(dashboard_host='172.17.0.2', dashboard_port=8265)
 
     # The Data
-    data: pd.DataFrame = src.data.source.Source().exc()
-    logger.info(data.head())
-    
-    # Tags
-    elements, enumerator, archetype = src.data.tags.Tags(data=data).exc()
-    logger.info(elements)
-    logger.info(enumerator)
-    logger.info(archetype)
-    
-    # Balance/Imbalance
-    data = data.copy().loc[data['category'].isin(values=elements['category'].unique()), :]
-
-    # Sentences & Labels
-    frame: pd.DataFrame = src.data.demarcations.Demarcations(data=data).exc()
-    logger.info(frame.head())
+    interface = src.data.interface.Interface(s3_parameters=s3_parameters)
+    data: pd.DataFrame = interface.data()
 
     # Temporary
-    frame = frame.loc[:500, :]
-    src.models.interface.Interface(frame=frame, enumerator=enumerator, archetype=archetype).exc()
+    data = data.loc[:500, :]
+    src.models.interface.Interface(
+        data=data, enumerator=interface.enumerator(), archetype=interface.archetype()).exc(architecture='distil')
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
@@ -67,10 +61,21 @@ if __name__ == '__main__':
     os.environ['RAY_USAGE_STATS_ENABLED']='0'
     
     # Modules
-    import src.data.source
-    import src.data.tags
-    import src.data.demarcations
+    import src.data.interface
+
+    import src.elements.s3_parameters as s3p
+    import src.elements.service as sr
+
     import src.functions.cache
+    import src.functions.service
+
     import src.models.interface
+    import src.s3.s3_parameters
+    import src.setup
+
+
+    # S3 S3Parameters, Service Instance
+    s3_parameters: s3p.S3Parameters = src.s3.s3_parameters.S3Parameters().exc()
+    service: sr.Service = src.functions.service.Service(region_name=s3_parameters.region_name).exc()
 
     main()

@@ -44,7 +44,7 @@ class Intelligence:
         :return:
         """
 
-        config = transformers.DistilBertConfig(dropout=0.2, activation='gelu').from_pretrained(
+        config = transformers.DistilBertConfig(dropout=0.1, activation='gelu').from_pretrained(
             pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
             **{'num_labels': len(self.__enumerator)})
 

@@ -1,10 +1,12 @@
 """Module steps.py"""
+import logging
 import transformers
 
 import src.elements.frames as fr
 import src.elements.variable as vr
-import src.models.bert.metrics
-import src.models.bert.modelling
+import src.models.bert.architecture
+import src.models.bert.measurements
+import src.models.bert.operating
 import src.models.bert.parameters
 import src.models.bert.structures
 import src.models.bert.tokenizer
@@ -33,7 +35,7 @@ class Steps:
         # A set of values for machine learning model development
         self.__variable = vr.Variable()
         self.__variable = self.__variable._replace(
-            EPOCHS=4, N_TRAIN=self.__frames.training.shape[0], N_TRIALS=8)
+            EPOCHS=4, N_TRAIN=self.__frames.training.shape[0], N_TRIALS=5)
 
         # Instances
         self.__tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase = (
@@ -63,17 +65,25 @@ class Steps:
         training, validating, _ = self.__structures()
 
         # Hyperparameter search
-        # best = ...
+        architecture = src.models.bert.architecture.Architecture(
+            variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype)
+        best = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
+        logging.info(best)
 
-        # Training: In future, via the best hyperparameters set
-        model: transformers.PreTrainedModel = src.models.bert.modelling.Modelling(
-            variable = self.__variable, enumerator=self.__enumerator,
-            dataloader=training.dataloader).exc()
+        # Hence, update the modelling variables
+        self.__variable = self.__variable._replace(
+            LEARNING_RATE=best.hyperparameters.get('learning_rate'), WEIGHT_DECAY=best.hyperparameters.get('weight_decay'))
+        logging.info(self.__variable)
+
+        # Training via the best hyperparameters set
+        operating = src.models.bert.operating.Operating(
+            variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype)
+        model = operating.exc(training=training, validating=validating, tokenizer=self.__tokenizer)
+        logging.info(dir(model))
 
         # Evaluating: vis-à-vis model & validation data
         originals, predictions = src.models.bert.validation.Validation(
-            model=model, archetype=self.__archetype,
-            dataloader=validating.dataloader).exc()
+            validating=validating, archetype=self.__archetype).exc(model=model)
 
-        src.models.bert.metrics.Metrics().exc(
+        src.models.bert.measurements.Measurements().exc(
             originals=originals, predictions=predictions)

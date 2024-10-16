@@ -14,15 +14,15 @@ class Interface:
     An interface to each model.
     """
 
-    def __init__(self, frame: pd.DataFrame, enumerator: dict, archetype: dict):
+    def __init__(self, data: pd.DataFrame, enumerator: dict, archetype: dict):
         """
 
-        :param frame: The data set for the training, validating, etc., stages
-        :param enumerator:
-        :param archetype:
+        :param data: The data set for the training, validating, etc., stages
+        :param enumerator: The tags and their identification codes.
+        :param archetype: The inverse dict of enumerator.
         """
 
-        self.__training, self.__validating, self.__testing = src.models.splittings.Splittings(frame=frame).exc()
+        self.__training, self.__validating, self.__testing = src.models.splittings.Splittings().exc(data=data)
         self.__frames = src.elements.frames.Frames(
             training=self.__training, validating=self.__validating, testing=self.__testing)
         self.__enumerator = enumerator
@@ -31,6 +31,7 @@ class Interface:
     def exc(self, architecture: str = 'distil') -> None:
         """
 
+        :param architecture:
         :return:
         """
 
@@ -40,6 +41,9 @@ class Interface:
                     enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
             case 'electra':
                 logging.info('ELECTRA: Future')
+            case 'roberta':
+                logging.info(self.__frames.training)
+                logging.info('ROBERTA: Future')
             case 'distil':
                 src.models.distil.steps.Steps(
                     enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()

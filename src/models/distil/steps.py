@@ -22,9 +22,9 @@ class Steps:
     def __init__(self, enumerator: dict, archetype: dict, frames: fr.Frames):
         """
 
-        :param enumerator:
-        :param archetype:
-        :param frames:
+        :param enumerator: The tags and their identification codes.
+        :param archetype: The inverse dict of enumerator.
+        :param frames: An object of dataframes, consisting of the training, validating, and testing data sets.
         """
 
         # Inputs
@@ -72,7 +72,7 @@ class Steps:
         training, validating, _ = self.__structures()
         self.__logger.info(self.__variable)
 
-        # Modelling
+        # Hyperparameter search
         architecture = src.models.distil.architecture.Architecture(
             variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype)
         best = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
@@ -91,8 +91,8 @@ class Steps:
         self.__logger.info(dir(model))
 
         # Evaluating: vis-à-vis model & validation data
-        # originals, predictions = src.models.distil.validation.Validation(
-        #     validating=validating, archetype=self.__archetype).exc(model=model)
+        originals, predictions = src.models.distil.validation.Validation(
+            validating=validating, archetype=self.__archetype).exc(model=model)
 
-        # src.models.distil.measurements.Measurements().exc(
-        #     originals=originals, predictions=predictions)
+        src.models.distil.measurements.Measurements().exc(
+            originals=originals, predictions=predictions)

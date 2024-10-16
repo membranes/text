@@ -11,7 +11,7 @@ import src.models.distil.intelligence
 import src.models.distil.metrics
 import src.models.distil.parameters as pr
 import src.models.distil.settings
-import src.models.distil.storage
+import src.functions.directories
 
 
 class Architecture:
@@ -35,7 +35,7 @@ class Architecture:
         self.__parameters = pr.Parameters()
 
         # Directory preparation
-        src.models.distil.storage.Storage().exc(path=self.__parameters.storage_path)
+        src.functions.directories.Directories().cleanup(path=self.__parameters.storage_path)
 
     def __call__(self, training: sr.Structures, validating: sr.Structures,
                  tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase) -> transformers.trainer_utils.BestRun:
@@ -52,7 +52,7 @@ class Architecture:
         # Arguments
         args = src.models.distil.arguments.Arguments(variable=self.__variable).exc()
 
-        # Collator
+        # Collator, Model, ETC.
         intelligence = src.models.distil.intelligence.Intelligence(enumerator=self.__enumerator, archetype=self.__archetype)
 
         # Metrics
@@ -67,7 +67,8 @@ class Architecture:
             args=args, data_collator=intelligence.collator(tokenizer),
             train_dataset=training.dataset, eval_dataset=validating.dataset,
             tokenizer=tokenizer,
-            compute_metrics=metrics.exc)
+            compute_metrics=metrics.exc
+        )
 
         best = trainer.hyperparameter_search(
             hp_space=settings.hp_space,
@@ -88,6 +89,7 @@ class Architecture:
 
             # run configuration: local_dir -> storage_path
             name='default', storage_path=os.path.join(self.__parameters.storage_path, 'ray'),
-            verbose=0, progress_reporter=settings.reporting, log_to_file=True)
+            verbose=0, progress_reporter=settings.reporting, log_to_file=True
+        )
 
         return best
