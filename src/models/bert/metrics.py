@@ -1,5 +1,6 @@
 """Module metrics.py"""
 import collections
+import typing
 import logging
 
 import evaluate
@@ -28,7 +29,27 @@ class Metrics:
                         datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
 
-    def __restructure(self, key: str, dictionary: dict):
+    def __active(self, predictions: np.ndarray, labels: np.ndarray) -> typing.Tuple[list[list], list[list]]:
+        """
+
+        :param predictions:
+        :param labels:
+        :return:
+        """
+
+        true_predictions = [
+            [self.__archetype[p] for (p, l) in zip(prediction, label) if l != -100]
+            for prediction, label in zip(predictions, labels)
+        ]
+        true_labels = [
+            [self.__archetype[l] for (p, l) in zip(prediction, label) if l != -100]
+            for prediction, label in zip(predictions, labels)
+        ]
+
+        return true_predictions, true_labels
+
+    @staticmethod
+    def __restructure(key: str, dictionary: dict):
         """
 
         :param key:
@@ -71,15 +92,8 @@ class Metrics:
         predictions = np.argmax(predictions, axis=2)
         labels = bucket.label_ids
 
-        # Or
-        true_predictions = [
-            [self.__archetype[p] for (p, l) in zip(prediction, label) if l != -100]
-            for prediction, label in zip(predictions, labels)
-        ]
-        true_labels = [
-            [self.__archetype[l] for (p, l) in zip(prediction, label) if l != -100]
-            for prediction, label in zip(predictions, labels)
-        ]
+        # Active
+        true_predictions, true_labels = self.__active(predictions=predictions, labels=labels)
 
         # Hence
         metrics = self.__seqeval.compute(predictions=true_predictions, references=true_labels, zero_division=0.0)
