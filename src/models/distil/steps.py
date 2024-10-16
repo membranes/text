@@ -62,9 +62,6 @@ class Steps:
 
     def exc(self):
         """
-        a. Training
-        b. Evaluating
-        c. Testing
 
         :return:
         """
