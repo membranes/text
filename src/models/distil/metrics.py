@@ -1,6 +1,10 @@
 """Module metrics.py"""
-import numpy as np
+import collections
+import logging
+import typing
+
 import evaluate
+import numpy as np
 import transformers.trainer_utils
 
 
@@ -19,13 +23,64 @@ class Metrics:
         self.__archetype = archetype
         self.__seqeval = evaluate.load('seqeval')
 
+        # Logging
+        logging.basicConfig(level=logging.INFO,
+                            format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
+                            datefmt='%Y-%m-%d %H:%M:%S')
+        self.__logger = logging.getLogger(__name__)
+
+    def __active(self, predictions: np.ndarray, labels: np.ndarray) -> typing.Tuple[list[list], list[list]]:
+        """
+
+        :param predictions:
+        :param labels:
+        :return:
+        """
+
+        _predictions = [
+            [self.__archetype[p] for (p, l) in zip(prediction, label) if l != -100]
+            for prediction, label in zip(predictions, labels)
+        ]
+        _labels = [
+            [self.__archetype[l] for (p, l) in zip(prediction, label) if l != -100]
+            for prediction, label in zip(predictions, labels)
+        ]
+
+        return _predictions, _labels
+
+    @staticmethod
+    def __restructure(key: str, dictionary: dict):
+        """
+
+        :param key:
+        :param dictionary:
+        :return:
+        """
+
+        return {f'{key}_{k}': v for k, v in dictionary.items()}
+
+    def __decompose(self, metrics: dict) -> dict:
+        """
+
+        :param metrics:{<br>
+                    &nbsp; 'class<sub>1</sub>': {'metric<sub>1</sub>': value, 'metric<sub>2</sub>': value, ...},<br>
+                    &nbsp; 'class<sub>2</sub>': {'metric<sub>1</sub>': value, 'metric<sub>2</sub>': value, ...}, ...}
+        :return:
+        """
+
+        # Class level metrics
+        disaggregates = {k: v for k, v in metrics.items() if not k.startswith('overall')}
+
+        # Re-structuring the dictionary of class level metrics
+        metrics_per_class = list(map(lambda x: self.__restructure(x[0], x[1]), disaggregates.items()))
+
+        # Overarching metrics
+        aggregates = {k: v for k, v in metrics.items() if k.startswith('overall')}
+
+        return dict(collections.ChainMap(*metrics_per_class, aggregates))
+
     def exc(self, bucket: transformers.trainer_utils.PredictionOutput):
         """
-        logging.info('Determining active labels & predictions')
-        active = np.not_equal(labels, -100)
-
-        true_labels = labels[active]
-        true_predictions = predictions[active]
 
         :param bucket:
         :return:
@@ -35,21 +90,14 @@ class Metrics:
         predictions = np.argmax(predictions, axis=2)
         labels = bucket.label_ids
 
-        # Or
-        true_predictions = [
-            [self.__archetype[p] for (p, l) in zip(prediction, label) if l != -100]
-            for prediction, label in zip(predictions, labels)
-        ]
-        true_labels = [
-            [self.__archetype[l] for (p, l) in zip(prediction, label) if l != -100]
-            for prediction, label in zip(predictions, labels)
-        ]
+        # Active
+        _predictions, _labels = self.__active(predictions=predictions, labels=labels)
 
         # Hence
-        results = self.__seqeval.compute(predictions=true_predictions, references=true_labels, zero_division=0.0)
+        metrics = self.__seqeval.compute(predictions=_predictions, references=_labels, zero_division=0.0)
+        self.__logger.info('The original metrics structure:\n%s', metrics)
 
-        return {
-            "precision": results["overall_precision"],
-            "recall": results["overall_recall"],
-            "f1": results["overall_f1"],
-        }
+        decomposition = self.__decompose(metrics=metrics)
+        self.__logger.info('The restructured dictionary of metrics:\n%s', metrics)
+
+        return decomposition
