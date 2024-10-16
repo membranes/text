@@ -30,6 +30,7 @@ class Arguments(typing.NamedTuple):
     task : <b>str</b> The type of task the model is being trained for<br>
     pretrained_model_name : <b>str</b> The name of the pre-trained model that will be fine-tuned<br>
     name : <b>str</b> A name that identifies the underlying pre-trained model
+    model_output_directory: <b>str</b>
     """
 
     MAX_LENGTH: int
@@ -52,3 +53,4 @@ class Arguments(typing.NamedTuple):
     task: str
     pretrained_model_name: str
     name: str
+    model_output_directory: str
