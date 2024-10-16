@@ -8,7 +8,6 @@ import src.elements.structures as sr
 import src.functions.directories
 import src.models.args
 import src.models.bert.intelligence
-import src.models.bert.parameters as pr
 import src.models.bert.settings
 import src.models.metrics
 
@@ -29,9 +28,6 @@ class Architecture:
         self.__arguments = arguments
         self.__enumerator = enumerator
         self.__archetype = archetype
-
-        # Parameters
-        self.__parameters = pr.Parameters()
 
         # Directory preparation
         src.functions.directories.Directories().cleanup(path=self.__arguments.model_output_directory)
