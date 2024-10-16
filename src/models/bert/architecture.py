@@ -1,15 +1,16 @@
 """Module architecture.py"""
 import os
+
 import transformers
 
+import src.elements.arguments as ag
 import src.elements.structures as sr
-import src.elements.variable as vr
 import src.functions.directories
-import src.models.bert.parameters as pr
-import src.models.bert.arguments
+import src.models.args
 import src.models.bert.intelligence
-import src.models.bert.metrics
+import src.models.bert.parameters as pr
 import src.models.bert.settings
+import src.models.metrics
 
 
 class Architecture:
@@ -17,15 +18,15 @@ class Architecture:
     Architecture
     """
 
-    def __init__(self, variable: vr.Variable, enumerator: dict, archetype: dict):
+    def __init__(self, arguments: ag.Arguments, enumerator: dict, archetype: dict):
         """
 
-        :param variable:
+        :param arguments:
         :param enumerator:
         :param archetype:
         """
 
-        self.__variable = variable
+        self.__arguments = arguments
         self.__enumerator = enumerator
         self.__archetype = archetype
 
@@ -33,7 +34,7 @@ class Architecture:
         self.__parameters = pr.Parameters()
 
         # Directory preparation
-        src.functions.directories.Directories().cleanup(path=self.__parameters.storage_path)
+        src.functions.directories.Directories().cleanup(path=self.__arguments.model_output_directory)
 
     def __call__(self, training: sr.Structures, validating: sr.Structures,
                  tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase) -> transformers.trainer_utils.BestRun:
@@ -48,16 +49,17 @@ class Architecture:
         """
 
         # Arguments
-        args = src.models.bert.arguments.Arguments(variable=self.__variable).exc()
+        args = src.models.args.Args(arguments=self.__arguments).exc()
 
         # Collator, Model, ETC.
-        intelligence = src.models.bert.intelligence.Intelligence(enumerator=self.__enumerator, archetype=self.__archetype)
+        intelligence = src.models.bert.intelligence.Intelligence(
+            enumerator=self.__enumerator, archetype=self.__archetype, arguments=self.__arguments)
 
         # Metrics
-        metrics = src.models.bert.metrics.Metrics(archetype=self.__archetype)
+        metrics = src.models.metrics.Metrics(archetype=self.__archetype)
 
         # Settings
-        settings = src.models.bert.settings.Settings(variable=self.__variable)
+        settings = src.models.bert.settings.Settings(arguments=self.__arguments)
 
         # Hence
         trainer = transformers.Trainer(
@@ -71,12 +73,12 @@ class Architecture:
         best = trainer.hyperparameter_search(
             hp_space=settings.hp_space,
             compute_objective=settings.compute_objective,
-            n_trials=self.__variable.N_TRIALS,
+            n_trials=self.__arguments.N_TRIALS,
             direction='minimize',
             backend='ray',
 
             # scaling configuration
-            resources_per_trial={'cpu': self.__variable.N_CPU, 'gpu': self.__variable.N_GPU},
+            resources_per_trial={'cpu': self.__arguments.N_CPU, 'gpu': self.__arguments.N_GPU},
 
             # tune configuration
             search_alg=settings.algorithm(),
@@ -87,7 +89,7 @@ class Architecture:
             checkpoint_score_attr='training_iteration',
 
             # run configuration: local_dir -> storage_path
-            name='default', storage_path=os.path.join(self.__parameters.storage_path, 'ray'),
+            name='default', storage_path=os.path.join(self.__arguments.model_output_directory, 'ray'),
             verbose=0, progress_reporter=settings.reporting, log_to_file=True
         )
 
