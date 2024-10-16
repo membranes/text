@@ -37,16 +37,16 @@ class Metrics:
         :return:
         """
 
-        true_predictions = [
+        _predictions = [
             [self.__archetype[p] for (p, l) in zip(prediction, label) if l != -100]
             for prediction, label in zip(predictions, labels)
         ]
-        true_labels = [
+        _labels = [
             [self.__archetype[l] for (p, l) in zip(prediction, label) if l != -100]
             for prediction, label in zip(predictions, labels)
         ]
 
-        return true_predictions, true_labels
+        return _predictions, _labels
 
     @staticmethod
     def __restructure(key: str, dictionary: dict):
@@ -81,8 +81,6 @@ class Metrics:
 
     def exc(self, bucket: transformers.trainer_utils.PredictionOutput):
         """
-        logging.info('Determining active labels & predictions')
-        active = np.not_equal(labels, -100)
 
         :param bucket:
         :return:
@@ -93,10 +91,10 @@ class Metrics:
         labels = bucket.label_ids
 
         # Active
-        true_predictions, true_labels = self.__active(predictions=predictions, labels=labels)
+        _predictions, _labels = self.__active(predictions=predictions, labels=labels)
 
         # Hence
-        metrics = self.__seqeval.compute(predictions=true_predictions, references=true_labels, zero_division=0.0)
+        metrics = self.__seqeval.compute(predictions=_predictions, references=_labels, zero_division=0.0)
         self.__logger.info('The original metrics structure:\n%s', metrics)
 
         decomposition = self.__decompose(metrics=metrics)
