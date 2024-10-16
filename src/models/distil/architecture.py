@@ -49,7 +49,8 @@ class Architecture:
         args = src.models.args.Args(arguments=self.__arguments).exc()
 
         # Collator, Model, ETC.
-        intelligence = src.models.distil.intelligence.Intelligence(enumerator=self.__enumerator, archetype=self.__archetype)
+        intelligence = src.models.distil.intelligence.Intelligence(
+            enumerator=self.__enumerator, archetype=self.__archetype, arguments=self.__arguments)
 
         # Metrics
         metrics = src.models.metrics.Metrics(archetype=self.__archetype)
