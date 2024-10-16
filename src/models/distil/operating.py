@@ -39,7 +39,7 @@ class Operating:
 
         # Intelligence
         intelligence = src.models.distil.intelligence.Intelligence(
-            enumerator=self.__enumerator, archetype=self.__archetype)
+            enumerator=self.__enumerator, archetype=self.__archetype, arguments=self.__arguments)
 
         # Metrics
         metrics = src.models.metrics.Metrics(archetype=self.__archetype)
