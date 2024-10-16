@@ -1,7 +1,7 @@
 """Module metrics.py"""
 import collections
-import typing
 import logging
+import typing
 
 import evaluate
 import numpy as np
