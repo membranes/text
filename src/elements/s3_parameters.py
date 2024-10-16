@@ -22,6 +22,9 @@ class S3Parameters(typing.NamedTuple):
     path_internal_data : str
       The bucket path of the data.
 
+    path_internal_configurations : str
+        The bucket path, prefix root, of the configurations files.
+
     path_internal_artefacts : str
       The bucket path of the model development artefacts.
 
@@ -34,5 +37,6 @@ class S3Parameters(typing.NamedTuple):
     location_constraint: str
     internal: str
     path_internal_data: str
+    path_internal_configurations: str
     path_internal_artefacts: str
     external: str
