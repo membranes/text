@@ -40,7 +40,7 @@ class Steps:
 
         # Get tokenizer
         self.__tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase = (
-            src.models.distil.tokenizer.Tokenizer()())
+            src.models.distil.tokenizer.Tokenizer(arguments=self.__arguments)())
 
         # Logging
         logging.basicConfig(level=logging.INFO,
