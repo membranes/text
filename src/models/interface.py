@@ -7,6 +7,7 @@ import src.elements.frames
 import src.models.bert.steps
 import src.models.distil.steps
 import src.models.splittings
+import src.elements.arguments as ag
 
 
 class Interface:
@@ -28,10 +29,11 @@ class Interface:
         self.__enumerator = enumerator
         self.__archetype = archetype
 
-    def exc(self, architecture: str = 'distil') -> None:
+    def exc(self, architecture: str, arguments: ag.Arguments) -> None:
         """
 
         :param architecture:
+        :param arguments:
         :return:
         """
 
@@ -46,7 +48,7 @@ class Interface:
                 logging.info('ROBERTA: Future')
             case 'distil':
                 src.models.distil.steps.Steps(
-                    enumerator=self.__enumerator, archetype=self.__archetype, frames=self.__frames).exc()
+                    enumerator=self.__enumerator, archetype=self.__archetype, arguments=arguments, frames=self.__frames).exc()
             case 'ensemble':
                 logging.info('BiLSTM, BERT, & CRF: Future\nhttps://link.springer.com/article/10.1007/s42979-024-02835-z')
             case _:
