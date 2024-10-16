@@ -7,7 +7,7 @@ import transformers
 import src.elements.arguments as ag
 import src.elements.structures as sr
 import src.functions.directories
-import src.models.distil.args
+import src.models.args
 import src.models.distil.intelligence
 import src.models.distil.metrics
 import src.models.distil.settings
@@ -46,7 +46,7 @@ class Architecture:
         """
 
         # Arguments
-        args = src.models.distil.args.Args(arguments=self.__arguments).exc()
+        args = src.models.args.Args(arguments=self.__arguments).exc()
 
         # Collator, Model, ETC.
         intelligence = src.models.distil.intelligence.Intelligence(enumerator=self.__enumerator, archetype=self.__archetype)
