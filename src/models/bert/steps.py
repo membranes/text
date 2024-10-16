@@ -5,7 +5,7 @@ import transformers
 import src.elements.frames as fr
 import src.elements.variable as vr
 import src.models.bert.architecture
-import src.models.bert.measurements
+import src.models.measurements
 import src.models.bert.operating
 import src.models.bert.parameters
 import src.models.bert.structures
@@ -85,5 +85,5 @@ class Steps:
         originals, predictions = src.models.bert.validation.Validation(
             validating=validating, archetype=self.__archetype).exc(model=model)
 
-        src.models.bert.measurements.Measurements().exc(
+        src.models.measurements.Measurements().exc(
             originals=originals, predictions=predictions)
