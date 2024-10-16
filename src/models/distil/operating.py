@@ -4,7 +4,7 @@ import src.elements.arguments as ag
 import src.elements.structures as sr
 import src.models.args
 import src.models.distil.intelligence
-import src.models.distil.metrics
+import src.models.metrics
 
 
 class Operating:
@@ -42,7 +42,7 @@ class Operating:
             enumerator=self.__enumerator, archetype=self.__archetype)
 
         # Metrics
-        metrics = src.models.distil.metrics.Metrics(archetype=self.__archetype)
+        metrics = src.models.metrics.Metrics(archetype=self.__archetype)
 
         # Trainer
         trainer = transformers.Trainer(
