@@ -4,7 +4,7 @@ import src.elements.structures as sr
 import src.elements.variable as vr
 import src.models.bert.arguments
 import src.models.bert.intelligence
-import src.models.bert.metrics
+import src.models.metrics
 
 
 class Operating:
@@ -40,7 +40,7 @@ class Operating:
         )
 
         # Metrics
-        metrics = src.models.bert.metrics.Metrics(archetype=self.__archetype)
+        metrics = src.models.metrics.Metrics(archetype=self.__archetype)
 
         # Trainer
         trainer = transformers.Trainer(
