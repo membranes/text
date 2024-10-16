@@ -6,6 +6,9 @@ import sklearn.metrics as sm
 
 
 class Measurements:
+    """
+    For classification metrics calculations
+    """
 
     def __init__(self):
         """
@@ -20,8 +23,8 @@ class Measurements:
     def __sci(self, originals: list, predictions: list):
         """
 
-        :param originals:
-        :param predictions:
+        :param originals: The true values
+        :param predictions: The predictions
         :return:
         """
 
@@ -59,4 +62,3 @@ class Measurements:
 
         self.__sci(originals=originals, predictions=predictions)
         self.__seq(originals=originals, predictions=predictions)
-
