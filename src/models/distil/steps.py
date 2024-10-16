@@ -38,10 +38,6 @@ class Steps:
         # A set of values for machine learning model development
         self.__arguments = self.__arguments._replace(
             N_TRAIN=self.__frames.training.shape[0], N_VALID=self.__frames.validating.shape[0], N_TEST=self.__frames.testing.shape[0])
-        self.__variable = vr.Variable()
-        self.__variable = self.__variable._replace(
-            N_TRAIN=self.__frames.training.shape[0], N_VALID=self.__frames.validating.shape[0],
-            N_TEST=self.__frames.testing.shape[0], EPOCHS=2, N_TRIALS=2)
 
         # Get tokenizer
         self.__tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase = (
@@ -60,7 +56,7 @@ class Steps:
         """
 
         structures = src.models.distil.structures.Structures(
-            enumerator=self.__enumerator, variable=self.__variable,
+            enumerator=self.__enumerator, arguments=self.__arguments,
             frames=self.__frames, tokenizer=self.__tokenizer)
 
         return structures.training(), structures.validating(), structures.testing()
@@ -75,7 +71,7 @@ class Steps:
         """
 
         training, validating, _ = self.__structures()
-        self.__logger.info(self.__variable)
+        self.__logger.info(self.__arguments)
 
         # Hyperparameter search
         architecture = src.models.distil.architecture.Architecture(
@@ -84,14 +80,14 @@ class Steps:
         self.__logger.info(best)
 
         # Hence, update the modelling variables
-        self.__variable = self.__variable._replace(
+        self.__arguments = self.__arguments._replace(
             LEARNING_RATE=best.hyperparameters.get('learning_rate'), WEIGHT_DECAY=best.hyperparameters.get('weight_decay'),
             TRAIN_BATCH_SIZE=best.hyperparameters.get('per_device_train_batch_size'))
-        self.__logger.info(self.__variable)
+        self.__logger.info(self.__arguments)
 
         # Training via the best hyperparameters set
         operating = src.models.distil.operating.Operating(
-            variable=self.__variable, enumerator=self.__enumerator, archetype=self.__archetype)
+            arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
         model = operating.exc(training=training, validating=validating, tokenizer=self.__tokenizer)
         self.__logger.info(dir(model))
 
