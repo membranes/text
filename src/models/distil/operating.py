@@ -1,8 +1,8 @@
 import transformers.trainer_utils
 
+import src.elements.arguments as ag
 import src.elements.structures as sr
-import src.elements.variable as vr
-import src.models.distil.arguments
+import src.models.args
 import src.models.distil.intelligence
 import src.models.distil.metrics
 
@@ -12,15 +12,15 @@ class Operating:
     Class Operating
     """
 
-    def __init__(self, variable: vr.Variable, enumerator: dict, archetype: dict):
+    def __init__(self, arguments: ag.Arguments, enumerator: dict, archetype: dict):
         """
 
-        :param variable:
+        :param arguments:
         :param enumerator:
         :param archetype:
         """
 
-        self.__variable = variable
+        self.__arguments = arguments
         self.__enumerator = enumerator
         self.__archetype = archetype
 
@@ -35,7 +35,7 @@ class Operating:
         """
 
         # Arguments
-        args = src.models.distil.arguments.Arguments(variable=self.__variable).exc()
+        args = src.models.args.Args(arguments=self.__arguments).exc()
 
         # Intelligence
         intelligence = src.models.distil.intelligence.Intelligence(
