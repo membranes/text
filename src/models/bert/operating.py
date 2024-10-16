@@ -1,23 +1,23 @@
 import transformers.trainer_utils
 
+import src.elements.arguments as ag
 import src.elements.structures as sr
-import src.elements.variable as vr
-import src.models.bert.arguments
+import src.models.args
 import src.models.bert.intelligence
 import src.models.metrics
 
 
 class Operating:
 
-    def __init__(self, variable: vr.Variable, enumerator: dict, archetype: dict):
+    def __init__(self, arguments: ag.Arguments, enumerator: dict, archetype: dict):
         """
 
-        :param variable:
+        :param arguments:
         :param enumerator:
         :param archetype:
         """
 
-        self.__variable = variable
+        self.__arguments = arguments
         self.__enumerator = enumerator
         self.__archetype = archetype
 
@@ -32,12 +32,11 @@ class Operating:
         """
 
         # Arguments
-        args = src.models.bert.arguments.Arguments(variable=self.__variable).exc()
+        args = src.models.args.Args(arguments=self.__arguments).exc()
 
         # Intelligence
         intelligence = src.models.bert.intelligence.Intelligence(
-            enumerator=self.__enumerator, archetype=self.__archetype
-        )
+            enumerator=self.__enumerator, archetype=self.__archetype, arguments=self.__arguments)
 
         # Metrics
         metrics = src.models.metrics.Metrics(archetype=self.__archetype)
