@@ -5,7 +5,7 @@ import transformers.tokenization_utils_base
 
 import src.elements.frames as fr
 import src.models.distil.architecture
-import src.models.distil.measurements
+import src.models.measurements
 import src.models.distil.tokenizer
 import src.models.distil.validation
 import src.models.structures
@@ -94,5 +94,5 @@ class Steps:
         originals, predictions = src.models.distil.validation.Validation(
             validating=validating, archetype=self.__archetype).exc(model=model)
 
-        src.models.distil.measurements.Measurements().exc(
+        src.models.measurements.Measurements().exc(
             originals=originals, predictions=predictions)
