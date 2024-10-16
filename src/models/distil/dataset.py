@@ -4,16 +4,15 @@ import pandas as pd
 import torch.utils.data
 import transformers
 
-import src.elements.variable as vr
-
 
 class Dataset(torch.utils.data.Dataset):
 
-    def __init__(self, frame: pd.DataFrame, variable: vr.Variable, enumerator: dict,
+    def __init__(self, frame: pd.DataFrame, enumerator: dict,
                  tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
         """
 
         :param frame:
+        :param enumerator:
         :param tokenizer:
         """
 
@@ -22,7 +21,6 @@ class Dataset(torch.utils.data.Dataset):
         self.__frame = frame
         self.__length = self.__frame.shape[0]
 
-        self.__variable = variable
         self.__enumerator = enumerator
         self.__tokenizer = tokenizer
 
