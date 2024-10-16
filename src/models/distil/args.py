@@ -1,4 +1,4 @@
-"""Module arguments.py"""
+"""Module args.py"""
 import os
 
 import transformers
@@ -8,7 +8,7 @@ import src.elements.variable as vr
 import src.models.distil.parameters
 
 
-class Arguments:
+class Args:
     """
     Class Arguments
     """
