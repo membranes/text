@@ -9,8 +9,8 @@ import src.elements.structures as sr
 import src.functions.directories
 import src.models.args
 import src.models.distil.intelligence
-import src.models.distil.metrics
 import src.models.distil.settings
+import src.models.metrics
 
 
 class Architecture:
@@ -52,7 +52,7 @@ class Architecture:
         intelligence = src.models.distil.intelligence.Intelligence(enumerator=self.__enumerator, archetype=self.__archetype)
 
         # Metrics
-        metrics = src.models.distil.metrics.Metrics(archetype=self.__archetype)
+        metrics = src.models.metrics.Metrics(archetype=self.__archetype)
 
         # Settings
         settings = src.models.distil.settings.Settings(arguments=self.__arguments)
