@@ -41,7 +41,7 @@ class Steps:
 
         # Get tokenizer
         self.__tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase = (
-            src.models.bert.tokenizer.Tokenizer()())
+            src.models.bert.tokenizer.Tokenizer(arguments=self.__arguments)())
 
     def __structures(self):
         """
