@@ -7,11 +7,10 @@ import src.elements.arguments as ag
 import src.elements.frames as fr
 import src.models.bert.architecture
 import src.models.bert.operating
-import src.models.bert.parameters
+import src.models.bert.structures
 import src.models.bert.tokenizer
 import src.models.bert.validation
 import src.models.measurements
-import src.models.bert.structures
 
 
 class Steps:
