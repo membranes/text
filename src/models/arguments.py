@@ -1,4 +1,5 @@
 """Module arguments.py"""
+import os
 import logging
 import pandas as pd
 
@@ -56,5 +57,8 @@ class Arguments:
     def exc(self, node: str) -> src.elements.arguments.Arguments:
 
         dictionary = self.__get_dictionary(node=node)
+
+        model_output_directory = os.path.join(config.Config().warehouse, dictionary['name'])
+        dictionary['model_output_directory'] = model_output_directory
 
         return src.elements.arguments.Arguments(**dictionary)
