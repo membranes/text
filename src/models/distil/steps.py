@@ -4,12 +4,11 @@ import logging
 import transformers.tokenization_utils_base
 
 import src.elements.frames as fr
-import src.elements.variable as vr
 import src.models.distil.architecture
 import src.models.distil.measurements
 import src.models.distil.tokenizer
 import src.models.distil.validation
-import src.models.distil.structures
+import src.models.structures
 import src.models.distil.operating
 import src.elements.arguments as ag
 
@@ -55,7 +54,7 @@ class Steps:
         :return:
         """
 
-        structures = src.models.distil.structures.Structures(
+        structures = src.models.structures.Structures(
             enumerator=self.__enumerator, arguments=self.__arguments,
             frames=self.__frames, tokenizer=self.__tokenizer)
 
