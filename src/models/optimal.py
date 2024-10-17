@@ -8,7 +8,7 @@ import src.elements.structures as sr
 import src.functions.directories
 import src.models.algorithm
 import src.models.args
-import src.models.settings
+import src.models.tuning
 import src.models.metrics
 
 
@@ -57,8 +57,8 @@ class Optimal:
         # Metrics
         metrics = src.models.metrics.Metrics(archetype=self.__archetype)
 
-        # Settings
-        settings = src.models.settings.Settings(arguments=self.__arguments)
+        # Tuning
+        tuning = src.models.tuning.Tuning(arguments=self.__arguments)
 
         # Temporary
         data_collator: transformers.DataCollatorForTokenClassification = (
@@ -74,8 +74,8 @@ class Optimal:
         )
 
         best = trainer.hyperparameter_search(
-            hp_space=settings.hp_space,
-            compute_objective=settings.compute_objective,
+            hp_space=tuning.hp_space,
+            compute_objective=tuning.compute_objective,
             n_trials=self.__arguments.N_TRIALS,
             direction='minimize',
             backend='ray',
@@ -84,15 +84,15 @@ class Optimal:
             resources_per_trial={'cpu': self.__arguments.N_CPU, 'gpu': self.__arguments.N_GPU},
 
             # tune configuration
-            search_alg=settings.algorithm(),
-            scheduler=settings.scheduler(), reuse_actors=True,
+            search_alg=tuning.algorithm(),
+            scheduler=tuning.scheduler(), reuse_actors=True,
 
             # check point configuration
             # keep_checkpoints_num=8, checkpoint_score_attr='training_iteration',
 
             # run configuration: local_dir -> storage_path
             name='default', storage_path=os.path.join(self.__arguments.model_output_directory, 'ray'),
-            verbose=0, progress_reporter=settings.reporting, log_to_file=True
+            verbose=0, progress_reporter=tuning.reporting, log_to_file=True
         )
 
         return best
