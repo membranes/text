@@ -6,7 +6,7 @@ import transformers.tokenization_utils_base
 import src.elements.arguments as ag
 import src.elements.frames as fr
 import src.models.distil.architecture
-import src.models.distil.operating
+import src.models.operating
 import src.models.distil.structures
 import src.models.distil.tokenizer
 import src.models.distil.validation
@@ -82,7 +82,7 @@ class Steps:
         self.__logger.info(self.__arguments)
 
         # Training via the best hyperparameters set
-        operating = src.models.distil.operating.Operating(
+        operating = src.models.operating.Operating(
             arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
         model = operating.exc(training=training, validating=validating, tokenizer=self.__tokenizer)
         self.__logger.info(dir(model))
