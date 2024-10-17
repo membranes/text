@@ -8,7 +8,7 @@ import src.elements.arguments as ag
 import src.elements.frames as fr
 import src.elements.structures as sr
 import src.models.bert.dataset
-import src.models.loadings
+import src.models.loader
 
 
 class Structures:
@@ -37,7 +37,7 @@ class Structures:
         self.__tokenizer = tokenizer
 
         # For DataLoader creation
-        self.__loadings = src.models.loadings.Loadings()
+        self.__loader = src.models.loader.Loader()
 
     def __structure(self, frame: pd.DataFrame, parameters: dict) -> sr.Structures:
         """
@@ -53,7 +53,7 @@ class Structures:
             frame=frame, arguments=self.__arguments, enumerator=self.__enumerator,
             tokenizer=self.__tokenizer)
 
-        dataloader: tu.DataLoader = self.__loadings.exc(
+        dataloader: tu.DataLoader = self.__loader.exc(
             dataset=dataset, parameters=parameters)
 
         return sr.Structures(dataset=dataset, dataloader=dataloader)
