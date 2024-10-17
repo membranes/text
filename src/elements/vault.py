@@ -3,7 +3,7 @@ import typing
 import pandas as pd
 
 
-class Frames(typing.NamedTuple):
+class Vault(typing.NamedTuple):
     """
 
     Attributes
