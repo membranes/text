@@ -1,6 +1,7 @@
 """Module metrics.py"""
 import collections
 import logging
+import typing
 
 import evaluate
 import numpy as np
@@ -24,11 +25,31 @@ class Metrics:
 
         # Logging
         logging.basicConfig(level=logging.INFO,
-                        format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
-                        datefmt='%Y-%m-%d %H:%M:%S')
+                            format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
+                            datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
 
-    def __restructure(self, key: str, dictionary: dict):
+    def __active(self, predictions: np.ndarray, labels: np.ndarray) -> typing.Tuple[list[list], list[list]]:
+        """
+
+        :param predictions:
+        :param labels:
+        :return:
+        """
+
+        _predictions = [
+            [self.__archetype[p] for (p, l) in zip(prediction, label) if l != -100]
+            for prediction, label in zip(predictions, labels)
+        ]
+        _labels = [
+            [self.__archetype[l] for (p, l) in zip(prediction, label) if l != -100]
+            for prediction, label in zip(predictions, labels)
+        ]
+
+        return _predictions, _labels
+
+    @staticmethod
+    def __restructure(key: str, dictionary: dict):
         """
 
         :param key:
@@ -60,8 +81,6 @@ class Metrics:
 
     def exc(self, bucket: transformers.trainer_utils.PredictionOutput):
         """
-        logging.info('Determining active labels & predictions')
-        active = np.not_equal(labels, -100)
 
         :param bucket:
         :return:
@@ -71,18 +90,11 @@ class Metrics:
         predictions = np.argmax(predictions, axis=2)
         labels = bucket.label_ids
 
-        # Or
-        true_predictions = [
-            [self.__archetype[p] for (p, l) in zip(prediction, label) if l != -100]
-            for prediction, label in zip(predictions, labels)
-        ]
-        true_labels = [
-            [self.__archetype[l] for (p, l) in zip(prediction, label) if l != -100]
-            for prediction, label in zip(predictions, labels)
-        ]
+        # Active
+        _predictions, _labels = self.__active(predictions=predictions, labels=labels)
 
         # Hence
-        metrics = self.__seqeval.compute(predictions=true_predictions, references=true_labels, zero_division=0.0)
+        metrics = self.__seqeval.compute(predictions=_predictions, references=_labels, zero_division=0.0)
         self.__logger.info('The original metrics structure:\n%s', metrics)
 
         decomposition = self.__decompose(metrics=metrics)

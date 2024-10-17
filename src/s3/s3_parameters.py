@@ -1,4 +1,5 @@
 """Module s3_parameters.py"""
+
 import config
 import src.elements.s3_parameters as s3p
 import src.functions.secret
@@ -25,7 +26,7 @@ class S3Parameters:
         """
 
         # Hence
-        self.__url = config.Config().s3_parameters_template
+        self.__configurations = config.Config()
         self.__secret = src.functions.secret.Secret()
 
     def __get_dictionary(self) -> dict:
@@ -35,7 +36,7 @@ class S3Parameters:
             A dictionary, or excerpt dictionary, of YAML file contents
         """
 
-        blob = src.functions.serial.Serial().api(url=self.__url)
+        blob = src.functions.serial.Serial().api(url=self.__configurations.s3_parameters_template_)
 
         return blob['parameters']
 

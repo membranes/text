@@ -1,29 +1,26 @@
-"""Module settings"""
+"""Module tuning.py"""
 import logging
+
 import ray
 import ray.tune
 import ray.tune.schedulers as rts
 import ray.tune.search.optuna as opt
 
-import src.elements.variable as vr
+import src.elements.arguments as ag
 
 
-class Settings:
+class Tuning:
     """
-    Class Settings
+    Class Tuning
     """
 
-    def __init__(self, variable: vr.Variable):
+    def __init__(self, arguments: ag.Arguments):
         """
 
-        :param variable: A suite of values for machine learning
-                         model development
+        :param arguments: A suite of values for machine learning model development
         """
 
-        self.__variable = variable
-
-        # Re-visit
-        self.__perturbation_interval = 2
+        self.__arguments = arguments
 
         # Space
         self.__space = {'learning_rate': ray.tune.uniform(lower=0.000016, upper=0.000017),
@@ -54,19 +51,19 @@ class Settings:
     @staticmethod
     def scheduler():
         """
-        https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.PopulationBasedTraining.html
+        https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.PopulationBasedTraining.html<br>
         https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.AsyncHyperBandScheduler.html
 
         rts.PopulationBasedTraining(
             time_attr='training_iteration',
             metric='eval_loss', mode='min',
-            perturbation_interval=self.__perturbation_interval,
+            perturbation_interval=self.__arguments.perturbation_interval,
             hyperparam_mutations={
                 'learning_rate': ray.tune.uniform(lower=0.001, upper=0.1),
                 'weight_decay': ray.tune.uniform(lower=0.01, upper=0.1)
             },
-            quantile_fraction=0.25,
-            resample_probability=0.25)
+            quantile_fraction=self.__arguments.quantile_fraction,
+            resample_probability=self.__arguments.resample_probability)
 
         :return:
         """
@@ -86,7 +83,17 @@ class Settings:
     @staticmethod
     def reporting():
         """
-        https://docs.ray.io/en/latest/tune/api/doc/ray.tune.CLIReporter.html
+
+        Notes<br>
+        ------<br>
+
+        <a href="https://docs.ray.io/en/latest/tune/api/doc/ray.tune.CLIReporter.html">ray.tune.CLIReporter</a><br><br>
+
+        This prints to the console if the verbose setting of
+        <a href="https://huggingface.co/docs/transformers/v4.45.2/en/main_classes/trainer#transformers.Trainer.hyperparameter_search">
+        hyperparameter_search()</a> is > 0. The
+        hyperparameter_search() function accepts the <a href="https://docs.ray.io/en/latest/train/api/doc/ray.train.RunConfig.html">RunConfig</a>
+        parameters.
 
         :return:
         """

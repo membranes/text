@@ -1,17 +1,18 @@
 """Module tokenizer.py"""
 import transformers
 
-import src.models.bert.parameters
+import src.elements.arguments as ag
 
 
 class Tokenizer:
 
-    def __init__(self):
-        """
-        Constructor
+    def __init__(self, arguments: ag.Arguments):
         """
 
-        self.__parameters = src.models.bert.parameters.Parameters()
+        :param arguments:
+        """
+
+        self.__arguments = arguments
 
     def __call__(self) -> transformers.tokenization_utils_base.PreTrainedTokenizerBase:
         """
@@ -21,5 +22,5 @@ class Tokenizer:
 
         # Tokenizer
         return transformers.BertTokenizerFast.from_pretrained(
-            pretrained_model_name_or_path=self.__parameters.pretrained_model_name,
+            pretrained_model_name_or_path=self.__arguments.pretrained_model_name,
             clean_up_tokenization_spaces=True)

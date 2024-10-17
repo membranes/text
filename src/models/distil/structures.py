@@ -3,33 +3,34 @@ import pandas as pd
 import torch.utils.data as tu
 import transformers
 
-import src.elements.frames as fr
+import src.elements.arguments as ag
 import src.elements.structures as sr
-import src.elements.variable as vr
+import src.elements.vault as vu
 import src.models.distil.dataset
-import src.models.loadings
+import src.models.loader
 
 
 class Structures:
 
-    def __init__(self, enumerator: dict, variable: vr.Variable, frames: fr.Frames,
+    def __init__(self, enumerator: dict, arguments: ag.Arguments, vault: vu.Vault,
                  tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
         """
 
         :param enumerator:
-        :param variable:
-        :param frames:
+        :param arguments:
+        :param vault:
+        :param tokenizer:
         """
 
         # A set of values, and data, for machine learning model development
         self.__enumerator = enumerator
-        self.__variable = variable
-        self.__frames = frames
+        self.__arguments = arguments
+        self.__vault = vault
 
         self.__tokenizer = tokenizer
 
         # For DataLoader creation
-        self.__loadings = src.models.loadings.Loadings()
+        self.__loader = src.models.loader.Loader()
 
     def __structure(self, frame: pd.DataFrame, parameters: dict) -> sr.Structures:
         """
@@ -40,8 +41,8 @@ class Structures:
         """
 
         dataset = src.models.distil.dataset.Dataset(
-            frame=frame, variable=self.__variable, enumerator=self.__enumerator, tokenizer=self.__tokenizer)
-        dataloader: tu.DataLoader = self.__loadings.exc(dataset=dataset, parameters=parameters)
+            frame=frame, enumerator=self.__enumerator, tokenizer=self.__tokenizer)
+        dataloader: tu.DataLoader = self.__loader.exc(dataset=dataset, parameters=parameters)
 
         return sr.Structures(dataset=dataset, dataloader=dataloader)
 
@@ -53,10 +54,10 @@ class Structures:
         """
 
         # Modelling parameters
-        parameters = {'batch_size': self.__variable.TRAIN_BATCH_SIZE,
+        parameters = {'batch_size': self.__arguments.TRAIN_BATCH_SIZE,
                       'shuffle': True, 'num_workers': 0}
 
-        return self.__structure(frame=self.__frames.training, parameters=parameters)
+        return self.__structure(frame=self.__vault.training, parameters=parameters)
 
     def validating(self) -> sr.Structures:
         """
@@ -66,10 +67,10 @@ class Structures:
         """
 
         # Modelling parameters
-        parameters = {'batch_size': self.__variable.VALID_BATCH_SIZE,
+        parameters = {'batch_size': self.__arguments.VALID_BATCH_SIZE,
                       'shuffle': True, 'num_workers': 0}
 
-        return self.__structure(frame=self.__frames.validating, parameters=parameters)
+        return self.__structure(frame=self.__vault.validating, parameters=parameters)
 
     def testing(self) -> sr.Structures:
         """
@@ -79,7 +80,7 @@ class Structures:
         """
 
         # Modelling parameters
-        parameters = {'batch_size': self.__variable.TEST_BATCH_SIZE,
+        parameters = {'batch_size': self.__arguments.TEST_BATCH_SIZE,
                       'shuffle': True, 'num_workers': 0}
 
-        return self.__structure(frame=self.__frames.testing, parameters=parameters)
+        return self.__structure(frame=self.__vault.testing, parameters=parameters)

@@ -17,6 +17,9 @@ def main():
 
     logger: logging.Logger = logging.getLogger(__name__)
 
+    # Arguments
+    logger.info(arguments)
+
     # Set up
     setup: bool = src.setup.Setup(service=service, s3_parameters=s3_parameters).exc()
     if not setup:
@@ -37,13 +40,16 @@ def main():
     # Temporary
     data = data.loc[:500, :]
     src.models.interface.Interface(
-        data=data, enumerator=interface.enumerator(), archetype=interface.archetype()).exc(architecture='distil')
+        data=data, enumerator=interface.enumerator(), archetype=interface.archetype()).exc(
+        architecture='bert', arguments=arguments)
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
 
 
 if __name__ == '__main__':
+
+    architecture = 'distil'
 
     # Paths
     root = os.getcwd()
@@ -65,17 +71,21 @@ if __name__ == '__main__':
 
     import src.elements.s3_parameters as s3p
     import src.elements.service as sr
+    import src.elements.arguments
 
     import src.functions.cache
     import src.functions.service
 
     import src.models.interface
+    import src.models.arguments
     import src.s3.s3_parameters
     import src.setup
-
 
     # S3 S3Parameters, Service Instance
     s3_parameters: s3p.S3Parameters = src.s3.s3_parameters.S3Parameters().exc()
     service: sr.Service = src.functions.service.Service(region_name=s3_parameters.region_name).exc()
+
+    arguments = src.models.arguments.Arguments(s3_parameters=s3_parameters).exc(
+        node=f'{architecture}/arguments.json')
 
     main()
