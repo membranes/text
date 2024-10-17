@@ -9,7 +9,7 @@ import src.models.distil.architecture
 import src.models.operating
 import src.models.distil.structures
 import src.models.distil.tokenizer
-import src.models.distil.validation
+import src.models.validation
 import src.models.measurements
 
 
@@ -88,7 +88,7 @@ class Steps:
         self.__logger.info(dir(model))
 
         # Evaluating: vis-à-vis model & validation data
-        originals, predictions = src.models.distil.validation.Validation(
+        originals, predictions = src.models.validation.Validation(
             validating=validating, archetype=self.__archetype).exc(model=model)
 
         src.models.measurements.Measurements().exc(
