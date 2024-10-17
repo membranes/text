@@ -2,9 +2,9 @@ import transformers.trainer_utils
 
 import src.elements.arguments as ag
 import src.elements.structures as sr
+import src.models.algorithm
 import src.models.args
 import src.models.metrics
-import src.models.algorithm
 
 
 class Operating:
