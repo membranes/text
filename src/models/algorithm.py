@@ -29,14 +29,14 @@ class Algorithm:
         match self.__architecture:
             case 'bert':
                 return src.models.bert.intelligence.Intelligence(
-                    enumerator=enumerator, archetype=archetype, arguments=arguments).model()
+                    enumerator=enumerator, archetype=archetype, arguments=arguments)
             case 'electra':
                 sys.exit('ELECTRA: Future')
             case 'roberta':
                 sys.exit('ROBERTA: Future')
             case 'distil':
                 return src.models.distil.intelligence.Intelligence(
-                    enumerator=enumerator, archetype=archetype, arguments=arguments).model()
+                    enumerator=enumerator, archetype=archetype, arguments=arguments)
             case 'ensemble':
                 sys.exit('BiLSTM, BERT, & CRF: Future\nhttps://link.springer.com/article/10.1007/s42979-024-02835-z')
             case _:
