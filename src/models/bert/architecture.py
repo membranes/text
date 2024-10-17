@@ -10,6 +10,7 @@ import src.models.args
 import src.models.bert.intelligence
 import src.models.bert.settings
 import src.models.metrics
+import src.models.algorithm
 
 
 class Architecture:
@@ -29,6 +30,9 @@ class Architecture:
         self.__enumerator = enumerator
         self.__archetype = archetype
 
+        # Intelligence
+        self.__algorithm = src.models.algorithm.Algorithm(architecture=self.__arguments.name)
+
         # Directory preparation
         src.functions.directories.Directories().cleanup(path=self.__arguments.model_output_directory)
 
@@ -47,9 +51,9 @@ class Architecture:
         # Arguments
         args = src.models.args.Args(arguments=self.__arguments).exc()
 
-        # Collator, Model, ETC.
-        intelligence = src.models.bert.intelligence.Intelligence(
-            enumerator=self.__enumerator, archetype=self.__archetype, arguments=self.__arguments)
+        # Model
+        intelligence = self.__algorithm.exc(
+            arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
 
         # Metrics
         metrics = src.models.metrics.Metrics(archetype=self.__archetype)
