@@ -5,7 +5,7 @@ import transformers
 
 import src.elements.arguments as ag
 import src.elements.frames as fr
-import src.models.architecture
+import src.models.optimal
 import src.models.operating
 import src.models.bert.structures
 import src.models.bert.tokenizer
@@ -63,9 +63,9 @@ class Steps:
         training, validating, _ = self.__structures()
 
         # Hyperparameter search
-        architecture = src.models.architecture.Architecture(
+        optimal = src.models.optimal.Optimal(
             arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
-        best = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
+        best = optimal(training=training, validating=validating, tokenizer=self.__tokenizer)
         logging.info(best)
 
         # Hence, update the modelling variables
