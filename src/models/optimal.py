@@ -1,4 +1,4 @@
-"""Module architecture.py"""
+"""Module optimal.py"""
 import os
 
 import transformers
@@ -12,7 +12,7 @@ import src.models.settings
 import src.models.metrics
 
 
-class Architecture:
+class Optimal:
     """
     Architecture
     """
