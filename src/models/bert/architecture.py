@@ -57,10 +57,14 @@ class Architecture:
         # Settings
         settings = src.models.bert.settings.Settings(arguments=self.__arguments)
 
+        # Temporary
+        data_collator: transformers.DataCollatorForTokenClassification = (
+            transformers.DataCollatorForTokenClassification(tokenizer=tokenizer))
+
         # Hence
         trainer = transformers.Trainer(
             model_init=intelligence.model,
-            args=args, data_collator=intelligence.collator(tokenizer=tokenizer),
+            args=args, data_collator=data_collator,
             train_dataset=training.dataset, eval_dataset=validating.dataset,
             tokenizer=tokenizer,
             compute_metrics=metrics.exc
