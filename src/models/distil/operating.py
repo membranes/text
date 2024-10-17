@@ -3,8 +3,8 @@ import transformers.trainer_utils
 import src.elements.arguments as ag
 import src.elements.structures as sr
 import src.models.args
-import src.models.distil.intelligence
 import src.models.metrics
+import src.models.algorithm
 
 
 class Operating:
@@ -24,6 +24,9 @@ class Operating:
         self.__enumerator = enumerator
         self.__archetype = archetype
 
+        # Intelligence
+        self.__algorithm = src.models.algorithm.Algorithm(architecture=self.__arguments.name)
+
     def exc(self, training: sr.Structures, validating: sr.Structures,
             tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
         """
@@ -37,9 +40,9 @@ class Operating:
         # Arguments
         args = src.models.args.Args(arguments=self.__arguments).exc()
 
-        # Intelligence
-        intelligence = src.models.distil.intelligence.Intelligence(
-            enumerator=self.__enumerator, archetype=self.__archetype, arguments=self.__arguments)
+        # Model
+        intelligence = self.__algorithm.exc(
+            arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
 
         # Metrics
         metrics = src.models.metrics.Metrics(archetype=self.__archetype)
