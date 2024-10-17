@@ -8,7 +8,6 @@ import src.elements.structures as sr
 import src.functions.directories
 import src.models.algorithm
 import src.models.args
-import src.models.bert.intelligence
 import src.models.bert.settings
 import src.models.metrics
 
