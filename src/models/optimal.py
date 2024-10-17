@@ -92,7 +92,7 @@ class Optimal:
 
             # run configuration: local_dir -> storage_path
             name='default', storage_path=os.path.join(self.__arguments.model_output_directory, 'ray'),
-            verbose=0, progress_reporter=tuning.reporting, log_to_file=True
+            verbose=1, progress_reporter=tuning.reporting, log_to_file=True
         )
 
         return best
