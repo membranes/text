@@ -52,7 +52,7 @@ class Architecture:
         # Arguments
         args = src.models.args.Args(arguments=self.__arguments).exc()
 
-        # Collator, Model, ETC.
+        # Model
         intelligence = self.__algorithm.exc(
             arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
 
