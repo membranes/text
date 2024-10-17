@@ -83,7 +83,17 @@ class Tuning:
     @staticmethod
     def reporting():
         """
-        https://docs.ray.io/en/latest/tune/api/doc/ray.tune.CLIReporter.html
+
+        Notes<br>
+        ------<br>
+
+        <a href="https://docs.ray.io/en/latest/tune/api/doc/ray.tune.CLIReporter.html">ray.tune.CLIReporter</a><br><br>
+
+        This prints to the console if the verbose setting of
+        <a href="https://huggingface.co/docs/transformers/v4.45.2/en/main_classes/trainer#transformers.Trainer.hyperparameter_search">
+        hyperparameter_search()</a> is > 0. The
+        hyperparameter_search() function accepts the <a href="https://docs.ray.io/en/latest/train/api/doc/ray.train.RunConfig.html">RunConfig</a>
+        parameters.
 
         :return:
         """
