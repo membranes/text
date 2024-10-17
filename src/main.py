@@ -41,7 +41,7 @@ def main():
     data = data.loc[:500, :]
     src.models.interface.Interface(
         data=data, enumerator=interface.enumerator(), archetype=interface.archetype()).exc(
-        architecture='distil', arguments=arguments)
+        architecture='bert', arguments=arguments)
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
