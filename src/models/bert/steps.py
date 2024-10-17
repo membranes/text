@@ -56,9 +56,6 @@ class Steps:
 
     def exc(self):
         """
-        a. Training
-        b. Evaluating
-        c. Testing
 
         :return:
         """
@@ -80,7 +77,6 @@ class Steps:
         operating = src.models.bert.operating.Operating(
             arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
         model = operating.exc(training=training, validating=validating, tokenizer=self.__tokenizer)
-        logging.info(dir(model))
 
         # Evaluating: vis-à-vis model & validation data
         originals, predictions = src.models.bert.validation.Validation(
