@@ -1,5 +1,6 @@
 """Module settings"""
 import logging
+
 import ray
 import ray.tune
 import ray.tune.schedulers as rts
