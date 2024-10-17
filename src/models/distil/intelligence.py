@@ -23,16 +23,6 @@ class Intelligence:
         # Parameters
         self.__arguments = arguments
 
-    @staticmethod
-    def collator(tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase) -> transformers.DataCollatorForTokenClassification:
-        """
-
-        :param tokenizer:
-        :return:
-        """
-
-        return transformers.DataCollatorForTokenClassification(tokenizer=tokenizer)
-
     def model(self):
         """
         https://huggingface.co/docs/transformers/v4.41.3/en/model_doc/auto#transformers.AutoModel
