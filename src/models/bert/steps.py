@@ -9,7 +9,7 @@ import src.models.bert.architecture
 import src.models.operating
 import src.models.bert.structures
 import src.models.bert.tokenizer
-import src.models.bert.validation
+import src.models.validation
 import src.models.measurements
 
 
@@ -79,7 +79,7 @@ class Steps:
         model = operating.exc(training=training, validating=validating, tokenizer=self.__tokenizer)
 
         # Evaluating: vis-à-vis model & validation data
-        originals, predictions = src.models.bert.validation.Validation(
+        originals, predictions = src.models.validation.Validation(
             validating=validating, archetype=self.__archetype).exc(model=model)
 
         src.models.measurements.Measurements().exc(
