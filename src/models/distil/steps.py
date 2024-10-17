@@ -5,7 +5,7 @@ import transformers.tokenization_utils_base
 
 import src.elements.arguments as ag
 import src.elements.frames as fr
-import src.models.distil.architecture
+import src.models.architecture
 import src.models.operating
 import src.models.distil.structures
 import src.models.distil.tokenizer
@@ -70,7 +70,7 @@ class Steps:
         self.__logger.info(self.__arguments)
 
         # Hyperparameter search
-        architecture = src.models.distil.architecture.Architecture(
+        architecture = src.models.architecture.Architecture(
             arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
         best = architecture(training=training, validating=validating, tokenizer=self.__tokenizer)
         self.__logger.info(best)
