@@ -7,11 +7,11 @@ import transformers
 import src.elements.arguments as ag
 import src.elements.structures as sr
 import src.functions.directories
+import src.models.algorithm
 import src.models.args
 import src.models.distil.intelligence
 import src.models.distil.settings
 import src.models.metrics
-import src.models.algorithm
 
 
 class Architecture:
