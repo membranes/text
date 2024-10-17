@@ -7,7 +7,7 @@ import src.elements.arguments as ag
 import src.elements.structures as sr
 import src.functions.directories
 import src.models.algorithm
-import src.models.args
+import src.models.trainee
 import src.models.tuning
 import src.models.metrics
 
@@ -47,8 +47,8 @@ class Optimal:
         :return:
         """
 
-        # Arguments
-        args = src.models.args.Args(arguments=self.__arguments).exc()
+        # Training Arguments
+        args = src.models.trainee.Trainee(arguments=self.__arguments).exc()
 
         # Model
         intelligence = self.__algorithm.exc(
