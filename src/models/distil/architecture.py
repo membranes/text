@@ -8,7 +8,7 @@ import src.elements.structures as sr
 import src.functions.directories
 import src.models.algorithm
 import src.models.args
-import src.models.distil.settings
+import src.models.settings
 import src.models.metrics
 
 
@@ -58,7 +58,7 @@ class Architecture:
         metrics = src.models.metrics.Metrics(archetype=self.__archetype)
 
         # Settings
-        settings = src.models.distil.settings.Settings(arguments=self.__arguments)
+        settings = src.models.settings.Settings(arguments=self.__arguments)
 
         # Temporary
         data_collator: transformers.DataCollatorForTokenClassification = (
