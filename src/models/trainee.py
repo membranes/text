@@ -1,4 +1,4 @@
-"""Module args.py"""
+"""Module trainee.py"""
 import os
 
 import transformers
@@ -7,7 +7,7 @@ import config
 import src.elements.arguments as ag
 
 
-class Args:
+class Trainee:
     """
     Class Arguments
     """
