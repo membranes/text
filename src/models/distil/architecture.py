@@ -1,5 +1,4 @@
 """Module architecture.py"""
-import logging
 import os
 
 import transformers
