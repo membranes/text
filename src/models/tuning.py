@@ -1,4 +1,4 @@
-"""Module settings"""
+"""Module tuning.py"""
 import logging
 
 import ray
@@ -9,9 +9,9 @@ import ray.tune.search.optuna as opt
 import src.elements.arguments as ag
 
 
-class Settings:
+class Tuning:
     """
-    Class Settings
+    Class Tuning
     """
 
     def __init__(self, arguments: ag.Arguments):
