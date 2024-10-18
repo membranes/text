@@ -42,23 +42,29 @@ class Hyperspace:
         """
 
         key_name = self.__s3_parameters.path_internal_configurations + node
-        self.__logger.info(key_name)
 
         buffer = src.s3.unload.Unload(service=self.__service).exc(
             bucket_name=self.__s3_parameters.internal, key_name=key_name)
+        self.__logger.info('buffer type: %s', type(buffer))
 
-        return json.loads(buffer)
+        dictionary = json.loads(buffer)
+        self.__logger.info('dictionary type, dictionary = json.loads(buffer): %s', type(dictionary))
+
+        return dictionary
 
     def exc(self, node: str):
+        """
+
+        :param node:
+        :return:
+        """
 
         dictionary = self.__get_dictionary(node=node)
-        self.__logger.info(dictionary)
-        self.__logger.info(type(dictionary))
-        self.__logger.info(dictionary["continuous"])
 
-        space = {'learning_rate_distribution': dictionary['continuous']['learning_rate'],
+        items = {'learning_rate_distribution': dictionary['continuous']['learning_rate'],
                  'weight_decay_distribution': dictionary['continuous']['weight_decay'],
                  'weight_decay_choice': dictionary['choice']['weight_decay'],
                  'per_device_train_batch_size': dictionary['choice']['per_device_train_batch_size']}
-        hyperspace = src.elements.hyperspace.Hyperspace(**space)
+        
+        hyperspace = src.elements.hyperspace.Hyperspace(**items)
         self.__logger.info(hyperspace)
