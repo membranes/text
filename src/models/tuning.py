@@ -24,7 +24,7 @@ class Tuning:
 
         # Space
         self.__space = {'learning_rate': ray.tune.uniform(lower=0.000016, upper=0.000017),
-                        'weight_decay': ray.tune.choice([0.0, 0.00001]),
+                        'weight_decay': ray.tune.uniform(lower=0.0, upper=0.00001),
                         'per_device_train_batch_size': ray.tune.choice([4, 16])}
 
     @staticmethod
