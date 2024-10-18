@@ -1,13 +1,12 @@
-import os
-import logging
+"""Module hyperspace.py"""
 import json
-import pandas as pd
+import logging
 
 import config
-import src.elements.service as sr
-import src.elements.s3_parameters as s3p
-import src.s3.unload
 import src.elements.hyperspace as hp
+import src.elements.s3_parameters as s3p
+import src.elements.service as sr
+import src.s3.unload
 
 
 class Hyperspace:
@@ -34,7 +33,6 @@ class Hyperspace:
 
     def __get_dictionary(self, node: str) -> dict:
         """
-
         s3:// {bucket.name} / {prefix.root} + {prefix.name} / {key.name}
 
         :param node: {prefix.name} / {key.name}
@@ -45,17 +43,15 @@ class Hyperspace:
 
         buffer = src.s3.unload.Unload(service=self.__service).exc(
             bucket_name=self.__s3_parameters.internal, key_name=key_name)
-        self.__logger.info('buffer type: %s', type(buffer))
-
         dictionary = json.loads(buffer)
-        self.__logger.info('dictionary type, dictionary = json.loads(buffer): %s', type(dictionary))
 
         return dictionary
 
     def exc(self, node: str) -> hp.Hyperspace:
         """
+        s3:// {bucket.name} / {prefix.root} + {prefix.name} / {key.name}
 
-        :param node:
+        :param node: {prefix.name} / {key.name}
         :return:
         """
 
