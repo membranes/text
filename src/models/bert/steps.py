@@ -9,6 +9,7 @@ import src.elements.vault as vu
 import src.models.bert.structures
 import src.models.bert.tokenizer
 import src.models.optimal
+import src.models.prime
 
 
 class Steps:
@@ -72,3 +73,10 @@ class Steps:
         self.__arguments = self.__arguments._replace(
             LEARNING_RATE=best.hyperparameters.get('learning_rate'),
             WEIGHT_DECAY=best.hyperparameters.get('weight_decay'))
+
+        # Then
+        src.models.prime.Prime(
+            enumerator=self.__enumerator, archetype=self.__archetype,
+            arguments=self.__arguments, tokenizer=self.__tokenizer).exc(
+            training=training, validating=validating)
+
