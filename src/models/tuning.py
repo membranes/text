@@ -7,6 +7,7 @@ import ray.tune.schedulers as rts
 import ray.tune.search.optuna as opt
 
 import src.elements.arguments as ag
+import src.elements.hyperspace as hp
 
 
 class Tuning:
@@ -14,13 +15,15 @@ class Tuning:
     Class Tuning
     """
 
-    def __init__(self, arguments: ag.Arguments):
+    def __init__(self, arguments: ag.Arguments, hyperspace: hp.Hyperspace):
         """
 
         :param arguments: A suite of values for machine learning model development
+        :param hyperspace:
         """
 
         self.__arguments = arguments
+        self.__hyperspace = hyperspace
 
         # Space
         self.__space = {'learning_rate': ray.tune.uniform(lower=0.000016, upper=0.000017),
