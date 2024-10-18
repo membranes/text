@@ -70,13 +70,12 @@ class Steps:
             arguments=self.__arguments, hyperspace=self.__hyperspace,
             enumerator=self.__enumerator, archetype=self.__archetype)
         best = optimal(training=training, validating=validating, tokenizer=self.__tokenizer)
-        logging.info(best)
 
         # Hence, update the modelling variables
         self.__arguments = self.__arguments._replace(
-            LEARNING_RATE=best.hyperparameters.get('learning_rate'), WEIGHT_DECAY=best.hyperparameters.get('weight_decay'),
+            LEARNING_RATE=best.hyperparameters.get('learning_rate'),
+            WEIGHT_DECAY=best.hyperparameters.get('weight_decay'),
             TRAIN_BATCH_SIZE=best.hyperparameters.get('per_device_train_batch_size'))
-        logging.info(self.__arguments)
 
         # Training via the best hyperparameters set
         operating = src.models.operating.Operating(
