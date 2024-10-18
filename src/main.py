@@ -17,8 +17,10 @@ def main():
 
     logger: logging.Logger = logging.getLogger(__name__)
 
-    # Arguments
+    # Arguments & Hyperspace
     logger.info(arguments)
+    logger.info(min(hyperspace.learning_rate_distribution))
+
 
     # Set up
     setup: bool = src.setup.Setup(service=service, s3_parameters=s3_parameters).exc()
@@ -36,12 +38,14 @@ def main():
     # The Data
     interface = src.data.interface.Interface(s3_parameters=s3_parameters)
     data: pd.DataFrame = interface.data()
+    logger.info(data)
+
 
     # Temporary
     data = data.loc[:500, :]
     src.models.interface.Interface(
         data=data, enumerator=interface.enumerator(), archetype=interface.archetype()).exc(
-        architecture='bert', arguments=arguments)
+        architecture=architecture, arguments=arguments, hyperspace=hyperspace)
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
@@ -78,6 +82,7 @@ if __name__ == '__main__':
 
     import src.models.interface
     import src.models.arguments
+    import src.models.hyperspace
     import src.s3.s3_parameters
     import src.setup
 
@@ -87,5 +92,9 @@ if __name__ == '__main__':
 
     arguments = src.models.arguments.Arguments(s3_parameters=s3_parameters).exc(
         node=f'{architecture}/arguments.json')
+
+    hyperspace = src.models.hyperspace.Hyperspace(service=service, s3_parameters=s3_parameters).exc(
+        node=f'{architecture}/hyperspace.json'
+    )
 
     main()

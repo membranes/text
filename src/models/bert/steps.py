@@ -4,13 +4,12 @@ import logging
 import transformers
 
 import src.elements.arguments as ag
+import src.elements.hyperspace as hp
 import src.elements.vault as vu
 import src.models.bert.structures
 import src.models.bert.tokenizer
-import src.models.measurements
-import src.models.operating
 import src.models.optimal
-import src.models.validation
+import src.models.prime
 
 
 class Steps:
@@ -18,12 +17,13 @@ class Steps:
     The BERT steps.
     """
 
-    def __init__(self, enumerator: dict, archetype: dict, arguments: ag.Arguments, vault: vu.Vault):
+    def __init__(self, enumerator: dict, archetype: dict, arguments: ag.Arguments, hyperspace: hp.Hyperspace, vault: vu.Vault):
         """
 
         :param enumerator: Code -> tag mapping
         :param archetype: Tag -> code mapping
         :param arguments: The parameter values for ...
+        :param hyperspace: The real number spaces of ...
         :param vault: The data frames for modelling stages, i.e., the
                        training, validating, and testing stages
         """
@@ -32,6 +32,7 @@ class Steps:
         self.__enumerator = enumerator
         self.__archetype = archetype
         self.__arguments = arguments
+        self.__hyperspace = hyperspace
         self.__vault = vault
 
         # A set of values for machine learning model development
@@ -64,23 +65,18 @@ class Steps:
 
         # Hyperparameter search
         optimal = src.models.optimal.Optimal(
-            arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
+            arguments=self.__arguments, hyperspace=self.__hyperspace,
+            enumerator=self.__enumerator, archetype=self.__archetype)
         best = optimal(training=training, validating=validating, tokenizer=self.__tokenizer)
-        logging.info(best)
 
         # Hence, update the modelling variables
         self.__arguments = self.__arguments._replace(
-            LEARNING_RATE=best.hyperparameters.get('learning_rate'), WEIGHT_DECAY=best.hyperparameters.get('weight_decay'))
-        logging.info(self.__arguments)
+            LEARNING_RATE=best.hyperparameters.get('learning_rate'),
+            WEIGHT_DECAY=best.hyperparameters.get('weight_decay'))
 
-        # Training via the best hyperparameters set
-        operating = src.models.operating.Operating(
-            arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
-        model = operating.exc(training=training, validating=validating, tokenizer=self.__tokenizer)
+        # Then
+        src.models.prime.Prime(
+            enumerator=self.__enumerator, archetype=self.__archetype,
+            arguments=self.__arguments, tokenizer=self.__tokenizer).exc(
+            training=training, validating=validating)
 
-        # Evaluating: vis-à-vis model & validation data
-        originals, predictions = src.models.validation.Validation(
-            validating=validating, archetype=self.__archetype).exc(model=model)
-
-        src.models.measurements.Measurements().exc(
-            originals=originals, predictions=predictions)

@@ -4,12 +4,13 @@ import os
 import transformers
 
 import src.elements.arguments as ag
+import src.elements.hyperspace as hp
 import src.elements.structures as sr
 import src.functions.directories
 import src.models.algorithm
+import src.models.metrics
 import src.models.trainee
 import src.models.tuning
-import src.models.metrics
 
 
 class Optimal:
@@ -17,15 +18,17 @@ class Optimal:
     Architecture
     """
 
-    def __init__(self, arguments: ag.Arguments, enumerator: dict, archetype: dict):
+    def __init__(self, arguments: ag.Arguments, hyperspace: hp.Hyperspace, enumerator: dict, archetype: dict):
         """
 
         :param arguments:
+        :param hyperspace:
         :param enumerator:
         :param archetype:
         """
 
         self.__arguments = arguments
+        self.__hyperspace = hyperspace
         self.__enumerator = enumerator
         self.__archetype = archetype
 
@@ -58,7 +61,7 @@ class Optimal:
         metrics = src.models.metrics.Metrics(archetype=self.__archetype)
 
         # Tuning
-        tuning = src.models.tuning.Tuning(arguments=self.__arguments)
+        tuning = src.models.tuning.Tuning(arguments=self.__arguments, hyperspace=self.__hyperspace)
 
         # Temporary
         data_collator: transformers.DataCollatorForTokenClassification = (
