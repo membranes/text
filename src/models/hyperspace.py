@@ -51,4 +51,9 @@ class Hyperspace:
 
         dictionary = self.__get_dictionary(node=node)
 
+        space = {'learning_rate_distribution': dictionary['continuous']['learning_rate'],
+                 'weight_decay_distribution': dictionary['continuous']['weight_decay'],
+                 'weight_decay_choice': dictionary['choice']['weight_decay'],
+                 'per_device_train_batch_size': dictionary['choice']['per_device_train_batch_size']}
+
         self.__logger.info(dictionary)
