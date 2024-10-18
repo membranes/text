@@ -7,7 +7,7 @@ import config
 import src.elements.service as sr
 import src.elements.s3_parameters as s3p
 import src.s3.unload
-import src.elements.hyperspace
+import src.elements.hyperspace as hp
 
 
 class Hyperspace:
@@ -32,7 +32,7 @@ class Hyperspace:
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
 
-    def __get_dictionary(self, node: str):
+    def __get_dictionary(self, node: str) -> dict:
         """
 
         s3:// {bucket.name} / {prefix.root} + {prefix.name} / {key.name}
@@ -52,7 +52,7 @@ class Hyperspace:
 
         return dictionary
 
-    def exc(self, node: str):
+    def exc(self, node: str) -> hp.Hyperspace:
         """
 
         :param node:
@@ -65,6 +65,7 @@ class Hyperspace:
                  'weight_decay_distribution': dictionary['continuous']['weight_decay'],
                  'weight_decay_choice': dictionary['choice']['weight_decay'],
                  'per_device_train_batch_size': dictionary['choice']['per_device_train_batch_size']}
-        
-        hyperspace = src.elements.hyperspace.Hyperspace(**items)
-        self.__logger.info(hyperspace)
+
+        hyperspace = hp.Hyperspace(**items)
+
+        return hyperspace
