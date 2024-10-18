@@ -8,6 +8,7 @@ import src.models.bert.steps
 import src.models.distil.steps
 import src.models.splittings
 import src.elements.arguments as ag
+import src.elements.hyperspace as hp
 
 
 class Interface:
@@ -29,18 +30,20 @@ class Interface:
         self.__enumerator = enumerator
         self.__archetype = archetype
 
-    def exc(self, architecture: str, arguments: ag.Arguments) -> None:
+    def exc(self, architecture: str, arguments: ag.Arguments, hyperspace: hp.Hyperspace) -> None:
         """
 
         :param architecture:
         :param arguments:
+        :param hyperspace:
         :return:
         """
 
         match architecture:
             case 'bert':
                 src.models.bert.steps.Steps(
-                    enumerator=self.__enumerator, archetype=self.__archetype, arguments=arguments, vault=self.__vault).exc()
+                    enumerator=self.__enumerator, archetype=self.__archetype,
+                    arguments=arguments, vault=self.__vault).exc()
             case 'electra':
                 logging.info('ELECTRA: Future')
             case 'roberta':
@@ -48,7 +51,8 @@ class Interface:
                 logging.info('ROBERTA: Future')
             case 'distil':
                 src.models.distil.steps.Steps(
-                    enumerator=self.__enumerator, archetype=self.__archetype, arguments=arguments, vault=self.__vault).exc()
+                    enumerator=self.__enumerator, archetype=self.__archetype,
+                    arguments=arguments, vault=self.__vault).exc()
             case 'ensemble':
                 logging.info('BiLSTM, BERT, & CRF: Future\nhttps://link.springer.com/article/10.1007/s42979-024-02835-z')
             case _:
