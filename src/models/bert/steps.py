@@ -11,6 +11,7 @@ import src.models.measurements
 import src.models.operating
 import src.models.optimal
 import src.models.validation
+import src.elements.hyperspace as hp
 
 
 class Steps:
@@ -18,12 +19,13 @@ class Steps:
     The BERT steps.
     """
 
-    def __init__(self, enumerator: dict, archetype: dict, arguments: ag.Arguments, vault: vu.Vault):
+    def __init__(self, enumerator: dict, archetype: dict, arguments: ag.Arguments, hyperspace: hp.Hyperspace, vault: vu.Vault):
         """
 
         :param enumerator: Code -> tag mapping
         :param archetype: Tag -> code mapping
         :param arguments: The parameter values for ...
+        :param hyperspace: The real number spaces of ...
         :param vault: The data frames for modelling stages, i.e., the
                        training, validating, and testing stages
         """
@@ -32,6 +34,7 @@ class Steps:
         self.__enumerator = enumerator
         self.__archetype = archetype
         self.__arguments = arguments
+        self.__hyperspace = hyperspace
         self.__vault = vault
 
         # A set of values for machine learning model development
@@ -64,7 +67,8 @@ class Steps:
 
         # Hyperparameter search
         optimal = src.models.optimal.Optimal(
-            arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
+            arguments=self.__arguments, hyperspace=self.__hyperspace,
+            enumerator=self.__enumerator, archetype=self.__archetype)
         best = optimal(training=training, validating=validating, tokenizer=self.__tokenizer)
         logging.info(best)
 
