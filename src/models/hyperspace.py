@@ -1,11 +1,13 @@
 import os
 import logging
+import json
 import pandas as pd
 
 import config
 import src.elements.service as sr
 import src.elements.s3_parameters as s3p
 import src.s3.unload
+import src.elements.hyperspace
 
 
 class Hyperspace:
@@ -45,15 +47,18 @@ class Hyperspace:
         buffer = src.s3.unload.Unload(service=self.__service).exc(
             bucket_name=self.__s3_parameters.internal, key_name=key_name)
 
-        return buffer
+        return json.loads(buffer)
 
     def exc(self, node: str):
 
         dictionary = self.__get_dictionary(node=node)
+        self.__logger.info(dictionary)
+        self.__logger.info(type(dictionary))
+        self.__logger.info(dictionary["continuous"])
 
         space = {'learning_rate_distribution': dictionary['continuous']['learning_rate'],
                  'weight_decay_distribution': dictionary['continuous']['weight_decay'],
                  'weight_decay_choice': dictionary['choice']['weight_decay'],
                  'per_device_train_batch_size': dictionary['choice']['per_device_train_batch_size']}
-
-        self.__logger.info(dictionary)
+        hyperspace = src.elements.hyperspace.Hyperspace(**space)
+        self.__logger.info(hyperspace)
