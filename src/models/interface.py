@@ -43,7 +43,7 @@ class Interface:
             case 'bert':
                 src.models.bert.steps.Steps(
                     enumerator=self.__enumerator, archetype=self.__archetype,
-                    arguments=arguments, vault=self.__vault).exc()
+                    arguments=arguments, hyperspace=hyperspace, vault=self.__vault).exc()
             case 'electra':
                 logging.info('ELECTRA: Future')
             case 'roberta':
@@ -52,7 +52,7 @@ class Interface:
             case 'distil':
                 src.models.distil.steps.Steps(
                     enumerator=self.__enumerator, archetype=self.__archetype,
-                    arguments=arguments, vault=self.__vault).exc()
+                    arguments=arguments, hyperspace=hyperspace, vault=self.__vault).exc()
             case 'ensemble':
                 logging.info('BiLSTM, BERT, & CRF: Future\nhttps://link.springer.com/article/10.1007/s42979-024-02835-z')
             case _:
