@@ -4,14 +4,11 @@ import logging
 import transformers
 
 import src.elements.arguments as ag
+import src.elements.hyperspace as hp
 import src.elements.vault as vu
 import src.models.bert.structures
 import src.models.bert.tokenizer
-import src.models.measurements
-import src.models.operating
 import src.models.optimal
-import src.models.validation
-import src.elements.hyperspace as hp
 
 
 class Steps:
@@ -73,16 +70,5 @@ class Steps:
 
         # Hence, update the modelling variables
         self.__arguments = self.__arguments._replace(
-            LEARNING_RATE=best.hyperparameters.get('learning_rate'), WEIGHT_DECAY=best.hyperparameters.get('weight_decay'))
-
-        # Training via the best hyperparameters set
-        operating = src.models.operating.Operating(
-            arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
-        model = operating.exc(training=training, validating=validating, tokenizer=self.__tokenizer)
-
-        # Evaluating: vis-à-vis model & validation data
-        originals, predictions = src.models.validation.Validation(
-            validating=validating, archetype=self.__archetype).exc(model=model)
-
-        src.models.measurements.Measurements().exc(
-            originals=originals, predictions=predictions)
+            LEARNING_RATE=best.hyperparameters.get('learning_rate'),
+            WEIGHT_DECAY=best.hyperparameters.get('weight_decay'))
