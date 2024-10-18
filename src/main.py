@@ -17,8 +17,9 @@ def main():
 
     logger: logging.Logger = logging.getLogger(__name__)
 
-    # Arguments
+    # Arguments & Hyperspace
     logger.info(arguments)
+    logger.info(min(hyperspace.learning_rate_distribution))
 
 
     # Set up
@@ -93,7 +94,7 @@ if __name__ == '__main__':
     arguments = src.models.arguments.Arguments(s3_parameters=s3_parameters).exc(
         node=f'{architecture}/arguments.json')
 
-    src.models.hyperspace.Hyperspace(service=service, s3_parameters=s3_parameters).exc(
+    hyperspace = src.models.hyperspace.Hyperspace(service=service, s3_parameters=s3_parameters).exc(
         node=f'{architecture}/hyperspace.json'
     )
 
