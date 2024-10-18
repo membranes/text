@@ -40,13 +40,12 @@ def main():
     data: pd.DataFrame = interface.data()
     logger.info(data)
 
-    '''
+
     # Temporary
     data = data.loc[:500, :]
     src.models.interface.Interface(
         data=data, enumerator=interface.enumerator(), archetype=interface.archetype()).exc(
-        architecture=architecture, arguments=arguments)
-    '''
+        architecture=architecture, arguments=arguments, hyperspace=hyperspace)
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
