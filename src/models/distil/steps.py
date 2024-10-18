@@ -9,6 +9,7 @@ import src.elements.vault as vu
 import src.models.distil.structures
 import src.models.distil.tokenizer
 import src.models.optimal
+import src.models.prime
 
 
 class Steps:
@@ -73,3 +74,9 @@ class Steps:
             LEARNING_RATE=best.hyperparameters.get('learning_rate'),
             WEIGHT_DECAY=best.hyperparameters.get('weight_decay'),
             TRAIN_BATCH_SIZE=best.hyperparameters.get('per_device_train_batch_size'))
+
+        # Then
+        src.models.prime.Prime(
+            enumerator=self.__enumerator, archetype=self.__archetype,
+            arguments=self.__arguments, tokenizer=self.__tokenizer).exc(
+            training=training, validating=validating)
