@@ -1,3 +1,4 @@
+"""Module vault.py"""
 import typing
 
 import pandas as pd
