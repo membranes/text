@@ -37,7 +37,6 @@ class Arguments:
 
     def __get_dictionary(self, node: str):
         """
-
         s3:// {bucket.name} / {prefix.root} + {prefix.name} / {key.name}
 
         :param node: {prefix.name} / {key.name}
@@ -55,10 +54,18 @@ class Arguments:
         return values.to_dict()[0]
 
     def exc(self, node: str) -> src.elements.arguments.Arguments:
+        """
+        s3:// {bucket.name} / {prefix.root} + {prefix.name} / {key.name}
 
+        :param node: {prefix.name} / {key.name}
+        :return:
+        """
+
+        # Get the dictionary of arguments
         dictionary = self.__get_dictionary(node=node)
 
-        model_output_directory = os.path.join(config.Config().warehouse, dictionary['name'])
+        # Set up the model output directory parameter
+        model_output_directory = os.path.join(self.__configurations.warehouse, dictionary['name'])
         dictionary['model_output_directory'] = model_output_directory
 
         return src.elements.arguments.Arguments(**dictionary)
