@@ -1,10 +1,11 @@
+"""Module main.py"""
 import logging
 import os
 import sys
 
 import pandas as pd
-import torch
 import ray
+import torch
 
 
 def main():
@@ -19,8 +20,6 @@ def main():
 
     # Arguments & Hyperspace
     logger.info(arguments)
-    logger.info(min(hyperspace.learning_rate_distribution))
-
 
     # Set up
     setup: bool = src.setup.Setup(service=service, s3_parameters=s3_parameters).exc()
@@ -38,8 +37,6 @@ def main():
     # The Data
     interface = src.data.interface.Interface(s3_parameters=s3_parameters)
     data: pd.DataFrame = interface.data()
-    logger.info(data)
-
 
     # Temporary
     data = data.loc[:500, :]
@@ -69,17 +66,15 @@ if __name__ == '__main__':
     os.environ['CUDA_VISIBLE_DEVICES']='0'
     os.environ['TOKENIZERS_PARALLELISM']='true'
     os.environ['RAY_USAGE_STATS_ENABLED']='0'
-    
+
     # Modules
     import src.data.interface
-
     import src.elements.s3_parameters as s3p
     import src.elements.service as sr
     import src.elements.arguments
 
     import src.functions.cache
     import src.functions.service
-
     import src.models.interface
     import src.models.arguments
     import src.models.hyperspace
