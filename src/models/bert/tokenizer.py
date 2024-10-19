@@ -5,6 +5,10 @@ import src.elements.arguments as ag
 
 
 class Tokenizer:
+    """
+    Class Tokenizer: <a href="https://arxiv.org/abs/1810.04805" target="_blank">BERT</a>
+     (Bidirectional Encoder Representations from Transformers)
+    """
 
     def __init__(self, arguments: ag.Arguments):
         """
