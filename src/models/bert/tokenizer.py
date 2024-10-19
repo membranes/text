@@ -13,7 +13,9 @@ class Tokenizer:
     def __init__(self, arguments: ag.Arguments):
         """
 
-        :param arguments:
+        Parameters<br>
+        ------------<br>
+        :param arguments: A suite of values/arguments for machine learning model development.<br>
         """
 
         self.__arguments = arguments
