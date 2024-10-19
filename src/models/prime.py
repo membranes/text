@@ -1,3 +1,4 @@
+"""Module prime.py"""
 import transformers
 
 import src.elements.arguments as ag
@@ -7,15 +8,21 @@ import src.models.validation
 
 
 class Prime:
+    """
+    Notes<br>
+    ------<br>
+
+    Determines the prime model vis-à-vis the best set of hyperparameters.
+    """
 
     def __init__(self, enumerator: dict, archetype: dict, arguments: ag.Arguments,
                  tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
         """
 
-        :param enumerator:
-        :param archetype:
-        :param arguments:
-        :param tokenizer:
+        :param enumerator: Of tags; key &rarr; identifier, value &rarr; label<br>
+        :param archetype: Of tags; key &rarr; label, value &rarr; identifier<br>
+        :param arguments: A suite of values/arguments for machine learning model development.<br>
+        :param tokenizer: The tokenizer of text.<br>
         """
 
         self.__enumerator = enumerator
@@ -26,8 +33,8 @@ class Prime:
     def exc(self, training, validating):
         """
 
-        :param training:
-        :param validating:
+        :param training: The training data.
+        :param validating: The validation data.
         :return:
         """
 
@@ -42,4 +49,3 @@ class Prime:
 
         src.models.measurements.Measurements().exc(
             originals=originals, predictions=predictions)
-
