@@ -7,7 +7,7 @@ class Hyperspace(typing.NamedTuple):
     <b>Notes</b><br>
     ------<br>
 
-    For the hyperparameter space variables.<br><br>
+    The hyperparameters; alongside their starting values or number spaces.<br><br>
 
 
     <b>Attributes</b><br>
