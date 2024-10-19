@@ -25,6 +25,9 @@ class Tuning:
         self.__arguments = arguments
         self.__hyperspace = hyperspace
 
+        # Arguments
+        logging.info('Architecture: %s', self.__arguments.pretrained_model_name)
+
         # Space
         self.__space = {
             'learning_rate': ray.tune.uniform(
@@ -98,10 +101,10 @@ class Tuning:
         <a href="https://docs.ray.io/en/latest/tune/api/doc/ray.tune.CLIReporter.html">ray.tune.CLIReporter</a><br><br>
 
         This prints to the console if the verbose setting of
-        <a href="https://huggingface.co/docs/transformers/v4.45.2/en/main_classes/trainer#transformers.Trainer.hyperparameter_search">
-        hyperparameter_search()</a> is > 0. The
-        hyperparameter_search() function accepts the <a href="https://docs.ray.io/en/latest/train/api/doc/ray.train.RunConfig.html">RunConfig</a>
-        parameters.
+        <a href="https://huggingface.co/docs/transformers/v4.45.2/en/main_classes/
+        trainer#transformers.Trainer.hyperparameter_search"> hyperparameter_search()</a> is > 0. The
+        hyperparameter_search() function accepts the
+        <a href="https://docs.ray.io/en/latest/train/api/doc/ray.train.RunConfig.html">RunConfig</a> parameters.
 
         :return:
         """
