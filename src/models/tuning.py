@@ -18,7 +18,7 @@ class Tuning:
     def __init__(self, arguments: ag.Arguments, hyperspace: hp.Hyperspace):
         """
 
-        :param arguments: A suite of values for machine learning model development
+        :param arguments: A suite of values/arguments for machine learning model development
         :param hyperspace:
         """
 
