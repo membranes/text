@@ -16,7 +16,7 @@ class API:
     def __call__(self, url: str) -> dict:
         """
 
-        :param url:
+        :param url: An online data source URL (Uniform Resource Locator)
         :return:
         """
 
