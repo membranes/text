@@ -25,8 +25,8 @@ class Objects:
     def write(nodes: dict, path: str) -> str:
         """
 
-        :param nodes:
-        :param path:
+        :param nodes: A dictionary of data
+        :param path: A string, which includes a file name & extension, representing a storage point.
         :return:
         """
 
@@ -46,7 +46,7 @@ class Objects:
     def api(url: str) -> dict:
         """
 
-        :param url:
+        :param url: An online data source URL (Uniform Resource Locator)
         :return:
         """
 
@@ -58,7 +58,7 @@ class Objects:
     def read(uri: str) -> dict:
         """
 
-        :param uri:
+        :param uri: A file's URI (Uniform Resource Identifier)
         :return:
         """
 
