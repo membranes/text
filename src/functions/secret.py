@@ -9,15 +9,16 @@ import botocore.exceptions
 
 class Secret:
     """
-    Description<br>
-    -----------<br>
-    This class will retrieve a requested secret.
+    <b>Description</b><br>
+    ------------<br>
+    This class will retrieve a requested secret.<br><br>
 
 
-    References<br>
-    ----------<br>
+    <b>References</b><br>
+    ------------<br>
 
-    <a href="https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html" target="_blank">Secret Value Documentation</a>
+    <a href="https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html" target="_blank">
+    Secret Value Documentation</a>
 
     """
 
