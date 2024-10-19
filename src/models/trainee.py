@@ -27,8 +27,9 @@ class Trainee:
         -----<br>
         output_dir: Is the model_output_directory<br>
         logging_dir: Is the storage_path, the
-        <a href="https://huggingface.co/docs/transformers/v4.45.2/en/main_classes/trainer#transformers.TrainingArguments.logging_dir"
-         target="_blank">TensorBoard logging directory</a>.<br><br>
+        <a href="https://huggingface.co/docs/transformers/v4.45.2/en/main_classes/
+        trainer#transformers.TrainingArguments.logging_dir" target="_blank">TensorBoard logging
+        directory</a>.<br><br>
 
         References<br>
         ----------<br>
