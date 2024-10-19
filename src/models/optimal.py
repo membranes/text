@@ -64,7 +64,7 @@ class Optimal:
         # Tuning
         tuning = src.models.tuning.Tuning(arguments=self.__arguments, hyperspace=self.__hyperspace)
 
-        # Temporary
+        # Data Collator
         data_collator: transformers.DataCollatorForTokenClassification = (
             transformers.DataCollatorForTokenClassification(tokenizer=tokenizer))
 
