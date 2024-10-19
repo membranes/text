@@ -1,6 +1,4 @@
 """Module steps.py"""
-import logging
-
 import transformers
 
 import src.elements.arguments as ag
@@ -17,15 +15,15 @@ class Steps:
     The BERT steps.
     """
 
-    def __init__(self, enumerator: dict, archetype: dict, arguments: ag.Arguments, hyperspace: hp.Hyperspace, vault: vu.Vault):
+    def __init__(self, enumerator: dict, archetype: dict, arguments: ag.Arguments,
+                 hyperspace: hp.Hyperspace, vault: vu.Vault):
         """
 
-        :param enumerator: Code -> tag mapping
-        :param archetype: Tag -> code mapping
-        :param arguments: The parameter values for ...
-        :param hyperspace: The real number spaces of ...
-        :param vault: The data frames for modelling stages, i.e., the
-                       training, validating, and testing stages
+        :param enumerator: Of tags; key &rarr; identifier, value &rarr; label<br>
+        :param archetype: Of tags; key &rarr; label, value &rarr; identifier<br>
+        :param arguments: A suite of values/arguments for machine learning model development<br>
+        :param hyperspace: The hyperparameters alongside their starting values or number spaces.<br>
+        :param vault: The data frames for modelling stages, i.e., the training, validating, and testing stages.<br>
         """
 
         # Inputs
@@ -37,7 +35,8 @@ class Steps:
 
         # A set of values for machine learning model development
         self.__arguments = self.__arguments._replace(
-            N_TRAIN=self.__vault.training.shape[0], N_VALID=self.__vault.validating.shape[0], N_TEST=self.__vault.testing.shape[0])
+            N_TRAIN=self.__vault.training.shape[0], N_VALID=self.__vault.validating.shape[0],
+            N_TEST=self.__vault.testing.shape[0])
 
         # Get tokenizer
         self.__tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase = (
@@ -79,4 +78,3 @@ class Steps:
             enumerator=self.__enumerator, archetype=self.__archetype,
             arguments=self.__arguments, tokenizer=self.__tokenizer).exc(
             training=training, validating=validating)
-
