@@ -48,15 +48,13 @@ class Operating:
         # Metrics
         metrics = src.models.metrics.Metrics(archetype=self.__archetype)
 
-        # Temporary
-        data_collator: transformers.DataCollatorForTokenClassification = (
-            transformers.DataCollatorForTokenClassification(tokenizer=tokenizer))
-
         # Trainer
         trainer = transformers.Trainer(
             model_init=intelligence.model,
-            args=args, data_collator=data_collator,
-            train_dataset=training.dataset, eval_dataset=validating.dataset,
+            args=args,
+            data_collator=transformers.DataCollatorForTokenClassification(tokenizer=tokenizer),
+            train_dataset=training.dataset,
+            eval_dataset=validating.dataset,
             tokenizer=tokenizer,
             compute_metrics=metrics.exc)
 
