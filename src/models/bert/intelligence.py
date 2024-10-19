@@ -17,9 +17,12 @@ class Intelligence:
     def __init__(self, enumerator: dict, archetype: dict, arguments: ag.Arguments):
         """
 
-        :param enumerator: key -> identifier, value -> label
-        :param archetype: key -> label, value -> identifier
-        :param arguments:
+        Parameters<br>
+        ------------<br>
+
+        :param enumerator: Of tags; key &rarr; identifier, value &rarr; label<br>
+        :param archetype: Of tags; key &rarr; label, value &rarr; identifier<br>
+        :param arguments: A suite of values/arguments for machine learning model development.<br>
         """
 
         self.__enumerator = enumerator
@@ -42,7 +45,9 @@ class Intelligence:
 
         config = transformers.BertConfig(hidden_dropout_prob=0.1,  hidden_act='gelu').from_pretrained(
             pretrained_model_name_or_path=self.__arguments.pretrained_model_name,
-            **{'num_labels': len(self.__enumerator)})
+            **{'num_labels': len(self.__enumerator),
+               'label2id': self.__archetype,
+               'id2label': self.__enumerator})
 
         return transformers.BertForTokenClassification.from_pretrained(
             pretrained_model_name_or_path=self.__arguments.pretrained_model_name, config=config
