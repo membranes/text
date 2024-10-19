@@ -10,8 +10,8 @@ class Hyperspace(typing.NamedTuple):
     For the hyperparameter space variables.<br><br>
 
 
-    <b>Variables</b><br>
-    ----------<br>
+    <b>Attributes</b><br>
+    -----------<br>
 
     learning_rate_distribution: list[float]
         <ul><li>A list of length two, consisting of the minimum & maximum value constraints vis-à-vis
