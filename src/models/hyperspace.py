@@ -2,7 +2,6 @@
 import json
 import logging
 
-import config
 import src.elements.hyperspace as hp
 import src.elements.s3_parameters as s3p
 import src.elements.service as sr
@@ -10,6 +9,9 @@ import src.s3.unload
 
 
 class Hyperspace:
+    """
+    Class Hyperspace
+    """
 
     def __init__(self, service: sr.Service, s3_parameters: s3p.S3Parameters):
         """
@@ -21,9 +23,6 @@ class Hyperspace:
 
         self.__service: sr.Service = service
         self.__s3_parameters = s3_parameters
-
-        # Configurations
-        self.__configurations = config.Config()
 
         # Logging
         logging.basicConfig(level=logging.INFO,
@@ -55,13 +54,16 @@ class Hyperspace:
         :return:
         """
 
+        # Get the dictionary of hyperparameter values
         dictionary = self.__get_dictionary(node=node)
 
+        # Setting up
         items = {'learning_rate_distribution': dictionary['continuous']['learning_rate'],
                  'weight_decay_distribution': dictionary['continuous']['weight_decay'],
                  'weight_decay_choice': dictionary['choice']['weight_decay'],
                  'per_device_train_batch_size': dictionary['choice']['per_device_train_batch_size']}
 
+        # Hence
         hyperspace = hp.Hyperspace(**items)
 
         return hyperspace
