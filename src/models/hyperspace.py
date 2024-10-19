@@ -1,6 +1,5 @@
 """Module hyperspace.py"""
 import json
-import logging
 
 import src.elements.hyperspace as hp
 import src.elements.s3_parameters as s3p
@@ -23,12 +22,6 @@ class Hyperspace:
 
         self.__service: sr.Service = service
         self.__s3_parameters = s3_parameters
-
-        # Logging
-        logging.basicConfig(level=logging.INFO,
-                            format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
-                            datefmt='%Y-%m-%d %H:%M:%S')
-        self.__logger = logging.getLogger(__name__)
 
     def __get_dictionary(self, node: str) -> dict:
         """
