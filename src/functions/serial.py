@@ -24,7 +24,7 @@ class Serial:
     def api(url: str) -> dict:
         """
 
-        :param url:
+        :param url: The file string of a local YAML file; path + file name + extension.
         :return:
         """
 
