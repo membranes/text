@@ -18,12 +18,13 @@ class Setup:
     Sets up local & cloud environments
     """
 
-    def __init__(self, service: sr.Service, s3_parameters: s3p.S3Parameters):
+    def __init__(self, service: sr.Service, s3_parameters: s3p.S3Parameters, architecture: str):
         """
 
         :param service: A suite of services for interacting with Amazon Web Services.
         :param s3_parameters: The overarching S3 (Simple Storage Service) parameters
                               settings of this project, e.g., region code name, buckets, etc.
+        :param architecture: The architecture in focus
         """
 
         self.__service: sr.Service = service
@@ -31,10 +32,10 @@ class Setup:
         self.__configurations = config.Config()
 
         # The prefix in focus within the Amazon S3 bucket in focus.
-        parts = self.__configurations.artefacts_.split(sep=self.__configurations.warehouse + os.sep)
-        self.__prefix = self.__s3_parameters.path_internal_data + parts[-1] + '/'
+        self.__architecture = architecture
+        self.__prefix = self.__s3_parameters.path_internal_artefacts + self.__architecture + '/'
 
-    def __clear(self) -> bool:
+    def __clear_prefix(self) -> bool:
         """
 
         :return:
@@ -66,7 +67,7 @@ class Setup:
 
         # If the bucket exist, the prefix path is cleared.  Otherwise, the bucket is created.
         if bucket.exists():
-            self.__clear()
+            self.__clear_prefix()
 
         return bucket.create()
 
@@ -79,7 +80,7 @@ class Setup:
         directories = src.functions.directories.Directories()
         directories.cleanup(path=self.__configurations.warehouse)
 
-        return directories.create(path=self.__configurations.artefacts_)
+        return directories.create(path=os.path.join(self.__configurations.artefacts_, self.__architecture))
 
     def exc(self) -> bool:
         """
