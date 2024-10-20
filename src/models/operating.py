@@ -26,7 +26,7 @@ class Operating:
         self.__archetype = archetype
 
         # Intelligence
-        self.__algorithm = src.models.algorithm.Algorithm(architecture=self.__arguments.name)
+        self.__algorithm = src.models.algorithm.Algorithm(architecture=self.__arguments.architecture)
 
     def exc(self, training: sr.Structures, validating: sr.Structures,
             tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
