@@ -8,6 +8,9 @@ import src.elements.arguments as ag
 
 
 class Algorithm:
+    """
+    Class Algorithm
+    """
 
     def __init__(self, architecture: str):
         """
@@ -20,9 +23,9 @@ class Algorithm:
     def exc(self, arguments: ag.Arguments, enumerator: dict, archetype: dict):
         """
 
-        :param arguments:
-        :param enumerator:
-        :param archetype:
+        :param arguments: A suite of values/arguments for machine learning model development.<br>
+        :param enumerator: Of tags; key &rarr; identifier, value &rarr; label<br>
+        :param archetype: Of tags; key &rarr; label, value &rarr; identifier<br>
         :return:
         """
 

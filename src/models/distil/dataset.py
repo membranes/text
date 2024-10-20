@@ -1,19 +1,22 @@
-import logging
-
+"""Module dataset.py"""
 import pandas as pd
 import torch.utils.data
 import transformers
 
 
 class Dataset(torch.utils.data.Dataset):
+    """
+    Dataset builder, vis-à-vis the tokenization method of the architecture in question.
+    """
 
     def __init__(self, frame: pd.DataFrame, enumerator: dict,
                  tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
         """
-
-        :param frame:
-        :param enumerator:
-        :param tokenizer:
+        Parameters<br>
+        -----------<br>
+        :param frame: The data object within which the data being tokenized resides.<br>
+        :param enumerator: Of tags; key &rarr; identifier, value &rarr; label<br>
+        :param tokenizer: The tokenizer of text.<br>
         """
 
         super().__init__()
@@ -24,16 +27,16 @@ class Dataset(torch.utils.data.Dataset):
         self.__enumerator = enumerator
         self.__tokenizer = tokenizer
 
-        # Logging
-        logging.basicConfig(level=logging.INFO,
-                            format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
-                            datefmt='%Y-%m-%d %H:%M:%S')
-        self.__logger = logging.getLogger(__name__)
-
     def __getitem__(self, index):
+        """
+
+        :param index: A row index
+        :return:
+        """
 
         words: list[str] = self.__frame['sentence'][index].strip().split()
-        encodings = self.__tokenizer(words, truncation=True, is_split_into_words=True, padding='max_length', max_length=self.__length)
+        encodings = self.__tokenizer(
+            words, truncation=True, is_split_into_words=True, padding='max_length', max_length=self.__length)
 
         tags: list[str] = self.__frame['tagstr'][index].split(',')
         numerals: list[int] = [self.__enumerator[tag] for tag in tags]

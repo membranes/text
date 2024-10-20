@@ -1,3 +1,4 @@
+"""Module validation.py"""
 import logging
 import typing
 
@@ -8,11 +9,8 @@ import src.elements.structures as sr
 
 
 class Validation:
-    """Validation Class
-
-    <br>
-    Summarises a variety of validation steps
-
+    """
+    Executes the validation steps.
     """
 
     def __init__(self, validating: sr.Structures, archetype: dict):
@@ -32,7 +30,7 @@ class Validation:
     def exc(self, model: transformers.Trainer) -> typing.Tuple[list, list]:
         """
 
-        :param model:
+        :param model: The model; trained using the best set of hyperparameters.
         :return:
             labels: The codes of the original labels<br>
             predictions: The predicted codes

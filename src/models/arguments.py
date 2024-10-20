@@ -1,12 +1,12 @@
 """Module arguments.py"""
-import os
 import logging
+import os
+
 import pandas as pd
 
 import config
-import src.elements.s3_parameters as s3p
 import src.elements.arguments
-
+import src.elements.s3_parameters as s3p
 
 
 class Arguments:
@@ -29,15 +29,8 @@ class Arguments:
         # Configurations
         self.__configurations = config.Config()
 
-        # Logging
-        logging.basicConfig(level=logging.INFO,
-                        format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
-                        datefmt='%Y-%m-%d %H:%M:%S')
-        self.__logger = logging.getLogger(__name__)
-
     def __get_dictionary(self, node: str):
         """
-
         s3:// {bucket.name} / {prefix.root} + {prefix.name} / {key.name}
 
         :param node: {prefix.name} / {key.name}
@@ -45,7 +38,7 @@ class Arguments:
         """
 
         path = 's3://' + self.__s3_parameters.internal + '/' + self.__s3_parameters.path_internal_configurations + node
-        self.__logger.info(path)
+        logging.info(path)
 
         try:
             values = pd.read_json(path_or_buf=path, orient='index')
@@ -55,10 +48,18 @@ class Arguments:
         return values.to_dict()[0]
 
     def exc(self, node: str) -> src.elements.arguments.Arguments:
+        """
+        s3:// {bucket.name} / {prefix.root} + {prefix.name} / {key.name}
 
+        :param node: {prefix.name} / {key.name}
+        :return:
+        """
+
+        # Get the dictionary of arguments
         dictionary = self.__get_dictionary(node=node)
 
-        model_output_directory = os.path.join(config.Config().warehouse, dictionary['name'])
+        # Set up the model output directory parameter
+        model_output_directory = os.path.join(self.__configurations.warehouse, dictionary['name'])
         dictionary['model_output_directory'] = model_output_directory
 
         return src.elements.arguments.Arguments(**dictionary)

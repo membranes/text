@@ -1,5 +1,4 @@
 """Module steps.py"""
-import logging
 
 import transformers.tokenization_utils_base
 
@@ -21,11 +20,11 @@ class Steps:
     def __init__(self, enumerator: dict, archetype: dict, arguments: ag.Arguments, hyperspace: hp.Hyperspace, vault: vu.Vault):
         """
 
-        :param enumerator: The tags and their identification codes.
-        :param archetype: The inverse dict of enumerator.
-        :param arguments: The parameter values for ...
-        :param hyperspace: The real number spaces of ...
-        :param vault: An object of dataframes, consisting of the training, validating, and testing data sets.
+        :param enumerator: Of tags; key &rarr; identifier, value &rarr; label<br>
+        :param archetype: Of tags; key &rarr; label, value &rarr; identifier<br>
+        :param arguments: A suite of values/arguments for machine learning model development.<br>
+        :param hyperspace: The hyperparameters alongside their starting values or number spaces.<br>
+        :param vault: An object of dataframes, consisting of the training, validating, and testing data sets.<br>
         """
 
         # Inputs
@@ -37,7 +36,8 @@ class Steps:
 
         # A set of values for machine learning model development
         self.__arguments = self.__arguments._replace(
-            N_TRAIN=self.__vault.training.shape[0], N_VALID=self.__vault.validating.shape[0], N_TEST=self.__vault.testing.shape[0])
+            N_TRAIN=self.__vault.training.shape[0], N_VALID=self.__vault.validating.shape[0],
+            N_TEST=self.__vault.testing.shape[0])
 
         # Get tokenizer
         self.__tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase = (

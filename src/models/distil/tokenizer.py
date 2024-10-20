@@ -5,10 +5,15 @@ import src.elements.arguments as ag
 
 
 class Tokenizer:
+    """
+    Class Tokenizer: <a href="https://arxiv.org/abs/1910.01108" target="_blank">Distil BERT</a>
+     (Bidirectional Encoder Representations from Transformers)
+    """
 
     def __init__(self, arguments: ag.Arguments):
         """
-        Constructor
+
+        :param arguments: A suite of values/arguments for machine learning model development.<br>
         """
 
         self.__arguments = arguments

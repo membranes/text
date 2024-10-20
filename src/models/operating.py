@@ -1,3 +1,4 @@
+"""Module operating.py"""
 import transformers.trainer_utils
 
 import src.elements.arguments as ag
@@ -15,9 +16,9 @@ class Operating:
     def __init__(self, arguments: ag.Arguments, enumerator: dict, archetype: dict):
         """
 
-        :param arguments:
-        :param enumerator:
-        :param archetype:
+        :param arguments: A suite of values/arguments for machine learning model development.<br>
+        :param enumerator: Of tags; key &rarr; identifier, value &rarr; label<br>
+        :param archetype: Of tags; key &rarr; label, value &rarr; identifier<br>
         """
 
         self.__arguments = arguments
@@ -31,9 +32,9 @@ class Operating:
             tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
         """
 
-        :param training:
-        :param validating:
-        :param tokenizer:
+        :param training: The training data object.<br>
+        :param validating: The validation data object.<br>
+        :param tokenizer: The tokenizer of text.<br>
         :return:
         """
 
@@ -47,15 +48,13 @@ class Operating:
         # Metrics
         metrics = src.models.metrics.Metrics(archetype=self.__archetype)
 
-        # Temporary
-        data_collator: transformers.DataCollatorForTokenClassification = (
-            transformers.DataCollatorForTokenClassification(tokenizer=tokenizer))
-
         # Trainer
         trainer = transformers.Trainer(
             model_init=intelligence.model,
-            args=args, data_collator=data_collator,
-            train_dataset=training.dataset, eval_dataset=validating.dataset,
+            args=args,
+            data_collator=transformers.DataCollatorForTokenClassification(tokenizer=tokenizer),
+            train_dataset=training.dataset,
+            eval_dataset=validating.dataset,
             tokenizer=tokenizer,
             compute_metrics=metrics.exc)
 

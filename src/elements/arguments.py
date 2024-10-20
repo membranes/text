@@ -1,3 +1,4 @@
+"""Module arguments.py"""
 import typing
 
 
@@ -21,12 +22,15 @@ class Arguments(typing.NamedTuple):
     N_CPU: <b>int</b>  An initial number of central processing units for computation<br>
     N_GPU: <b>int</b>  The number of graphics processing units<br>
     N_TRIALS: <b>int</b>   Hyperparameters search trials<br>
-    perturbation_interval: <b>float</b> <a href="https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.PopulationBasedTraining.html" target="_blank">
-    Population Based Training</a><br>
-    quantile_fraction: <b>float</b> <a href="https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.PopulationBasedTraining.html" target="_blank">
-    Population Based Training</a><br>
-    resample_probability: <b>float</b> <a href="https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.PopulationBasedTraining.html" target="_blank">
-    Population Based Training</a><br>
+    perturbation_interval: <b>float</b>
+        <a href="https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.PopulationBasedTraining.html" target="_blank">
+        Population Based Training</a><br>
+    quantile_fraction: <b>float</b>
+        <a href="https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.PopulationBasedTraining.html" target="_blank">
+        Population Based Training</a><br>
+    resample_probability: <b>float</b>
+        <a href="https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.PopulationBasedTraining.html" target="_blank">
+        Population Based Training</a><br>
     task : <b>str</b> The type of task the model is being trained for<br>
     pretrained_model_name : <b>str</b> The name of the pre-trained model that will be fine-tuned<br>
     name : <b>str</b> A name that identifies the underlying pre-trained model

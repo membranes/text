@@ -11,22 +11,27 @@ import src.models.loader
 
 
 class Structures:
+    """
+    Class Structures<br>
+    ----------------<br>
+
+    Builds and delivers the data structures per modelling stage
+    """
 
     def __init__(self, enumerator: dict, arguments: ag.Arguments, vault: vu.Vault,
                  tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
         """
 
-        :param enumerator:
-        :param arguments:
-        :param vault:
-        :param tokenizer:
+        :param enumerator: Of tags; key &rarr; identifier, value &rarr; label<br>
+        :param arguments: A suite of values/arguments for machine learning model development.<br>
+        :param vault: An object of dataframes, consisting of the training, validating, and testing data sets.<br>
+        :param tokenizer: The tokenizer of text.<br>
         """
 
         # A set of values, and data, for machine learning model development
         self.__enumerator = enumerator
         self.__arguments = arguments
         self.__vault = vault
-
         self.__tokenizer = tokenizer
 
         # For DataLoader creation

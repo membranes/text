@@ -15,7 +15,7 @@ class Trainee:
     def __init__(self, arguments: ag.Arguments):
         """
 
-        :param arguments:
+        :param arguments: A suite of values/arguments for machine learning model development.<br>
         """
 
         self.__arguments = arguments
@@ -25,13 +25,16 @@ class Trainee:
 
         Notes<br>
         -----<br>
-        output_dir: model_output_directory<br>
-        logging_dir: storage_path, <a href="https://huggingface.co/docs/transformers/v4.45.2/en/main_classes/trainer#transformers.TrainingArguments.logging_dir" target="_blank">
-        TensorBoard logging directory</a><br><br>
+        output_dir: Is the model_output_directory<br>
+        logging_dir: Is the storage_path, the
+        <a href="https://huggingface.co/docs/transformers/v4.45.2/en/main_classes/
+        trainer#transformers.TrainingArguments.logging_dir" target="_blank">TensorBoard logging
+        directory</a>.<br><br>
 
         References<br>
         ----------<br>
-        <a href="https://huggingface.co/docs/transformers/v4.41.3/en/main_classes/trainer#transformers.TrainingArguments" target="_blank">TrainingArguments</a>
+        <a href="https://huggingface.co/docs/transformers/v4.41.3/en/main_classes/trainer#transformers.TrainingArguments"
+         target="_blank">TrainingArguments</a><br><br>
 
         :return:
         """

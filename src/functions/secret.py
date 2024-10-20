@@ -1,5 +1,5 @@
 """
-The secret ...
+Module secret.py
 """
 import json
 
@@ -9,15 +9,16 @@ import botocore.exceptions
 
 class Secret:
     """
-    Description
-    -----------
-    This class retrieves the ...
+    <b>Description</b><br>
+    ------------<br>
+    This class will retrieve a requested secret.<br><br>
 
 
-    References
-    ----------
+    <b>References</b><br>
+    ------------<br>
 
-    * https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+    <a href="https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html" target="_blank">
+    Secret Value Documentation</a>
 
     """
 

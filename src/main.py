@@ -1,10 +1,12 @@
+"""Module main.py"""
+import argparse
 import logging
 import os
 import sys
 
 import pandas as pd
-import torch
 import ray
+import torch
 
 
 def main():
@@ -18,9 +20,7 @@ def main():
     logger: logging.Logger = logging.getLogger(__name__)
 
     # Arguments & Hyperspace
-    logger.info(arguments)
-    logger.info(min(hyperspace.learning_rate_distribution))
-
+    logger.info(args.architecture)
 
     # Set up
     setup: bool = src.setup.Setup(service=service, s3_parameters=s3_parameters).exc()
@@ -38,22 +38,18 @@ def main():
     # The Data
     interface = src.data.interface.Interface(s3_parameters=s3_parameters)
     data: pd.DataFrame = interface.data()
-    logger.info(data)
-
 
     # Temporary
     data = data.loc[:500, :]
     src.models.interface.Interface(
         data=data, enumerator=interface.enumerator(), archetype=interface.archetype()).exc(
-        architecture=architecture, arguments=arguments, hyperspace=hyperspace)
+        architecture=args.architecture, arguments=arguments, hyperspace=hyperspace)
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
 
 
 if __name__ == '__main__':
-
-    architecture = 'distil'
 
     # Paths
     root = os.getcwd()
@@ -69,32 +65,36 @@ if __name__ == '__main__':
     os.environ['CUDA_VISIBLE_DEVICES']='0'
     os.environ['TOKENIZERS_PARALLELISM']='true'
     os.environ['RAY_USAGE_STATS_ENABLED']='0'
-    
+
     # Modules
     import src.data.interface
-
     import src.elements.s3_parameters as s3p
     import src.elements.service as sr
     import src.elements.arguments
-
     import src.functions.cache
+    import src.functions.expecting
     import src.functions.service
-
     import src.models.interface
     import src.models.arguments
     import src.models.hyperspace
     import src.s3.s3_parameters
     import src.setup
 
+    expecting = src.functions.expecting.Expecting()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('architecture', type=expecting.architecture,
+                        help='The name of the architecture in focus.')
+    args = parser.parse_args()
+
     # S3 S3Parameters, Service Instance
     s3_parameters: s3p.S3Parameters = src.s3.s3_parameters.S3Parameters().exc()
     service: sr.Service = src.functions.service.Service(region_name=s3_parameters.region_name).exc()
 
     arguments = src.models.arguments.Arguments(s3_parameters=s3_parameters).exc(
-        node=f'{architecture}/arguments.json')
+        node=f'{args.architecture}/arguments.json')
 
     hyperspace = src.models.hyperspace.Hyperspace(service=service, s3_parameters=s3_parameters).exc(
-        node=f'{architecture}/hyperspace.json'
+        node=f'{args.architecture}/hyperspace.json'
     )
 
     main()
