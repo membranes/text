@@ -33,7 +33,7 @@ class Arguments(typing.NamedTuple):
         Population Based Training</a><br>
     task : <b>str</b> The type of task the model is being trained for<br>
     pretrained_model_name : <b>str</b> The name of the pre-trained model that will be fine-tuned<br>
-    name : <b>str</b> A name that identifies the underlying pre-trained model
+    architecture : <b>str</b> A name that identifies the underlying pre-trained model
     model_output_directory: <b>str</b>
     """
 
@@ -56,5 +56,5 @@ class Arguments(typing.NamedTuple):
     resample_probability: float
     task: str
     pretrained_model_name: str
-    name: str
+    architecture: str
     model_output_directory: str
