@@ -23,7 +23,7 @@ def main():
     logger.info(args.architecture)
 
     # Set up
-    setup: bool = src.setup.Setup(service=service, s3_parameters=s3_parameters).exc()
+    setup: bool = src.setup.Setup(service=service, s3_parameters=s3_parameters, architecture=args.architecture).exc()
     if not setup:
         src.functions.cache.Cache().exc()
         sys.exit('No Executions')
