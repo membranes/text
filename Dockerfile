@@ -13,7 +13,9 @@ RUN groupadd --system automata --gid $GID && \
     useradd --system automaton --uid $UID --gid $GID && \
     apt update && apt -q -y upgrade && apt -y install sudo && sudo apt -y install graphviz && \
     pip install --upgrade pip && \
-    pip install --requirement /app/requirements.txt --no-cache-dir && mkdir /app/warehouse
+    pip install --requirement /app/requirements.txt --no-cache-dir && \
+    python -m nltk.downloader -d /opt/conda/nltk_data all && \
+    mkdir /app/warehouse
 
 # Specific COPY
 COPY src /app/src
