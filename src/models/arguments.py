@@ -59,7 +59,7 @@ class Arguments:
         dictionary = self.__get_dictionary(node=node)
 
         # Set up the model output directory parameter
-        model_output_directory = os.path.join(self.__configurations.warehouse, dictionary['name'])
+        model_output_directory = os.path.join(self.__configurations.artefacts_, dictionary['architecture'])
         dictionary['model_output_directory'] = model_output_directory
 
         return src.elements.arguments.Arguments(**dictionary)
