@@ -1,4 +1,4 @@
-"""Module prime_steps.py"""
+"""The model training computation segment of class Prime"""
 import transformers.trainer_utils
 
 import src.elements.arguments as ag
@@ -8,7 +8,7 @@ import src.models.trainee
 import src.models.metrics
 
 
-class PrimeSteps:
+class PrimeCompute:
     """
     Class Operating
     """
