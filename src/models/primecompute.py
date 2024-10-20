@@ -1,4 +1,4 @@
-"""Module operating.py"""
+"""The model training computation segment of class Prime"""
 import transformers.trainer_utils
 
 import src.elements.arguments as ag
@@ -8,7 +8,7 @@ import src.models.trainee
 import src.models.metrics
 
 
-class Operating:
+class PrimeCompute:
     """
     Class Operating
     """
@@ -26,7 +26,7 @@ class Operating:
         self.__archetype = archetype
 
         # Intelligence
-        self.__algorithm = src.models.algorithm.Algorithm(architecture=self.__arguments.name)
+        self.__algorithm = src.models.algorithm.Algorithm(architecture=self.__arguments.architecture)
 
     def exc(self, training: sr.Structures, validating: sr.Structures,
             tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):

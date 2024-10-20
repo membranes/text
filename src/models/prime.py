@@ -3,7 +3,7 @@ import transformers
 
 import src.elements.arguments as ag
 import src.models.measurements
-import src.models.operating
+import src.models.primecompute
 import src.models.validation
 
 
@@ -39,7 +39,7 @@ class Prime:
         """
 
         # Training via the best hyperparameters set
-        operating = src.models.operating.Operating(
+        operating = src.models.primecompute.PrimeCompute(
             arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
         model = operating.exc(training=training, validating=validating, tokenizer=self.__tokenizer)
 
