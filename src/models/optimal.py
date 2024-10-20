@@ -33,7 +33,7 @@ class Optimal:
         self.__archetype = archetype
 
         # Intelligence
-        self.__algorithm = src.models.algorithm.Algorithm(architecture=self.__arguments.name)
+        self.__algorithm = src.models.algorithm.Algorithm(architecture=self.__arguments.architecture)
 
         # Directory preparation
         src.functions.directories.Directories().cleanup(path=self.__arguments.model_output_directory)
