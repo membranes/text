@@ -47,7 +47,7 @@ class Unload:
         try:
             blob = self.__s3_client.get_object(Bucket=bucket_name, Key=key_name)
         except self.__s3_client.exceptions.NoSuchKey as err:
-            raise f'The key {key_name} does not exist.\n{err}'
+            raise err from err
         except self.__s3_client.exceptions.InvalidObjectState as err:
             raise err.response
         except botocore.exceptions.ClientError as err:
