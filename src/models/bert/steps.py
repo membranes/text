@@ -8,7 +8,7 @@ import src.elements.hyperspace as hp
 import src.elements.vault as vu
 import src.models.bert.structures
 import src.models.bert.tokenizer
-import src.models.optimal
+import src.models.hyperpoints
 import src.models.prime
 
 
@@ -65,7 +65,7 @@ class Steps:
         training, validating, _ = self.__structures()
 
         # Hyperparameter search
-        optimal = src.models.optimal.Optimal(
+        optimal = src.models.hyperpoints.Hyperpoints(
             arguments=self.__arguments, hyperspace=self.__hyperspace,
             enumerator=self.__enumerator, archetype=self.__archetype)
         best = optimal(training=training, validating=validating, tokenizer=self.__tokenizer)
