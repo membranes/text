@@ -34,7 +34,7 @@ class Transfer:
         """
 
         strings = self.__dictionary.exc(
-            path=self.__configurations.warehouse, extension='*', prefix=self.__s3_parameters.path_internal_artefacts)
+            path=self.__configurations.artefacts_, extension='*', prefix=self.__s3_parameters.path_internal_artefacts)
 
         messages = src.s3.ingress.Ingress(
             service=self.__service, bucket_name=self.__s3_parameters.internal).exc(strings=strings)
