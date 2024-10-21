@@ -7,7 +7,7 @@ import src.elements.hyperspace as hp
 import src.elements.vault as vu
 import src.models.distil.structures
 import src.models.distil.tokenizer
-import src.models.optimal
+import src.models.hyperpoints
 import src.models.prime
 
 
@@ -43,7 +43,7 @@ class Steps:
         self.__tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase = (
             src.models.distil.tokenizer.Tokenizer(arguments=self.__arguments)())
 
-    def __structures(self):
+    def exc(self):
         """
 
         :return:
@@ -52,19 +52,11 @@ class Steps:
         structures = src.models.distil.structures.Structures(
             enumerator=self.__enumerator, arguments=self.__arguments,
             vault=self.__vault, tokenizer=self.__tokenizer)
-
-        return structures.training(), structures.validating(), structures.testing()
-
-    def exc(self):
-        """
-
-        :return:
-        """
-
-        training, validating, _ = self.__structures()
+        training = structures.training()
+        validating = structures.validating()
 
         # Hyperparameter search
-        optimal = src.models.optimal.Optimal(
+        optimal = src.models.hyperpoints.Hyperpoints(
             arguments=self.__arguments, hyperspace=self.__hyperspace,
             enumerator=self.__enumerator, archetype=self.__archetype)
         best = optimal(training=training, validating=validating, tokenizer=self.__tokenizer)
