@@ -1,4 +1,4 @@
-"""Module optimal.py"""
+"""Module hyperpoints.py"""
 import os
 
 import transformers
@@ -13,7 +13,7 @@ import src.models.trainee
 import src.models.tuning
 
 
-class Optimal:
+class Hyperpoints:
     """
     Architecture
     """
