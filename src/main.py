@@ -32,7 +32,7 @@ def main():
     ray.init(dashboard_host='172.17.0.2', dashboard_port=8265)
 
     # The Data
-    interface = src.data.interface.Interface(s3_parameters=s3_parameters).data()
+    interface = src.data.interface.Interface(s3_parameters=s3_parameters)
     data: pd.DataFrame = interface.data()
 
     # Temporary
