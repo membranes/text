@@ -11,16 +11,12 @@ import torch
 
 def main():
     """
-    https://docs.ray.io/en/latest/ray-core/api/doc/ray.init.html
-    https://docs.ray.io/en/latest/ray-core/configure.html
+    Entry Point
 
     :return:
     """
 
     logger: logging.Logger = logging.getLogger(__name__)
-
-    # Arguments & Hyperspace
-    logger.info(args.architecture)
 
     # Set up
     setup: bool = src.setup.Setup(service=service, s3_parameters=s3_parameters, architecture=args.architecture).exc()
@@ -36,7 +32,7 @@ def main():
     ray.init(dashboard_host='172.17.0.2', dashboard_port=8265)
 
     # The Data
-    interface = src.data.interface.Interface(s3_parameters=s3_parameters)
+    interface = src.data.interface.Interface(s3_parameters=s3_parameters).data()
     data: pd.DataFrame = interface.data()
 
     # Temporary
@@ -68,8 +64,6 @@ if __name__ == '__main__':
 
     # Modules
     import src.data.interface
-    import src.elements.s3_parameters as s3p
-    import src.elements.service as sr
     import src.elements.arguments
     import src.functions.cache
     import src.functions.expecting
@@ -87,8 +81,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # S3 S3Parameters, Service Instance
-    s3_parameters: s3p.S3Parameters = src.s3.s3_parameters.S3Parameters().exc()
-    service: sr.Service = src.functions.service.Service(region_name=s3_parameters.region_name).exc()
+    s3_parameters = src.s3.s3_parameters.S3Parameters().exc()
+    service = src.functions.service.Service(region_name=s3_parameters.region_name).exc()
 
     arguments = src.models.arguments.Arguments(s3_parameters=s3_parameters).exc(
         node=f'{args.architecture}/arguments.json')
