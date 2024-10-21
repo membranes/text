@@ -1,4 +1,4 @@
-"""The model training computation segment of class Prime"""
+"""Training via best set of hyperparameters."""
 import transformers.trainer_utils
 
 import src.elements.arguments as ag
@@ -8,7 +8,7 @@ import src.models.trainee
 import src.models.metrics
 
 
-class PrimeCompute:
+class Recompute:
     """
     Class Operating
     """
