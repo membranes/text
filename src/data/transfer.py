@@ -1,14 +1,16 @@
-
+"""Module transfer.py"""
+import config
 import src.data.dictionary
-import src.s3.ingress
-
 import src.elements.s3_parameters as s3p
 import src.elements.service as sr
-
-import config
+import src.s3.ingress
 
 
 class Transfer:
+    """
+    Transfers data files to an Amazon S3 (Simple Storage Service) prefix.
+    
+    """
 
     def __init__(self, service: sr.Service,  s3_parameters: s3p, architecture: str):
         """
@@ -16,6 +18,7 @@ class Transfer:
         :param service: A suite of services for interacting with Amazon Web Services.
         :param s3_parameters: The overarching S3 parameters settings of this
                               project, e.g., region code name, buckets, etc.
+        :param architecture: The pre-trained model architecture in focus.
         """
 
         self.__service: sr.Service = service
