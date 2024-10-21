@@ -9,7 +9,7 @@ import src.s3.ingress
 class Transfer:
     """
     Transfers data files to an Amazon S3 (Simple Storage Service) prefix.
-    
+
     """
 
     def __init__(self, service: sr.Service,  s3_parameters: s3p, architecture: str):
