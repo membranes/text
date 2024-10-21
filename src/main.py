@@ -41,6 +41,9 @@ def main():
         data=data, enumerator=interface.enumerator(), archetype=interface.archetype()).exc(
         architecture=args.architecture, arguments=arguments, hyperspace=hyperspace)
 
+    src.data.transfer.Transfer(
+        service=service, s3_parameters=s3_parameters, architecture=args.architecture).exc()
+
     # Delete Cache Points
     src.functions.cache.Cache().exc()
 
@@ -64,6 +67,7 @@ if __name__ == '__main__':
 
     # Modules
     import src.data.interface
+    import src.data.transfer
     import src.elements.arguments
     import src.functions.cache
     import src.functions.expecting
