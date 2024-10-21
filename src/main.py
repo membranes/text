@@ -73,8 +73,8 @@ if __name__ == '__main__':
     import src.functions.expecting
     import src.functions.service
     import src.models.interface
-    import src.models.arguments
-    import src.models.hyperspace
+    import src.settings.arguments
+    import src.settings.hyperspace
     import src.s3.s3_parameters
     import src.setup
 
@@ -88,10 +88,10 @@ if __name__ == '__main__':
     s3_parameters = src.s3.s3_parameters.S3Parameters().exc()
     service = src.functions.service.Service(region_name=s3_parameters.region_name).exc()
 
-    arguments = src.models.arguments.Arguments(s3_parameters=s3_parameters).exc(
+    arguments = src.settings.arguments.Arguments(s3_parameters=s3_parameters).exc(
         node=f'{args.architecture}/arguments.json')
 
-    hyperspace = src.models.hyperspace.Hyperspace(service=service, s3_parameters=s3_parameters).exc(
+    hyperspace = src.settings.hyperspace.Hyperspace(service=service, s3_parameters=s3_parameters).exc(
         node=f'{args.architecture}/hyperspace.json'
     )
 
