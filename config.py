@@ -48,3 +48,11 @@ class Config:
         self.fraction = 0.8
         self.aside = 0.1
         self.seed = 5
+
+
+        '''
+        The metadata of the modelling artefacts
+        '''
+        self.metadata = {'description': 'The modelling artefacts of {architecture}.',
+                         'details': 'The {architecture} collection consists of (a) the checkpoints, (b) the logs ' +
+                                    'for TensorBoard examination, and (c) much more.'}
