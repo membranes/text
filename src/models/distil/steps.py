@@ -1,5 +1,5 @@
 """Module steps.py"""
-
+import logging
 import transformers.tokenization_utils_base
 
 import src.elements.arguments as ag
@@ -68,6 +68,7 @@ class Steps:
             arguments=self.__arguments, hyperspace=self.__hyperspace,
             enumerator=self.__enumerator, archetype=self.__archetype)
         best = optimal(training=training, validating=validating, tokenizer=self.__tokenizer)
+        logging.info(best)
 
         # Hence, update the modelling variables
         self.__arguments = self.__arguments._replace(
