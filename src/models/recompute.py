@@ -39,7 +39,8 @@ class Recompute:
         """
 
         # Training Arguments: Only save the checkpoint at the optimal training point.
-        self.__arguments = self.__arguments._replace(save_total_limit=1)
+        self.__arguments = self.__arguments._replace(
+            EPOCHS=2*self.__arguments.EPOCHS, save_total_limit=1)
         args = src.models.training_arguments.TrainingArguments(arguments=self.__arguments).exc()
 
         # Model
