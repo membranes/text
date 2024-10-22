@@ -1,4 +1,4 @@
-"""Module trainee.py"""
+"""Module training_arguments.py"""
 import os
 
 import transformers
@@ -7,7 +7,7 @@ import config
 import src.elements.arguments as ag
 
 
-class Trainee:
+class TrainingArguments:
     """
     Class Arguments
     """
@@ -52,7 +52,7 @@ class Trainee:
             warmup_steps=0,
             no_cuda=False,
             seed=config.Config().seed,
-            save_total_limit=5,
+            save_total_limit=self.__arguments.save_total_limit,
             skip_memory_metrics=True,
             load_best_model_at_end=True,
             logging_dir=os.path.join(self.__arguments.model_output_directory, 'logs'),

@@ -1,4 +1,4 @@
-"""Module optimal.py"""
+"""Module hyperpoints.py"""
 import os
 
 import transformers
@@ -9,11 +9,11 @@ import src.elements.structures as sr
 import src.functions.directories
 import src.models.algorithm
 import src.models.metrics
-import src.models.trainee
+import src.models.training_arguments
 import src.models.tuning
 
 
-class Optimal:
+class Hyperpoints:
     """
     Architecture
     """
@@ -52,7 +52,7 @@ class Optimal:
         """
 
         # Training Arguments
-        args = src.models.trainee.Trainee(arguments=self.__arguments).exc()
+        args = src.models.training_arguments.TrainingArguments(arguments=self.__arguments).exc()
 
         # Model
         intelligence = self.__algorithm.exc(

@@ -22,6 +22,10 @@ class Arguments(typing.NamedTuple):
     N_CPU: <b>int</b>  An initial number of central processing units for computation<br>
     N_GPU: <b>int</b>  The number of graphics processing units<br>
     N_TRIALS: <b>int</b>   Hyperparameters search trials<br>
+    save_total_limit: <b>int</b>
+        <a href="https://huggingface.co/docs/setfit/reference/trainer#setfit.TrainingArguments.save_total_limit"
+        target="_blank">
+        The maximum # of checkpoints that will be retained.</a><br>
     perturbation_interval: <b>float</b>
         <a href="https://docs.ray.io/en/latest/tune/api/doc/ray.tune.schedulers.PopulationBasedTraining.html" target="_blank">
         Population Based Training</a><br>
@@ -51,6 +55,7 @@ class Arguments(typing.NamedTuple):
     N_CPU: int
     N_GPU: int
     N_TRIALS: int
+    save_total_limit: int
     perturbation_interval: int
     quantile_fraction: float
     resample_probability: float

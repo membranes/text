@@ -11,16 +11,12 @@ import torch
 
 def main():
     """
-    https://docs.ray.io/en/latest/ray-core/api/doc/ray.init.html
-    https://docs.ray.io/en/latest/ray-core/configure.html
+    Entry Point
 
     :return:
     """
 
     logger: logging.Logger = logging.getLogger(__name__)
-
-    # Arguments & Hyperspace
-    logger.info(args.architecture)
 
     # Set up
     setup: bool = src.setup.Setup(service=service, s3_parameters=s3_parameters, architecture=args.architecture).exc()
@@ -45,6 +41,9 @@ def main():
         data=data, enumerator=interface.enumerator(), archetype=interface.archetype()).exc(
         architecture=args.architecture, arguments=arguments, hyperspace=hyperspace)
 
+    src.data.transfer.Transfer(
+        service=service, s3_parameters=s3_parameters, architecture=args.architecture).exc()
+
     # Delete Cache Points
     src.functions.cache.Cache().exc()
 
@@ -68,15 +67,14 @@ if __name__ == '__main__':
 
     # Modules
     import src.data.interface
-    import src.elements.s3_parameters as s3p
-    import src.elements.service as sr
+    import src.data.transfer
     import src.elements.arguments
     import src.functions.cache
     import src.functions.expecting
     import src.functions.service
     import src.models.interface
-    import src.models.arguments
-    import src.models.hyperspace
+    import src.settings.arguments
+    import src.settings.hyperspace
     import src.s3.s3_parameters
     import src.setup
 
@@ -87,13 +85,13 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # S3 S3Parameters, Service Instance
-    s3_parameters: s3p.S3Parameters = src.s3.s3_parameters.S3Parameters().exc()
-    service: sr.Service = src.functions.service.Service(region_name=s3_parameters.region_name).exc()
+    s3_parameters = src.s3.s3_parameters.S3Parameters().exc()
+    service = src.functions.service.Service(region_name=s3_parameters.region_name).exc()
 
-    arguments = src.models.arguments.Arguments(s3_parameters=s3_parameters).exc(
+    arguments = src.settings.arguments.Arguments(s3_parameters=s3_parameters).exc(
         node=f'{args.architecture}/arguments.json')
 
-    hyperspace = src.models.hyperspace.Hyperspace(service=service, s3_parameters=s3_parameters).exc(
+    hyperspace = src.settings.hyperspace.Hyperspace(service=service, s3_parameters=s3_parameters).exc(
         node=f'{args.architecture}/hyperspace.json'
     )
 

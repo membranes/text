@@ -1,14 +1,14 @@
-"""The model training computation segment of class Prime"""
+"""Training via best set of hyperparameters."""
 import transformers.trainer_utils
 
 import src.elements.arguments as ag
 import src.elements.structures as sr
 import src.models.algorithm
-import src.models.trainee
+import src.models.training_arguments
 import src.models.metrics
 
 
-class PrimeCompute:
+class Recompute:
     """
     Class Operating
     """
@@ -38,8 +38,9 @@ class PrimeCompute:
         :return:
         """
 
-        # Training Arguments
-        args = src.models.trainee.Trainee(arguments=self.__arguments).exc()
+        # Training Arguments: Only save the checkpoint at the optimal training point.
+        self.__arguments = self.__arguments._replace(save_total_limit=1)
+        args = src.models.training_arguments.TrainingArguments(arguments=self.__arguments).exc()
 
         # Model
         intelligence = self.__algorithm.exc(
