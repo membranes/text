@@ -1,4 +1,7 @@
 """Module transfer.py"""
+import glob
+import os
+
 import config
 import src.data.dictionary
 import src.elements.s3_parameters as s3p
@@ -27,11 +30,49 @@ class Transfer:
 
         self.__dictionary = src.data.dictionary.Dictionary(architecture=architecture)
 
+    @staticmethod
+    def __name(pathstr: str):
+        """
+
+        :param pathstr:
+        :return:
+        """
+
+        left = pathstr.split('_', maxsplit=4)
+        right = pathstr.rsplit('_', maxsplit=2)
+        strings = left[1:3] + right[-2:]
+
+        name = '_'.join(strings)
+
+        return name
+
+    def __renaming(self):
+        """
+
+        :return:
+        """
+
+        # The directories that start with _objective; add a directory check
+        elements = glob.glob(pathname=os.path.join(self.__configurations.artefacts_, '**', '_objective*'), recursive=True)
+        directories = [element for element in elements if os.path.isdir(element)]
+
+        # Bases
+        bases = [os.path.basename(directory) for directory in directories]
+        bases = [self.__name(base) for base in bases]
+
+        # Endpoints
+        endpoints = [os.path.dirname(directory) for directory in directories]
+
+        for directory, base, endpoint in zip(directories, bases, endpoints):
+            os.rename(src=directory, dst=os.path.join(endpoint, base))
+
     def exc(self):
         """
 
         :return:
         """
+
+        self.__renaming()
 
         strings = self.__dictionary.exc(
             path=self.__configurations.artefacts_, extension='*', prefix=self.__s3_parameters.path_internal_artefacts)
