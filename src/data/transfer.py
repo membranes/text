@@ -49,15 +49,20 @@ class Transfer:
 
         return name
 
-    def __runs(self):
+    def __stores(self):
         """
         Deletes the runs directories of the hyperparameter search stage.
 
         :return:
         """
 
-        path: str = os.path.join(self.__configurations.artefacts_, self.__architecture, 'hyperparameters', 'run*')
-        directories = glob.glob(pathname=path, recursive=True)
+        runs_: str = os.path.join(self.__configurations.artefacts_, self.__architecture, 'hyperparameters', 'run*')
+        runs = glob.glob(pathname=runs_, recursive=True)
+
+        checkpoints_: str = os.path.join(self.__configurations.artefacts_, self.__architecture, 'hyperparameters', 'ray', '**', 'checkpoint_*')
+        checkpoints = glob.glob(pathname=checkpoints_, recursive=True)
+
+        directories = runs + checkpoints
 
         for directory in directories:
             self.__directories.cleanup(directory)
@@ -89,7 +94,7 @@ class Transfer:
         :return:
         """
 
-        self.__runs()
+        self.__stores()
 
         self.__renaming()
 
