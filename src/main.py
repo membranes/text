@@ -34,6 +34,7 @@ def main():
     # The Data
     interface = src.data.interface.Interface(s3_parameters=s3_parameters)
     data: pd.DataFrame = interface.data()
+    logger.info(data)
 
     # Temporary
     data = data.loc[:500, :]
@@ -41,6 +42,7 @@ def main():
         data=data, enumerator=interface.enumerator(), archetype=interface.archetype()).exc(
         architecture=args.architecture, arguments=arguments, hyperspace=hyperspace)
 
+    # Transfer
     src.data.transfer.Transfer(
         service=service, s3_parameters=s3_parameters, architecture=args.architecture).exc()
 
