@@ -7,6 +7,7 @@ import src.data.dictionary
 import src.elements.s3_parameters as s3p
 import src.elements.service as sr
 import src.s3.ingress
+import src.functions.directories
 
 
 class Transfer:
@@ -26,9 +27,11 @@ class Transfer:
 
         self.__service: sr.Service = service
         self.__s3_parameters: s3p.S3Parameters = s3_parameters
+        self.__architecture: str = architecture
         self.__configurations = config.Config()
 
         self.__dictionary = src.data.dictionary.Dictionary(architecture=architecture)
+        self.__directories = src.functions.directories.Directories()
 
     @staticmethod
     def __name(pathstr: str):
@@ -45,6 +48,19 @@ class Transfer:
         name = '_'.join(strings)
 
         return name
+
+    def __runs(self):
+        """
+        Deletes the ...
+        
+        :return:
+        """
+
+        path: str = os.path.join(self.__configurations.artefacts_, self.__architecture, 'hyperparameters', 'run*')
+        directories = glob.glob(pathname=path, recursive=True)
+
+        for directory in directories:
+            self.__directories.cleanup(directory)
 
     def __renaming(self):
         """
@@ -71,6 +87,8 @@ class Transfer:
 
         :return:
         """
+
+        self.__runs()
 
         self.__renaming()
 
