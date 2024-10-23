@@ -61,7 +61,8 @@ class Transfer:
         runs = glob.glob(pathname=runs_, recursive=True)
 
         # Checkpoints
-        checkpoints_: str = os.path.join(self.__configurations.artefacts_, self.__architecture, 'hyperparameters', 'ray', '**', 'checkpoint_*')
+        checkpoints_: str = os.path.join(
+            self.__configurations.artefacts_, self.__architecture, 'hyperparameters', 'ray', '**', 'checkpoint_*')
         checkpoints = glob.glob(pathname=checkpoints_, recursive=True)
 
         # Hence, altogether
