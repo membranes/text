@@ -64,6 +64,7 @@ class Transfer:
 
     def __renaming(self):
         """
+        Renames the objective directories because their default names are too long.
 
         :return:
         """
