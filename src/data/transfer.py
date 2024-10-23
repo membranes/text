@@ -51,8 +51,8 @@ class Transfer:
 
     def __runs(self):
         """
-        Deletes the ...
-        
+        Deletes the runs directories of the hyperparameter search stage.
+
         :return:
         """
 
