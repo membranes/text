@@ -98,9 +98,11 @@ class Transfer:
         :return:
         """
 
+        # Foremost (a) delete runs & checkpoints data, and (b) rename the <_objective*> directories.
         self.__stores()
         self.__renaming()
 
+        # The details of the data being transferred to Amazon S3 (Simple Storage Service)
         strings = self.__dictionary.exc(
             path=self.__configurations.artefacts_, extension='*', prefix=self.__s3_parameters.path_internal_artefacts)
 
