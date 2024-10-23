@@ -28,8 +28,9 @@ class Transfer:
         self.__service: sr.Service = service
         self.__s3_parameters: s3p.S3Parameters = s3_parameters
         self.__architecture: str = architecture
-        self.__configurations = config.Config()
 
+        # Instances
+        self.__configurations = config.Config()
         self.__dictionary = src.data.dictionary.Dictionary(architecture=architecture)
         self.__directories = src.functions.directories.Directories()
 
@@ -44,7 +45,6 @@ class Transfer:
         left = pathstr.split('_', maxsplit=4)
         right = pathstr.rsplit('_', maxsplit=2)
         strings = left[1:3] + right[-2:]
-
         name = '_'.join(strings)
 
         return name
@@ -89,6 +89,7 @@ class Transfer:
         # Endpoints
         endpoints = [os.path.dirname(directory) for directory in directories]
 
+        # Rename
         for directory, base, endpoint in zip(directories, bases, endpoints):
             os.rename(src=directory, dst=os.path.join(endpoint, base))
 
@@ -106,6 +107,7 @@ class Transfer:
         strings = self.__dictionary.exc(
             path=self.__configurations.artefacts_, extension='*', prefix=self.__s3_parameters.path_internal_artefacts)
 
+        # Transfer
         messages = src.s3.ingress.Ingress(
             service=self.__service, bucket_name=self.__s3_parameters.internal).exc(strings=strings)
 
