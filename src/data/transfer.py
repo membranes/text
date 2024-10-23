@@ -6,8 +6,8 @@ import config
 import src.data.dictionary
 import src.elements.s3_parameters as s3p
 import src.elements.service as sr
-import src.s3.ingress
 import src.functions.directories
+import src.s3.ingress
 
 
 class Transfer:
