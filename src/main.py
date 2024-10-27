@@ -66,6 +66,7 @@ if __name__ == '__main__':
     os.environ['CUDA_VISIBLE_DEVICES']='0'
     os.environ['TOKENIZERS_PARALLELISM']='true'
     os.environ['RAY_USAGE_STATS_ENABLED']='0'
+    os.environ['TRANSFORMERS_CACHE']='/tmp'
 
     # Modules
     import src.data.interface
