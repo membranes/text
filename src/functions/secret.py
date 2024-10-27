@@ -29,7 +29,7 @@ class Secret:
 
         self.__session = boto3.session.Session()
         self.__secrets_manager = self.__session.client(
-            service_name='secretsmanager')
+            service_name='secretsmanager', region_name=self.__session.region_name)
 
     def __get__value(self, secret_id: str) -> str:
         """
