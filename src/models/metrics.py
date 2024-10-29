@@ -87,17 +87,22 @@ class Metrics:
         """
 
         predictions = bucket.predictions
+        self.__logger.info('The predictions matrix:\n%s', predictions)
         predictions = np.argmax(predictions, axis=2)
+        self.__logger.info('Predictions Vectors:\n%s', predictions)
         labels = bucket.label_ids
+        self.__logger.info(labels)
 
         # Active
         _predictions, _labels = self.__active(predictions=predictions, labels=labels)
+        self.__logger.info('Predictions Vectors:\n%s', _predictions)
+        self.__logger.info('Labels Vectors:\n%s', _labels)
 
         # Hence
         metrics = self.__seqeval.compute(predictions=_predictions, references=_labels, zero_division=0.0)
         self.__logger.info('The original metrics structure:\n%s', metrics)
 
         decomposition = self.__decompose(metrics=metrics)
-        self.__logger.info('The restructured dictionary of metrics:\n%s', metrics)
+        self.__logger.info('The restructured dictionary of metrics:\n%s', decomposition)
 
         return decomposition
