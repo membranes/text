@@ -1,6 +1,5 @@
 """Module metrics.py"""
 import collections
-import logging
 import typing
 
 import evaluate
@@ -22,12 +21,6 @@ class Metrics:
 
         self.__archetype = archetype
         self.__seqeval = evaluate.load('seqeval')
-
-        # Logging
-        logging.basicConfig(level=logging.INFO,
-                            format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
-                            datefmt='%Y-%m-%d %H:%M:%S')
-        self.__logger = logging.getLogger(__name__)
 
     def __active(self, predictions: np.ndarray, labels: np.ndarray) -> typing.Tuple[list[list], list[list]]:
         """
