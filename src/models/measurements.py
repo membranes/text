@@ -60,5 +60,8 @@ class Measurements:
         :return:
         """
 
+        self.__logger.info('In Measurements:\n%s', originals)
+        self.__logger.info('In Measurements:\n%s', predictions)
+
         self.__sci(originals=originals, predictions=predictions)
         self.__seq(originals=originals, predictions=predictions)
