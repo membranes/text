@@ -1,11 +1,13 @@
-import numpy as np
-
-import sklearn.metrics as sm
-
+"""Module numerics.py"""
 import dask
+import numpy as np
+import sklearn.metrics as sm
 
 
 class Numerics:
+    """
+    Calculates the error matrix labels per unique label
+    """
 
     def __init__(self, originals: list[str], predictions: list[str]):
         """
@@ -45,6 +47,7 @@ class Numerics:
         objects = [dask.delayed(self.__measures)(name) for name in names]
         calculations = dask.compute(objects)[0]
 
+        # The error matrix measures per label in dict form
         structure = {k: v for c in calculations for k, v in c.items()}
 
         return structure
