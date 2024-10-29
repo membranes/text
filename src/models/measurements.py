@@ -59,7 +59,7 @@ class Measurements:
         values = src.models.numerics.Numerics(
             originals=self.__originals, predictions=self.__predictions).exc()
 
-        self.__logger.info('NUMERICS:\n%s', values)
+        self.__logger.info('\n\nNUMERICS:\n%s', values)
 
     def exc(self, originals: list, predictions: list):
         """
