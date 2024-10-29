@@ -28,10 +28,8 @@ class Measurements:
         :return:
         """
 
-        self.__logger.info('SCIKIT LEARN')
-
-        self.__logger.info(
-            sm.classification_report(y_true=originals, y_pred=predictions, zero_division=0.0))
+        report = sm.classification_report(y_true=originals, y_pred=predictions, zero_division=0.0)
+        self.__logger.info('SCIKIT LEARN:\n%s\n%s', type(report), report)
 
     def __seq(self, originals: list, predictions: list):
         """
@@ -45,7 +43,7 @@ class Measurements:
         y_pred = [predictions]
 
         report = sme.classification_report(y_true=y_true, y_pred=y_pred, zero_division=0.0)
-        self.__logger.info('SEQ EVAL\n%s\n%s', type(report), report)
+        self.__logger.info('\n\nSEQ EVAL:\n%s\n%s', type(report), report)
 
         accuracy = sme.accuracy_score(y_true=y_true, y_pred=y_pred)
         self.__logger.info('\n%s\n%s', type(accuracy), accuracy)
