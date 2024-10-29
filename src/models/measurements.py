@@ -44,13 +44,11 @@ class Measurements:
         y_true = [originals]
         y_pred = [predictions]
 
-        self.__logger.info('SEQ EVAL')
+        report = sme.classification_report(y_true=y_true, y_pred=y_pred, zero_division=0.0)
+        self.__logger.info('SEQ EVAL\n%s\n%s', type(report), report)
 
-        self.__logger.info(
-            sme.classification_report(y_true=y_true, y_pred=y_pred, zero_division=0.0))
-
-        self.__logger.info(
-            sme.accuracy_score(y_true=y_true, y_pred=y_pred))
+        accuracy = sme.accuracy_score(y_true=y_true, y_pred=y_pred)
+        self.__logger.info('\n%s\n%s', type(accuracy), accuracy)
 
     def exc(self, originals: list, predictions: list):
         """
