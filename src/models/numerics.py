@@ -18,6 +18,11 @@ class Numerics:
         self.__predictions: np.ndarray = np.array(predictions)
 
     def __measures(self, name: str):
+        """
+
+        :param name: The name of one of the labels
+        :return:
+        """
 
         _true: np.ndarray = (self.__originals == name).astype(int)
         _prediction: np.ndarray =  (self.__predictions == name).astype(int)
