@@ -11,37 +11,38 @@ class Measurements:
     For classification metrics calculations
     """
 
-    def __init__(self):
+    def __init__(self, originals: list, predictions: list):
         """
-        Constructor
+
+        :param originals: The true values, a simple, i.e., un-nested, list.
+        :param predictions: The predictions, a simple list, i.e., un-nested, list.
         """
+
+        self.__originals = originals
+        self.__predictions = predictions
 
         # Logging
         logging.basicConfig(level=logging.INFO, format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
 
-    def __sci(self, originals: list, predictions: list):
+    def __sci(self):
         """
 
-        :param originals: The true values
-        :param predictions: The predictions
         :return:
         """
 
-        report = sm.classification_report(y_true=originals, y_pred=predictions, zero_division=0.0)
+        report = sm.classification_report(y_true=self.__originals, y_pred=self.__predictions, zero_division=0.0)
         self.__logger.info('SCIKIT LEARN:\n%s\n%s', type(report), report)
 
-    def __seq(self, originals: list, predictions: list):
+    def __seq(self):
         """
 
-        :param originals: The true values
-        :param predictions: The predictions
         :return:
         """
 
-        y_true = [originals]
-        y_pred = [predictions]
+        y_true = [self.__originals]
+        y_pred = [self.__predictions]
 
         report = sme.classification_report(y_true=y_true, y_pred=y_pred, zero_division=0.0)
         self.__logger.info('\n\nSEQ EVAL:\n%s\n%s', type(report), report)
@@ -49,21 +50,23 @@ class Measurements:
         accuracy = sme.accuracy_score(y_true=y_true, y_pred=y_pred)
         self.__logger.info('\n%s\n%s', type(accuracy), accuracy)
 
-    def __numerics(self, originals: list, predictions: list):
+    def __numerics(self):
+        """
+
+        :return:
+        """
 
         values = src.models.numerics.Numerics(
-            originals=originals, predictions=predictions).exc()
+            originals=self.__originals, predictions=self.__predictions).exc()
 
         self.__logger.info('NUMERICS:\n%s', values)
 
     def exc(self, originals: list, predictions: list):
         """
 
-        :param originals: The true values, simple list, i.e., not nested.
-        :param predictions: The predictions, simple list, i.e., not nested.
         :return:
         """
 
-        self.__sci(originals=originals, predictions=predictions)
-        self.__seq(originals=originals, predictions=predictions)
-        self.__numerics(originals=originals, predictions=predictions)
+        self.__sci()
+        self.__seq()
+        self.__numerics()
