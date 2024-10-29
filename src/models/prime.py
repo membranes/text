@@ -47,5 +47,5 @@ class Prime:
         originals, predictions = src.models.validation.Validation(
             validating=validating, archetype=self.__archetype).exc(model=model)
 
-        src.models.measurements.Measurements().exc(
-            originals=originals, predictions=predictions)
+        src.models.measurements.Measurements(
+            originals=originals, predictions=predictions).exc()
