@@ -1,6 +1,5 @@
 """Module metrics.py"""
 import collections
-import logging
 import typing
 
 import evaluate
@@ -22,12 +21,6 @@ class Metrics:
 
         self.__archetype = archetype
         self.__seqeval = evaluate.load('seqeval')
-
-        # Logging
-        logging.basicConfig(level=logging.INFO,
-                            format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
-                            datefmt='%Y-%m-%d %H:%M:%S')
-        self.__logger = logging.getLogger(__name__)
 
     def __active(self, predictions: np.ndarray, labels: np.ndarray) -> typing.Tuple[list[list], list[list]]:
         """
@@ -86,8 +79,11 @@ class Metrics:
         :return:
         """
 
+        # Predictions
         predictions = bucket.predictions
         predictions = np.argmax(predictions, axis=2)
+
+        # Labels
         labels = bucket.label_ids
 
         # Active
@@ -95,9 +91,7 @@ class Metrics:
 
         # Hence
         metrics = self.__seqeval.compute(predictions=_predictions, references=_labels, zero_division=0.0)
-        self.__logger.info('The original metrics structure:\n%s', metrics)
-
         decomposition = self.__decompose(metrics=metrics)
-        self.__logger.info('The restructured dictionary of metrics:\n%s', metrics)
+
 
         return decomposition

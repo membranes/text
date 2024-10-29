@@ -34,7 +34,6 @@ def main():
     # The Data
     interface = src.data.interface.Interface(s3_parameters=s3_parameters)
     data: pd.DataFrame = interface.data()
-    logger.info(data)
 
     # Temporary
     data = data.loc[:500, :]
