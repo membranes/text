@@ -61,7 +61,7 @@ class Measurements:
 
         self.__logger.info('\n\nNUMERICS:\n%s', values)
 
-    def exc(self, originals: list, predictions: list):
+    def exc(self):
         """
 
         :return:
