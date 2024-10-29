@@ -53,13 +53,10 @@ class Measurements:
     def exc(self, originals: list, predictions: list):
         """
 
-        :param originals: The true values
-        :param predictions: The predictions
+        :param originals: The true values, simple list, i.e., not nested.
+        :param predictions: The predictions, simple list, i.e., not nested.
         :return:
         """
-
-        self.__logger.info('In Measurements:\n%s', originals)
-        self.__logger.info('In Measurements:\n%s', predictions)
 
         self.__sci(originals=originals, predictions=predictions)
         self.__seq(originals=originals, predictions=predictions)
