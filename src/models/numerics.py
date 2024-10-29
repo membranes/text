@@ -8,6 +8,11 @@ import dask
 class Numerics:
 
     def __init__(self, originals: list[str], predictions: list[str]):
+        """
+
+        :param originals: The list of original labels
+        :param predictions: The list of predicted labels
+        """
 
         self.__originals: np.ndarray = np.array(originals)
         self.__predictions: np.ndarray = np.array(predictions)
