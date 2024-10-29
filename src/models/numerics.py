@@ -17,7 +17,7 @@ class Numerics:
         self.__originals: np.ndarray = np.array(originals)
         self.__predictions: np.ndarray = np.array(predictions)
 
-    def __measures(self, name: str):
+    def __measures(self, name: str) -> dict:
         """
 
         :param name: The name of one of the labels
@@ -32,9 +32,16 @@ class Numerics:
 
         return {name: {'tn': tn, 'fp': fp, 'fn': fn, 'tp': tp}}
 
-    def exc(self):
+    def exc(self) -> dict:
+        """
 
+        :return:
+        """
+
+        # The set of unique labels
         names = np.unique(self.__originals)
+
+        # The error matrix measures per unique label
         objects = [dask.delayed(self.__measures)(name) for name in names]
         calculations = dask.compute(objects)[0]
 
