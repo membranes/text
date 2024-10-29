@@ -18,4 +18,4 @@ class Numerics:
         tn, fp, fn, tp = sm.confusion_matrix(
             y_true=_true, y_pred=_prediction).ravel()
 
-        return {'name': {'tn': tn, 'fp': fp, 'fn': fn, 'tp': tp}}
+        return {name: {'tn': tn, 'fp': fp, 'fn': fn, 'tp': tp}}
