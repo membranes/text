@@ -3,6 +3,7 @@ import logging
 
 import seqeval.metrics as sme
 import sklearn.metrics as sm
+import src.models.numerics
 
 
 class Measurements:
@@ -48,6 +49,13 @@ class Measurements:
         accuracy = sme.accuracy_score(y_true=y_true, y_pred=y_pred)
         self.__logger.info('\n%s\n%s', type(accuracy), accuracy)
 
+    def __numerics(self, originals: list, predictions: list):
+
+        values = src.models.numerics.Numerics(
+            originals=originals, predictions=predictions).exc()
+
+        self.__logger.info('NUMERICS:\n%s', values)
+
     def exc(self, originals: list, predictions: list):
         """
 
@@ -58,3 +66,4 @@ class Measurements:
 
         self.__sci(originals=originals, predictions=predictions)
         self.__seq(originals=originals, predictions=predictions)
+        self.__numerics(originals=originals, predictions=predictions)
