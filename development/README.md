@@ -42,7 +42,8 @@ Subsequently, run a container, i.e., an instance, of the image `text` via:
 docker run --rm --gpus all --shm-size=16gb -i -t 
   -p 127.0.0.1:6007:6007 -p 127.0.0.1:6006:6006 
     -p 172.17.0.2:8265:8265 -p 172.17.0.2:6379:6379 -w /app 
-	    --mount type=bind,src="$(pwd)",target=/app text
+	    --mount type=bind,src="$(pwd)",target=/app 
+	      -v ~/.aws:/root/.aws text
 ```
 
 or
@@ -50,7 +51,8 @@ or
 ```shell
 docker run --rm --gpus all --shm-size=16gb -i -t 
   -p 6007:6007 -p 6006:6006 -p 8265:8265 -p 6379:6379  
-    -w /app --mount type=bind,src="$(pwd)",target=/app text
+    -w /app --mount type=bind,src="$(pwd)",target=/app 
+      -v ~/.aws:/root/.aws text
 ```
 
 <br>
