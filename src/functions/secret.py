@@ -28,9 +28,7 @@ class Secret:
         """
 
         self.__session = boto3.session.Session()
-        print(self.__session.region_name)
-        self.__secrets_manager = self.__session.client(
-            service_name='secretsmanager', region_name=self.__session.region_name)
+        self.__secrets_manager = self.__session.client(service_name='secretsmanager')
 
     def __get__value(self, secret_id: str) -> str:
         """
