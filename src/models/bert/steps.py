@@ -1,5 +1,6 @@
 """Module steps.py"""
 import logging
+import os
 
 import transformers
 
@@ -64,7 +65,12 @@ class Steps:
 
         training, validating, _ = self.__structures()
 
+        # Storage Section
+        section = self.__arguments.model_output_directory
+
         # Hyperparameter search
+        self.__arguments = self.__arguments._replace(
+            model_output_directory=os.path.join(section, 'hyperparameters'))
         optimal = src.models.hyperpoints.Hyperpoints(
             arguments=self.__arguments, hyperspace=self.__hyperspace,
             enumerator=self.__enumerator, archetype=self.__archetype)
@@ -77,6 +83,8 @@ class Steps:
             WEIGHT_DECAY=best.hyperparameters.get('weight_decay'))
 
         # Then
+        self.__arguments = self.__arguments._replace(
+            model_output_directory=os.path.join(section, 'prime'))
         src.models.prime.Prime(
             enumerator=self.__enumerator, archetype=self.__archetype,
             arguments=self.__arguments, tokenizer=self.__tokenizer).exc(
