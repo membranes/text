@@ -44,7 +44,7 @@ class Recompute:
         args = src.models.training_arguments.TrainingArguments(arguments=self.__arguments).exc()
 
         # Model
-        intelligence = self.__algorithm.exc(
+        algorithm = self.__algorithm.exc(
             arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
 
         # Metrics
@@ -52,7 +52,7 @@ class Recompute:
 
         # Trainer
         trainer = transformers.Trainer(
-            model_init=intelligence.model,
+            model_init=algorithm.model,
             args=args,
             data_collator=transformers.DataCollatorForTokenClassification(tokenizer=tokenizer),
             train_dataset=training.dataset,
