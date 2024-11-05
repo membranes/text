@@ -20,8 +20,8 @@ class Intelligence:
         Parameters<br>
         ------------<br>
 
-        :param enumerator: Of tags; key &rarr; identifier, value &rarr; label<br>
-        :param archetype: Of tags; key &rarr; label, value &rarr; identifier<br>
+        :param enumerator: {label: id, ...}<br>
+        :param archetype: {id: label, ...}<br>
         :param arguments: A suite of values/arguments for machine learning model development.<br>
         """
 
@@ -46,8 +46,8 @@ class Intelligence:
         config = transformers.BertConfig(hidden_dropout_prob=0.1,  hidden_act='gelu').from_pretrained(
             pretrained_model_name_or_path=self.__arguments.pretrained_model_name,
             **{'num_labels': len(self.__enumerator),
-               'label2id': self.__archetype,
-               'id2label': self.__enumerator})
+               'label2id': self.__enumerator,
+               'id2label': self.__archetype})
 
         return transformers.BertForTokenClassification.from_pretrained(
             pretrained_model_name_or_path=self.__arguments.pretrained_model_name, config=config
