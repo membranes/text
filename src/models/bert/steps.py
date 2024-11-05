@@ -1,5 +1,6 @@
 """Module steps.py"""
 import logging
+import os
 
 import transformers
 
@@ -65,6 +66,8 @@ class Steps:
         training, validating, _ = self.__structures()
 
         # Hyperparameter search
+        self.__arguments = self.__arguments._replace(
+            model_output_directory=os.path.join(self.__arguments.model_output_directory, 'hyperparameters'))
         optimal = src.models.hyperpoints.Hyperpoints(
             arguments=self.__arguments, hyperspace=self.__hyperspace,
             enumerator=self.__enumerator, archetype=self.__archetype)
