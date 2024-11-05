@@ -1,5 +1,6 @@
 """Module prime.py"""
 import os
+
 import transformers
 
 import src.elements.arguments as ag
