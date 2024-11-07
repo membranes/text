@@ -1,5 +1,4 @@
 """Module arguments.py"""
-import logging
 import os
 
 import pandas as pd
@@ -37,8 +36,7 @@ class Arguments:
         :return:
         """
 
-        path = 's3://' + self.__s3_parameters.internal + '/' + self.__s3_parameters.path_internal_configurations + node
-        logging.info(path)
+        path = 's3://' + self.__s3_parameters.configurations + '/architecture/' + node
 
         try:
             values = pd.read_json(path_or_buf=path, orient='index')
