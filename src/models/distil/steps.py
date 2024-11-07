@@ -45,6 +45,9 @@ class Steps:
         self.__tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase = (
             src.models.distil.tokenizer.Tokenizer(arguments=self.__arguments)())
 
+        # Storage Section
+        self.__section = self.__arguments.model_output_directory
+
     def exc(self):
         """
 
@@ -58,8 +61,8 @@ class Steps:
         validating = structures.validating()
 
         # Hyperparameter search
-        section = os.path.join(self.__arguments.model_output_directory, 'hyperparameters')
-        self.__arguments = self.__arguments._replace(model_output_directory=section)
+        self.__arguments = self.__arguments._replace(
+            model_output_directory=os.path.join(self.__section, 'hyperparameters'))
         optimal = src.models.hyperpoints.Hyperpoints(
             arguments=self.__arguments, hyperspace=self.__hyperspace,
             enumerator=self.__enumerator, archetype=self.__archetype)
@@ -73,8 +76,8 @@ class Steps:
             TRAIN_BATCH_SIZE=best.hyperparameters.get('per_device_train_batch_size'))
 
         # Then
-        section = os.path.join(os.path.dirname(section), 'prime')
-        self.__arguments = self.__arguments._replace(model_output_directory=section)
+        self.__arguments = self.__arguments._replace(
+            model_output_directory=os.path.join(self.__section, 'prime'))
         src.models.prime.Prime(
             enumerator=self.__enumerator, archetype=self.__archetype,
             arguments=self.__arguments, tokenizer=self.__tokenizer).exc(

@@ -31,10 +31,10 @@ class Hyperspace:
         :return:
         """
 
-        key_name = self.__s3_parameters.path_internal_configurations + node
+        key_name = 'architecture/' + node
 
         buffer = src.s3.unload.Unload(service=self.__service).exc(
-            bucket_name=self.__s3_parameters.internal, key_name=key_name)
+            bucket_name=self.__s3_parameters.configurations, key_name=key_name)
         dictionary = json.loads(buffer)
 
         return dictionary

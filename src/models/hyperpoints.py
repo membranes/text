@@ -55,7 +55,7 @@ class Hyperpoints:
         args = src.models.training_arguments.TrainingArguments(arguments=self.__arguments).exc()
 
         # Model
-        intelligence = self.__algorithm.exc(
+        algorithm = self.__algorithm.exc(
             arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
 
         # Metrics
@@ -70,7 +70,7 @@ class Hyperpoints:
 
         # Hence
         trainer = transformers.Trainer(
-            model_init=intelligence.model,
+            model_init=algorithm.model,
             args=args, data_collator=data_collator,
             train_dataset=training.dataset, eval_dataset=validating.dataset,
             tokenizer=tokenizer,

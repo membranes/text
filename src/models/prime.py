@@ -1,4 +1,6 @@
 """Module prime.py"""
+import os
+
 import transformers
 
 import src.elements.arguments as ag
@@ -42,6 +44,7 @@ class Prime:
         operating = src.models.recompute.Recompute(
             arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
         model = operating.exc(training=training, validating=validating, tokenizer=self.__tokenizer)
+        model.save_model(output_dir=os.path.join(self.__arguments.model_output_directory, 'model'))
 
         # Evaluating: vis-à-vis model & validation data
         originals, predictions = src.models.validation.Validation(
