@@ -48,6 +48,6 @@ class Numerics:
         calculations = dask.compute(objects)[0]
 
         # The error matrix measures per label in dict form
-        structure = {k: v for c in calculations for k, v in c.items()}
+        structure = {str(k): int(v) for c in calculations for k, v in c.items()}
 
         return structure
