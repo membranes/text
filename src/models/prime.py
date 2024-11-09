@@ -51,4 +51,4 @@ class Prime:
             validating=validating, archetype=self.__archetype).exc(model=model)
 
         src.models.measurements.Measurements(
-            originals=originals, predictions=predictions).exc()
+            originals=originals, predictions=predictions, arguments=self.__arguments).exc(segment='prime')
