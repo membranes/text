@@ -4,6 +4,7 @@ import logging
 import seqeval.metrics as sme
 import sklearn.metrics as sm
 import src.models.numerics
+import src.elements.arguments as ag
 
 
 class Measurements:
@@ -11,7 +12,7 @@ class Measurements:
     For classification metrics calculations
     """
 
-    def __init__(self, originals: list, predictions: list):
+    def __init__(self, originals: list, predictions: list, arguments: ag.Arguments):
         """
 
         :param originals: The true values, a simple, i.e., un-nested, list.
@@ -33,7 +34,8 @@ class Measurements:
         """
 
         report = sm.classification_report(y_true=self.__originals, y_pred=self.__predictions, zero_division=0.0)
-        self.__logger.info('SCIKIT LEARN:\n%s\n%s', type(report), report)
+
+        return report
 
     def __seq(self):
         """
@@ -44,22 +46,24 @@ class Measurements:
         y_true = [self.__originals]
         y_pred = [self.__predictions]
 
+        # str
         report = sme.classification_report(y_true=y_true, y_pred=y_pred, zero_division=0.0)
-        self.__logger.info('\n\nSEQ EVAL:\n%s\n%s', type(report), report)
 
-        accuracy = sme.accuracy_score(y_true=y_true, y_pred=y_pred)
-        self.__logger.info('\n%s\n%s', type(accuracy), accuracy)
+        # float
+        accuracy: float = sme.accuracy_score(y_true=y_true, y_pred=y_pred)
 
-    def __numerics(self):
+        return report, accuracy
+
+    def __numerics(self) -> dict:
         """
 
         :return:
         """
 
-        values = src.models.numerics.Numerics(
+        values: dict = src.models.numerics.Numerics(
             originals=self.__originals, predictions=self.__predictions).exc()
 
-        self.__logger.info('\n\nNUMERICS:\n%s', values)
+        return values
 
     def exc(self):
         """
@@ -67,6 +71,6 @@ class Measurements:
         :return:
         """
 
-        self.__sci()
-        self.__seq()
-        self.__numerics()
+        fine = self.__sci()
+        coarse = self.__seq()
+        fundamental = self.__numerics()
