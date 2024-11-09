@@ -1,6 +1,6 @@
 """Module measurements.py"""
 import logging
-import os.path
+import os
 
 import seqeval.metrics as sme
 import sklearn.metrics as sm
@@ -28,6 +28,7 @@ class Measurements:
         self.__predictions = predictions
         self.__arguments = arguments
 
+        # Instances
         self.__configurations = config.Config()
         self.__objects = src.functions.objects.Objects()
 
@@ -36,18 +37,20 @@ class Measurements:
                             datefmt='%Y-%m-%d %H:%M:%S')
         self.__logger = logging.getLogger(__name__)
 
-    def __sci(self):
+    def __sci(self, path: str):
         """
 
         :return:
         """
 
         report = sm.classification_report(y_true=self.__originals, y_pred=self.__predictions, zero_division=0.0)
+        with open(file=os.path.join(path, 'fine.txt'), mode='w') as disk:
+            disk.write(report)
+
+        # Preview
         self.__logger.info('scikit-learn:\n%s', report)
 
-        return report
-
-    def __seq(self):
+    def __seq(self, path: str) -> None:
         """
 
         :return:
@@ -56,17 +59,19 @@ class Measurements:
         y_true = [self.__originals]
         y_pred = [self.__predictions]
 
-        # str
         report = sme.classification_report(y_true=y_true, y_pred=y_pred, zero_division=0.0)
+        with open(file=os.path.join(path, 'coarse.txt'), mode='w') as disk:
+            disk.write(report)
 
-        # float
         accuracy: float = sme.accuracy_score(y_true=y_true, y_pred=y_pred)
+        self.__objects.write(nodes={"seqeval_overall_accuracy_score": accuracy},
+                             path=os.path.join(path, 'score.json'))
 
+        # Preview
         self.__logger.info('SEQ:\n%s\n%s', report, accuracy)
 
-        return report, accuracy
 
-    def __numerics(self) -> dict:
+    def __numerics(self, path: str) -> None:
         """
 
         :return:
@@ -74,9 +79,10 @@ class Measurements:
 
         values: dict = src.models.numerics.Numerics(
             originals=self.__originals, predictions=self.__predictions).exc()
-        self.__logger.info('numerics:\n%s', values)
+        self.__objects.write(nodes=values, path=os.path.join(path, 'fundamental.json'))
 
-        return values
+        # Preview
+        self.__logger.info('numerics:\n%s', values)
 
     def exc(self, segment: str):
         """
@@ -88,13 +94,6 @@ class Measurements:
         path = os.path.join(self.__configurations.artefacts_, self.__arguments.architecture, segment, 'metrics')
         src.functions.directories.Directories().create(path=path)
 
-        fine = self.__sci()
-        with open(file=os.path.join(path, 'fine.txt'), mode='w') as disk:
-            disk.write(fine)
-
-        coarse, _ = self.__seq()
-        with open(file=os.path.join(path, 'coarse.txt'), mode='w') as disk:
-            disk.write(coarse)
-
-        fundamental = self.__numerics()
-        self.__objects.write(nodes=fundamental, path=os.path.join(path, 'fundamental.json'))
+        self.__sci(path=path)
+        self.__seq(path=path)
+        self.__numerics(path=path)
