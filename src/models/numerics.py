@@ -19,6 +19,7 @@ class Numerics:
         self.__originals: np.ndarray = np.array(originals)
         self.__predictions: np.ndarray = np.array(predictions)
 
+    # noinspection PyUnresolvedReferences
     def __measures(self, name: str) -> dict:
         """
 
