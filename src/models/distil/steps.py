@@ -77,7 +77,7 @@ class Steps:
 
         # Then
         self.__arguments = self.__arguments._replace(
-            model_output_directory=os.path.join(self.__section, 'prime'))
+            model_output_directory=os.path.join(self.__section, 'prime'), save_total_limit=1)
         src.models.prime.Prime(
             enumerator=self.__enumerator, archetype=self.__archetype,
             arguments=self.__arguments, tokenizer=self.__tokenizer).exc(
