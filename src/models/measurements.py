@@ -1,10 +1,14 @@
 """Module measurements.py"""
 import logging
+import os.path
 
 import seqeval.metrics as sme
 import sklearn.metrics as sm
+
+import config
 import src.models.numerics
 import src.elements.arguments as ag
+import src.functions.objects
 
 
 class Measurements:
@@ -21,6 +25,10 @@ class Measurements:
 
         self.__originals = originals
         self.__predictions = predictions
+        self.__arguments = arguments
+
+        self.__configurations = config.Config()
+        self.__objects = src.functions.objects.Objects()
 
         # Logging
         logging.basicConfig(level=logging.INFO, format='\n\n%(message)s\n%(asctime)s.%(msecs)03d',
@@ -65,12 +73,20 @@ class Measurements:
 
         return values
 
-    def exc(self):
+    def exc(self, segment: str):
         """
 
+        :param segment: prime or hyperparameters
         :return:
         """
 
+        directory = os.path.join(self.__configurations.artefacts_, self.__arguments.architecture, segment, 'metrics')
+
         fine = self.__sci()
-        coarse = self.__seq()
+        self.__objects.write(nodes=fine, path=os.path.join(directory, 'fine.json'))
+
+        coarse, _ = self.__seq()
+        self.__objects.write(nodes=coarse, path=os.path.join(directory, 'coarse.json'))
+
         fundamental = self.__numerics()
+        self.__objects.write(nodes=fundamental, path=os.path.join(directory, 'fundamental.json'))
