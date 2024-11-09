@@ -89,10 +89,12 @@ class Measurements:
         src.functions.directories.Directories().create(path=path)
 
         fine = self.__sci()
-        self.__objects.write(nodes=fine, path=os.path.join(path, 'fine.json'))
+        with open(file=os.path.join(path, 'fine.txt'), mode='w') as disk:
+            disk.write(fine)
 
         coarse, _ = self.__seq()
-        self.__objects.write(nodes=coarse, path=os.path.join(path, 'coarse.json'))
+        with open(file=os.path.join(path, 'coarse.txt'), mode='w') as disk:
+            disk.write(coarse)
 
         fundamental = self.__numerics()
         self.__objects.write(nodes=fundamental, path=os.path.join(path, 'fundamental.json'))
