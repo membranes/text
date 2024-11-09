@@ -20,8 +20,9 @@ class Measurements:
     def __init__(self, originals: list, predictions: list, arguments: ag.Arguments):
         """
 
-        :param originals: The true values, a simple, i.e., un-nested, list.
-        :param predictions: The predictions, a simple list, i.e., un-nested, list.
+        :param originals: The true values, a simple, i.e., un-nested, list.<br>
+        :param predictions: The predictions, a simple list, i.e., un-nested, list.<br>
+        :param arguments: A suite of values/arguments for machine learning model development.<br>
         """
 
         self.__originals = originals
@@ -40,6 +41,7 @@ class Measurements:
     def __sci(self, path: str):
         """
 
+        :param path: Storage path
         :return:
         """
 
@@ -53,6 +55,7 @@ class Measurements:
     def __seq(self, path: str) -> None:
         """
 
+        :param path: Storage path
         :return:
         """
 
@@ -74,6 +77,7 @@ class Measurements:
     def __numerics(self, path: str) -> None:
         """
 
+        :param path: Storage path
         :return:
         """
 
