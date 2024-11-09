@@ -1,14 +1,18 @@
 """Module interface.py"""
 import logging
+import os
 
 import pandas as pd
 
+import config
+import src.elements.arguments as ag
+import src.elements.hyperspace as hp
 import src.elements.vault
+import src.functions.directories
+import src.functions.streams
 import src.models.bert.steps
 import src.models.distil.steps
 import src.models.splittings
-import src.elements.arguments as ag
-import src.elements.hyperspace as hp
 
 
 class Interface:
@@ -27,8 +31,29 @@ class Interface:
         self.__training, self.__validating, self.__testing = src.models.splittings.Splittings().exc(data=data)
         self.__vault = src.elements.vault.Vault(
             training=self.__training, validating=self.__validating, testing=self.__testing)
+
+        # Objects in relation to tagging
         self.__enumerator = enumerator
         self.__archetype = archetype
+
+        # Configurations
+        self.__configurations = config.Config()
+
+    def __store(self, architecture: str):
+        """
+
+        :param architecture:
+        :return:
+        """
+
+        path = os.path.join(self.__configurations.artefacts_, architecture, 'data')
+        directories = src.functions.directories.Directories()
+        directories.create(path=path)
+
+        streams = src.functions.streams.Streams()
+        streams.write(blob=self.__training, path=os.path.join(path, 'training.csv'))
+        streams.write(blob=self.__validating, path=os.path.join(path, 'validating.csv'))
+        streams.write(blob=self.__testing, path=os.path.join(path, 'testing.csv'))
 
     def exc(self, architecture: str, arguments: ag.Arguments, hyperspace: hp.Hyperspace) -> None:
         """
@@ -39,6 +64,10 @@ class Interface:
         :return:
         """
 
+        # Store the training, validating, and testing
+        self.__store(architecture=architecture)
+
+        # Hence
         match architecture:
             case 'bert':
                 src.models.bert.steps.Steps(
