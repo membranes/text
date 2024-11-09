@@ -46,7 +46,7 @@ class Measurements:
         """
 
         report = sm.classification_report(y_true=self.__originals, y_pred=self.__predictions, zero_division=0.0)
-        with open(file=os.path.join(path, 'fine.txt'), mode='w') as disk:
+        with open(file=os.path.join(path, 'fine.txt'), mode='w', encoding='utf-8') as disk:
             disk.write(report)
 
         # Preview
@@ -63,7 +63,7 @@ class Measurements:
         y_pred = [self.__predictions]
 
         report = sme.classification_report(y_true=y_true, y_pred=y_pred, zero_division=0.0)
-        with open(file=os.path.join(path, 'coarse.txt'), mode='w') as disk:
+        with open(file=os.path.join(path, 'coarse.txt'), mode='w', encoding='utf-8') as disk:
             disk.write(report)
 
         accuracy: float = sme.accuracy_score(y_true=y_true, y_pred=y_pred)
