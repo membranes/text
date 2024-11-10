@@ -60,15 +60,20 @@ class Steps:
         training = structures.training()
         validating = structures.validating()
 
-        # Hyperparameter search
+
+        '''
+        # The path for hyperparameter artefacts
         self.__arguments = self.__arguments._replace(
             model_output_directory=os.path.join(self.__section, 'hyperparameters'))
+        
+        # Determining the optimal hyperparameters
         optimal = src.models.hyperpoints.Hyperpoints(
             arguments=self.__arguments, hyperspace=self.__hyperspace,
             enumerator=self.__enumerator, archetype=self.__archetype)
         best = optimal(training=training, validating=validating, tokenizer=self.__tokenizer)
         logging.info(best)
-
+        
+               
         # Hence, update the modelling variables
         self.__arguments = self.__arguments._replace(
             LEARNING_RATE=best.hyperparameters.get('learning_rate'),
@@ -82,3 +87,4 @@ class Steps:
             enumerator=self.__enumerator, archetype=self.__archetype,
             arguments=self.__arguments, tokenizer=self.__tokenizer).exc(
             training=training, validating=validating)
+        '''
