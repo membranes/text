@@ -1,11 +1,11 @@
 """Module hyperpoints.py"""
 import os
 
+import datasets
 import transformers
 
 import src.elements.arguments as ag
 import src.elements.hyperspace as hp
-import src.elements.structures as sr
 import src.functions.directories
 import src.models.algorithm
 import src.models.metrics
@@ -38,7 +38,7 @@ class Hyperpoints:
         # Directory preparation
         src.functions.directories.Directories().cleanup(path=self.__arguments.model_output_directory)
 
-    def __call__(self, training: sr.Structures, validating: sr.Structures,
+    def __call__(self, training: datasets.Dataset, validating: datasets.Dataset,
                  tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase) -> (
             transformers.trainer_utils.BestRun):
         """
@@ -72,7 +72,7 @@ class Hyperpoints:
         trainer = transformers.Trainer(
             model_init=algorithm.model,
             args=args, data_collator=data_collator,
-            train_dataset=training.dataset, eval_dataset=validating.dataset,
+            train_dataset=training, eval_dataset=validating,
             tokenizer=tokenizer,
             compute_metrics=metrics.exc
         )
