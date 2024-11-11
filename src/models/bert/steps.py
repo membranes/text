@@ -1,7 +1,9 @@
 """Module steps.py"""
 import logging
 import os
+import typing
 
+import datasets
 import transformers
 
 import src.elements.arguments as ag
@@ -45,8 +47,9 @@ class Steps:
         self.__tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase = (
             src.models.bert.tokenizer.Tokenizer(arguments=self.__arguments)())
 
-    def __structures(self):
+    def __structures(self) -> typing.Tuple[datasets.Dataset, datasets.Dataset, datasets.Dataset]:
         """
+        structures.training(), structures.validating(), structures.testing()
 
         :return:
         """
@@ -63,7 +66,7 @@ class Steps:
         :return:
         """
 
-        training, validating, _ = self.__structures()
+        training, validating, testing = self.__structures()
 
         # Storage Section
         section = self.__arguments.model_output_directory
