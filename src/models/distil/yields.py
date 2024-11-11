@@ -1,4 +1,5 @@
 """Module yields.py"""
+import logging
 import datasets
 import pandas as pd
 import transformers
@@ -59,8 +60,11 @@ class Yields:
         :return:
         """
 
+        logging.info(feeds['words'])
+        logging.info(feeds['codes'])
+
         # tokenization of words
-        inputs = self.__tokenizer(feeds['words'], truncation=True, is_split_into_words=True, padding='max_length')
+        inputs = self.__tokenizer(feeds['words'], truncation=True, is_split_into_words=True)
 
         # A placeholder for labels, i.e., codes
         labels = []
@@ -89,9 +93,9 @@ class Yields:
             labels.append(label_identifiers)
 
             # Therefore
-            inputs['labels'] = labels
+        inputs['labels'] = labels
 
-            return  inputs
+        return  inputs
 
     def exc(self) -> datasets.DatasetDict:
         """
@@ -100,6 +104,9 @@ class Yields:
         """
 
         splittings = self.__splittings()
+        logging.info(splittings)
+        logging.info(splittings.keys())
+
         yields: datasets.DatasetDict = splittings.map(self.__tokenize, batched=True)
 
         return yields
