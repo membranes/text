@@ -2,10 +2,9 @@
 import logging
 import typing
 
-import transformers
+import datasets
 import numpy as np
-
-import src.elements.structures as sr
+import transformers
 
 
 class Validation:
@@ -13,7 +12,7 @@ class Validation:
     Executes the validation steps.
     """
 
-    def __init__(self, validating: sr.Structures, archetype: dict):
+    def __init__(self, validating: datasets.Dataset, archetype: dict):
         """
 
         :param validating:
@@ -37,7 +36,7 @@ class Validation:
         """
 
         # The outputs bucket
-        bucket = model.predict(self.__validating.dataset)
+        bucket = model.predict(self.__validating)
         __labels: np.ndarray = bucket.label_ids
         __predictions: np.ndarray = bucket.predictions
         self.__logger.info('Labels: %s', __labels.shape)
