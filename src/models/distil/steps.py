@@ -59,33 +59,30 @@ class Steps:
         yields: datasets.DatasetDict = src.models.distil.yields.Yields(
             vault=self.__vault, tokenizer=self.__tokenizer).exc()
 
-        logging.info(yields)
-
-
-        '''
         # The path for hyperparameter artefacts
         self.__arguments = self.__arguments._replace(
             model_output_directory=os.path.join(self.__section, 'hyperparameters'))
-        
+
         # Determining the optimal hyperparameters
         optimal = src.models.hyperpoints.Hyperpoints(
             arguments=self.__arguments, hyperspace=self.__hyperspace,
             enumerator=self.__enumerator, archetype=self.__archetype)
-        best = optimal(training=training, validating=validating, tokenizer=self.__tokenizer)
+        best = optimal(training=yields['training'], validating=yields['validating'], tokenizer=self.__tokenizer)
         logging.info(best)
-        
-               
+
         # Hence, update the modelling variables
         self.__arguments = self.__arguments._replace(
             LEARNING_RATE=best.hyperparameters.get('learning_rate'),
             WEIGHT_DECAY=best.hyperparameters.get('weight_decay'),
             TRAIN_BATCH_SIZE=best.hyperparameters.get('per_device_train_batch_size'))
 
-        # Then
+        # Additionally, prepare the artefacts storage area for the best model, vis-à-vis best hyperparameters set.
         self.__arguments = self.__arguments._replace(
             model_output_directory=os.path.join(self.__section, 'prime'), save_total_limit=1)
+
+        # The prime model
         src.models.prime.Prime(
             enumerator=self.__enumerator, archetype=self.__archetype,
             arguments=self.__arguments, tokenizer=self.__tokenizer).exc(
-            training=training, validating=validating)
-        '''
+            training=yields['training'], validating=yields['validating'])
+
