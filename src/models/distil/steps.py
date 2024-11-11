@@ -8,7 +8,6 @@ import transformers.tokenization_utils_base
 import src.elements.arguments as ag
 import src.elements.hyperspace as hp
 import src.elements.vault as vu
-import src.models.distil.structures
 import src.models.distil.tokenizer
 import src.models.hyperpoints
 import src.models.prime
@@ -85,4 +84,3 @@ class Steps:
             enumerator=self.__enumerator, archetype=self.__archetype,
             arguments=self.__arguments, tokenizer=self.__tokenizer).exc(
             training=yields['training'], validating=yields['validating'])
-
