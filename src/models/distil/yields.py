@@ -4,7 +4,8 @@ import pandas as pd
 
 import src.elements.vault as vu
 
-class Bricks:
+
+class Yields:
 
     def __init__(self, vault: vu.Vault, tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
         """
