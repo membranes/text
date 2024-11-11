@@ -6,7 +6,6 @@ import transformers
 import src.elements.arguments as ag
 import src.elements.vault as vu
 import src.models.bert.dataset
-import src.models.loader
 
 
 class Structures:
@@ -33,9 +32,6 @@ class Structures:
         self.__vault = vault
 
         self.__tokenizer = tokenizer
-
-        # For DataLoader creation
-        self.__loader = src.models.loader.Loader()
 
     def __structure(self, frame: pd.DataFrame) -> datasets.Dataset:
         """
