@@ -93,7 +93,13 @@ class Yields:
 
             return  inputs
 
-    def exc(self):
+    def exc(self) -> datasets.DatasetDict:
+        """
+
+        :return:
+        """
 
         splittings = self.__splittings()
-        yields = splittings.map(self.__tokenize, batched=True)
+        yields: datasets.DatasetDict = splittings.map(self.__tokenize, batched=True)
+
+        return yields
