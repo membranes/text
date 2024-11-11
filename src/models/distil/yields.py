@@ -55,7 +55,7 @@ class Yields:
     def __tokenize(self, feeds):
         """
 
-        :param feeds: sentence_identifier, sentence, tagstr
+        :param feeds: sentence_identifier, words, codes
         :return:
         """
 
