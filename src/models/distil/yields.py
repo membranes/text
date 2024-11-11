@@ -93,9 +93,6 @@ class Yields:
 
             return  inputs
 
-
-
-
     def exc(self):
 
         splittings = self.__splittings()
