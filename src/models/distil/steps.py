@@ -2,6 +2,7 @@
 import logging
 import os.path
 
+import datasets
 import transformers.tokenization_utils_base
 
 import src.elements.arguments as ag
@@ -11,6 +12,7 @@ import src.models.distil.structures
 import src.models.distil.tokenizer
 import src.models.hyperpoints
 import src.models.prime
+import src.models.distil.yields
 
 
 class Steps:
@@ -54,11 +56,10 @@ class Steps:
         :return:
         """
 
-        structures = src.models.distil.structures.Structures(
-            enumerator=self.__enumerator, arguments=self.__arguments,
-            vault=self.__vault, tokenizer=self.__tokenizer)
-        training = structures.training()
-        validating = structures.validating()
+        yields: datasets.DatasetDict = src.models.distil.yields.Yields(
+            vault=self.__vault, tokenizer=self.__tokenizer).exc()
+
+        logging.info(yields)
 
 
         '''
