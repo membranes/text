@@ -19,6 +19,7 @@ class Numerics:
         self.__originals: np.ndarray = np.array(originals)
         self.__predictions: np.ndarray = np.array(predictions)
 
+    # noinspection PyUnresolvedReferences
     def __measures(self, name: str) -> dict:
         """
 
@@ -32,7 +33,7 @@ class Numerics:
         tn, fp, fn, tp = sm.confusion_matrix(
             y_true=_true, y_pred=_prediction).ravel()
 
-        return {name: {'tn': tn, 'fp': fp, 'fn': fn, 'tp': tp}}
+        return {name: {'tn': int(tn), 'fp': int(fp), 'fn': int(fn), 'tp': int(tp)}}
 
     def exc(self) -> dict:
         """
@@ -48,6 +49,6 @@ class Numerics:
         calculations = dask.compute(objects)[0]
 
         # The error matrix measures per label in dict form
-        structure = {k: v for c in calculations for k, v in c.items()}
+        structure = {str(k): v for c in calculations for k, v in c.items()}
 
         return structure

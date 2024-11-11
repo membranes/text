@@ -22,6 +22,7 @@ class Arguments(typing.NamedTuple):
     N_CPU: <b>int</b>  An initial number of central processing units for computation<br>
     N_GPU: <b>int</b>  The number of graphics processing units<br>
     N_TRIALS: <b>int</b>   Hyperparameters search trials<br>
+    N_INSTANCES: <b>int</b> The total number of data instances to use for training, validating, and testing.<br>
     save_total_limit: <b>int</b>
         <a href="https://huggingface.co/docs/setfit/reference/trainer#setfit.TrainingArguments.save_total_limit"
         target="_blank">
@@ -55,6 +56,7 @@ class Arguments(typing.NamedTuple):
     N_CPU: int
     N_GPU: int
     N_TRIALS: int
+    N_INSTANCES: int
     save_total_limit: int
     perturbation_interval: int
     quantile_fraction: float

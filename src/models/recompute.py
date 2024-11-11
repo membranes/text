@@ -1,16 +1,16 @@
 """Training via best set of hyperparameters."""
+import datasets
 import transformers.trainer_utils
 
 import src.elements.arguments as ag
-import src.elements.structures as sr
 import src.models.algorithm
-import src.models.training_arguments
 import src.models.metrics
+import src.models.training_arguments
 
 
 class Recompute:
     """
-    Class Operating
+    Class Recompute
     """
 
     def __init__(self, arguments: ag.Arguments, enumerator: dict, archetype: dict):
@@ -28,7 +28,7 @@ class Recompute:
         # Intelligence
         self.__algorithm = src.models.algorithm.Algorithm(architecture=self.__arguments.architecture)
 
-    def exc(self, training: sr.Structures, validating: sr.Structures,
+    def exc(self, training: datasets.Dataset, validating: datasets.Dataset,
             tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
         """
 
@@ -55,8 +55,8 @@ class Recompute:
             model_init=algorithm.model,
             args=args,
             data_collator=transformers.DataCollatorForTokenClassification(tokenizer=tokenizer),
-            train_dataset=training.dataset,
-            eval_dataset=validating.dataset,
+            train_dataset=training,
+            eval_dataset=validating,
             tokenizer=tokenizer,
             compute_metrics=metrics.exc)
 

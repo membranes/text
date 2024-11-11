@@ -2,13 +2,14 @@
 import logging
 import os.path
 
+import datasets
 import transformers.tokenization_utils_base
 
 import src.elements.arguments as ag
 import src.elements.hyperspace as hp
 import src.elements.vault as vu
-import src.models.distil.structures
 import src.models.distil.tokenizer
+import src.models.distil.yields
 import src.models.hyperpoints
 import src.models.prime
 
@@ -54,19 +55,18 @@ class Steps:
         :return:
         """
 
-        structures = src.models.distil.structures.Structures(
-            enumerator=self.__enumerator, arguments=self.__arguments,
-            vault=self.__vault, tokenizer=self.__tokenizer)
-        training = structures.training()
-        validating = structures.validating()
+        yields: datasets.DatasetDict = src.models.distil.yields.Yields(
+            vault=self.__vault, tokenizer=self.__tokenizer).exc()
 
-        # Hyperparameter search
+        # The path for hyperparameter artefacts
         self.__arguments = self.__arguments._replace(
             model_output_directory=os.path.join(self.__section, 'hyperparameters'))
+
+        # Determining the optimal hyperparameters
         optimal = src.models.hyperpoints.Hyperpoints(
             arguments=self.__arguments, hyperspace=self.__hyperspace,
             enumerator=self.__enumerator, archetype=self.__archetype)
-        best = optimal(training=training, validating=validating, tokenizer=self.__tokenizer)
+        best = optimal(training=yields['training'], validating=yields['validating'], tokenizer=self.__tokenizer)
         logging.info(best)
 
         # Hence, update the modelling variables
@@ -75,10 +75,12 @@ class Steps:
             WEIGHT_DECAY=best.hyperparameters.get('weight_decay'),
             TRAIN_BATCH_SIZE=best.hyperparameters.get('per_device_train_batch_size'))
 
-        # Then
+        # Additionally, prepare the artefacts storage area for the best model, vis-à-vis best hyperparameters set.
         self.__arguments = self.__arguments._replace(
-            model_output_directory=os.path.join(self.__section, 'prime'))
+            model_output_directory=os.path.join(self.__section, 'prime'), save_total_limit=1)
+
+        # The prime model
         src.models.prime.Prime(
             enumerator=self.__enumerator, archetype=self.__archetype,
             arguments=self.__arguments, tokenizer=self.__tokenizer).exc(
-            training=training, validating=validating)
+            training=yields['training'], validating=yields['validating'])

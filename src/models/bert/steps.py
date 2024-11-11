@@ -1,7 +1,9 @@
 """Module steps.py"""
 import logging
 import os
+import typing
 
+import datasets
 import transformers
 
 import src.elements.arguments as ag
@@ -45,8 +47,9 @@ class Steps:
         self.__tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase = (
             src.models.bert.tokenizer.Tokenizer(arguments=self.__arguments)())
 
-    def __structures(self):
+    def __structures(self) -> typing.Tuple[datasets.Dataset, datasets.Dataset, datasets.Dataset]:
         """
+        structures.training(), structures.validating(), structures.testing()
 
         :return:
         """
@@ -68,9 +71,11 @@ class Steps:
         # Storage Section
         section = self.__arguments.model_output_directory
 
-        # Hyperparameter search
+        # The path for hyperparameter artefacts
         self.__arguments = self.__arguments._replace(
             model_output_directory=os.path.join(section, 'hyperparameters'))
+
+        # Determining the optimal hyperparameters
         optimal = src.models.hyperpoints.Hyperpoints(
             arguments=self.__arguments, hyperspace=self.__hyperspace,
             enumerator=self.__enumerator, archetype=self.__archetype)
@@ -82,9 +87,11 @@ class Steps:
             LEARNING_RATE=best.hyperparameters.get('learning_rate'),
             WEIGHT_DECAY=best.hyperparameters.get('weight_decay'))
 
-        # Then
+        # Additionally, prepare the artefacts storage area for the best model, vis-à-vis best hyperparameters set.
         self.__arguments = self.__arguments._replace(
-            model_output_directory=os.path.join(section, 'prime'))
+            model_output_directory=os.path.join(section, 'prime'), save_total_limit=1)
+
+        # The prime model
         src.models.prime.Prime(
             enumerator=self.__enumerator, archetype=self.__archetype,
             arguments=self.__arguments, tokenizer=self.__tokenizer).exc(

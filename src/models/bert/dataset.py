@@ -41,7 +41,7 @@ class Dataset(torch.utils.data.Dataset):
         """
 
         # A sentence's words, and the tokenization of words
-        words: list[str] = self.__frame['sentence'][index].strip().split()
+        words: list[str] = self.__frame['sentence'][index].split()
         encoding: dict = self.__tokenizer(words, padding='max_length', truncation=True,
                                           is_split_into_words=True,
                                           max_length=self.__arguments.MAX_LENGTH,

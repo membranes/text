@@ -2,6 +2,7 @@
 import os
 
 import transformers
+import datasets
 
 import src.elements.arguments as ag
 import src.models.measurements
@@ -32,7 +33,7 @@ class Prime:
         self.__arguments = arguments
         self.__tokenizer = tokenizer
 
-    def exc(self, training, validating):
+    def exc(self, training: datasets.Dataset, validating: datasets.Dataset):
         """
 
         :param training: The training data.
@@ -41,9 +42,9 @@ class Prime:
         """
 
         # Training via the best hyperparameters set
-        operating = src.models.recompute.Recompute(
+        recompute = src.models.recompute.Recompute(
             arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
-        model = operating.exc(training=training, validating=validating, tokenizer=self.__tokenizer)
+        model = recompute.exc(training=training, validating=validating, tokenizer=self.__tokenizer)
         model.save_model(output_dir=os.path.join(self.__arguments.model_output_directory, 'model'))
 
         # Evaluating: vis-à-vis model & validation data
@@ -51,4 +52,4 @@ class Prime:
             validating=validating, archetype=self.__archetype).exc(model=model)
 
         src.models.measurements.Measurements(
-            originals=originals, predictions=predictions).exc()
+            originals=originals, predictions=predictions, arguments=self.__arguments).exc(segment='prime')

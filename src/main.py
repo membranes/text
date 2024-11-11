@@ -35,15 +35,20 @@ def main():
     interface = src.data.interface.Interface(s3_parameters=s3_parameters)
     data: pd.DataFrame = interface.data()
 
-    # Temporary
-    data = data.loc[:500, :]
+    # Temporary, min(arguments.N_INSTANCES, data.shape[0])
+    data.info()
+    data = data if arguments.N_INSTANCES is None else data.loc[:1000, :]
+    data.info()
+
+    # Hence
     src.models.interface.Interface(
         data=data, enumerator=interface.enumerator(), archetype=interface.archetype()).exc(
         architecture=architecture, arguments=arguments, hyperspace=hyperspace)
 
     # Transfer
-    src.data.transfer.Transfer(
-        service=service, s3_parameters=s3_parameters, architecture=architecture).exc()
+    # src.data.transfer.Transfer(
+    #     service=service, s3_parameters=s3_parameters, architecture=architecture).exc()
+
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
