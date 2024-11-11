@@ -66,7 +66,7 @@ class Steps:
         :return:
         """
 
-        training, validating, testing = self.__structures()
+        training, validating, _ = self.__structures()
 
         # Storage Section
         section = self.__arguments.model_output_directory
