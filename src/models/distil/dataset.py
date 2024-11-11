@@ -34,7 +34,7 @@ class Dataset(torch.utils.data.Dataset):
         :return:
         """
 
-        words: list[str] = self.__frame['sentence'][index].strip().split()
+        words: list[str] = self.__frame['sentence'][index].split()
         encodings = self.__tokenizer(
             words, truncation=True, is_split_into_words=True, padding='max_length', max_length=self.__length)
 
