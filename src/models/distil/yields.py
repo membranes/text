@@ -1,11 +1,15 @@
+"""Module yields.py"""
 import datasets
-import transformers
 import pandas as pd
+import transformers
 
 import src.elements.vault as vu
 
 
 class Yields:
+    """
+    Tokenization yields
+    """
 
     def __init__(self, vault: vu.Vault, tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase):
         """
