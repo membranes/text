@@ -46,8 +46,8 @@ def main():
         architecture=architecture, arguments=arguments, hyperspace=hyperspace)
 
     # Transfer
-    # src.data.transfer.Transfer(
-    #     service=service, s3_parameters=s3_parameters, architecture=architecture).exc()
+    src.data.transfer.Transfer(
+        service=service, s3_parameters=s3_parameters, architecture=architecture).exc()
 
 
     # Delete Cache Points
