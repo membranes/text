@@ -4,6 +4,7 @@ import logging
 import os
 import sys
 
+import boto3
 import pandas as pd
 import ray
 import torch
@@ -37,7 +38,7 @@ def main():
 
     # Temporary, min(arguments.N_INSTANCES, data.shape[0])
     data.info()
-    data = data if arguments.N_INSTANCES is None else data.loc[:1000, :]
+    data = data if arguments.N_INSTANCES is None else data.loc[:min(arguments.N_INSTANCES, data.shape[0]), :]
     data.info()
 
     # Hence
@@ -48,7 +49,6 @@ def main():
     # Transfer
     src.data.transfer.Transfer(
         service=service, s3_parameters=s3_parameters, architecture=architecture).exc()
-
 
     # Delete Cache Points
     src.functions.cache.Cache().exc()
@@ -76,13 +76,15 @@ if __name__ == '__main__':
     import src.data.interface
     import src.data.transfer
     import src.elements.arguments
+
     import src.functions.cache
     import src.functions.expecting
     import src.functions.service
     import src.models.interface
+
+    import src.s3.s3_parameters
     import src.settings.arguments
     import src.settings.hyperspace
-    import src.s3.s3_parameters
     import src.setup
 
     expecting = src.functions.expecting.Expecting()
@@ -95,8 +97,9 @@ if __name__ == '__main__':
     architecture = 'distil' if args.architecture is None else args.architecture
 
     # S3 S3Parameters, Service Instance
-    s3_parameters = src.s3.s3_parameters.S3Parameters().exc()
-    service = src.functions.service.Service(region_name=s3_parameters.region_name).exc()
+    connector = boto3.session.Session()
+    s3_parameters = src.s3.s3_parameters.S3Parameters(connector=connector).exc()
+    service = src.functions.service.Service(connector=connector, region_name=s3_parameters.region_name).exc()
 
     arguments = src.settings.arguments.Arguments(s3_parameters=s3_parameters).exc(
         node=f'{architecture}/arguments.json')
