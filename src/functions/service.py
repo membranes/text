@@ -20,7 +20,7 @@ class Service:
       * https://boto3.amazonaws.com/v1/documentation/api/latest/reference/core/session.html#boto3.session.Session.resource
     """
 
-    def __init__(self, region_name: str):
+    def __init__(self, connector: boto3.session.Session, region_name: str):
         """
         The constructor.
         """
@@ -28,7 +28,7 @@ class Service:
         # Profile/Auto-login
         # This session will retrieve the developer's <default> Amazon Web Services (AWS) profile
         # details, which allows for programmatic interaction with AWS.
-        connector = boto3.session.Session()
+        # connector = boto3.session.Session()
 
         # The S3 resource, S3 client, secrets, etc.
         self.__s3_resource: boto3.session.Session.resource = connector.resource(
