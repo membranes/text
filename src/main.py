@@ -76,13 +76,15 @@ if __name__ == '__main__':
     import src.data.interface
     import src.data.transfer
     import src.elements.arguments
+
     import src.functions.cache
     import src.functions.expecting
     import src.functions.service
     import src.models.interface
+
+    import src.s3.s3_parameters
     import src.settings.arguments
     import src.settings.hyperspace
-    import src.s3.s3_parameters
     import src.setup
 
     expecting = src.functions.expecting.Expecting()
