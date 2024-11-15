@@ -14,9 +14,6 @@ class Config:
 
         Variables denoting a path - including or excluding a filename - have an underscore suffix; this suffix is
         excluded for names such as warehouse, storage, depository, etc.<br><br>
-
-        The variable <b>self.s3_parameters_template_</b> points to a template of
-        Amazon S3 (Simple Storage Service) parameters & arguments.
         """
 
         self.warehouse = os.path.join(os.getcwd(), 'warehouse')
