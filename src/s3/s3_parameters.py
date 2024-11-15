@@ -27,9 +27,10 @@ class S3Parameters:
 
     def __init__(self, connector: boto3.session.Session):
         """
-        Constructor
-        """
 
+        :param connector: A boto3 session instance, it retrieves the developer's <default> Amazon
+                          Web Services (AWS) profile details, which allows for programmatic interaction with AWS.
+        """
 
         self.__s3_client: boto3.session.Session.client = connector.client(
             service_name='s3')
@@ -44,9 +45,6 @@ class S3Parameters:
         :return:
             A dictionary, or excerpt dictionary, of YAML file contents
         """
-
-        # blob = src.functions.serial.Serial().api(url=self.__configurations.s3_parameters_template_)
-        # blob['parameters']
 
         buffer = src.s3.unload.Unload(s3_client=self.__s3_client).exc(
             bucket_name=self.__secret.exc(secret_id='DispatchTokenClassification', node='configurations'),
