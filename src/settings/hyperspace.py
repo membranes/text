@@ -33,7 +33,7 @@ class Hyperspace:
 
         key_name = 'architecture/' + node
 
-        buffer = src.s3.unload.Unload(service=self.__service).exc(
+        buffer = src.s3.unload.Unload(s3_client=self.__service.s3_client).exc(
             bucket_name=self.__s3_parameters.configurations, key_name=key_name)
         dictionary = json.loads(buffer)
 
