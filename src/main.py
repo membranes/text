@@ -3,8 +3,8 @@ import argparse
 import logging
 import os
 import sys
-import boto3
 
+import boto3
 import pandas as pd
 import ray
 import torch
