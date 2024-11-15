@@ -22,13 +22,13 @@ class Secret:
 
     """
 
-    def __init__(self) -> None:
+    def __init__(self, connector: boto3.session.Session) -> None:
         """
         Constructor
         """
 
-        self.__session = boto3.session.Session()
-        self.__secrets_manager = self.__session.client(service_name='secretsmanager')
+        # self.__session = boto3.session.Session()
+        self.__secrets_manager = connector.client(service_name='secretsmanager')
 
     def __get__value(self, secret_id: str) -> str:
         """
