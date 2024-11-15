@@ -1,12 +1,14 @@
 """Module s3_parameters.py"""
 import logging
+
+import boto3
+import yaml
+
 import config
 import src.elements.s3_parameters as s3p
 import src.functions.secret
 import src.functions.serial
-import boto3
 import src.s3.unload
-import yaml
 
 
 class S3Parameters:
