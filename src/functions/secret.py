@@ -24,7 +24,9 @@ class Secret:
 
     def __init__(self, connector: boto3.session.Session) -> None:
         """
-        Constructor
+
+        :param connector: A boto3 session instance, it retrieves the developer's <default> Amazon
+                          Web Services (AWS) profile details, which allows for programmatic interaction with AWS.
         """
 
         # self.__session = boto3.session.Session()
@@ -33,7 +35,6 @@ class Secret:
     def __get__value(self, secret_id: str) -> str:
         """
         The reader of a secret key's value.
-
 
         :param secret_id: The identification code of the secret
 
