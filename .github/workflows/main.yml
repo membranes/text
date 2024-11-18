@@ -14,7 +14,7 @@ jobs:
       max-parallel: 4
       fail-fast: false
       matrix:
-        python-version: ['3.10']
+        python-version: ['3.11']
 
     steps:
       - uses: actions/checkout@v4
@@ -95,25 +95,25 @@ jobs:
           echo "============================= pylint session starts =============================="
           
           printf "\n Package src/data"
-          pylint --rcfile .pylintrc src/data
+          pylint --rcfile pylintrc src/data
           
           printf "\n Package src/elements"
-          pylint --rcfile .pylintrc src/elements
+          pylint --rcfile pylintrc src/elements
           
           printf "\n Package src/functions"
-          pylint --rcfile .pylintrc src/functions
+          pylint --rcfile pylintrc src/functions
           
           printf "\n Package src/models/bert"
-          pylint --rcfile .pylintrc src/models/bert
+          pylint --rcfile pylintrc src/models/bert
           
           printf "\n Package src/models/distil"
-          pylint --rcfile .pylintrc src/models/distil
+          pylint --rcfile pylintrc src/models/distil
           
           printf "\n Package src/models/*.py"
-          pylint --rcfile .pylintrc src/models/*.py
+          pylint --rcfile pylintrc src/models/*.py
           
           printf "\n Package src/s3"
-          pylint --rcfile .pylintrc src/s3
+          pylint --rcfile pylintrc src/s3
 
       - name: Test with pytest
         run: |
