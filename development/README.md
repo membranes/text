@@ -104,16 +104,16 @@ The GitHub Actions script [main.yml](../.github/workflows/main.yml) conducts cod
 The directive
 
 ```shell
-pylint --generate-rcfile > .pylintrc
+pylint --generate-rcfile > pylintrc
 ```
 
-generates the dotfile `.pylintrc` of the static code analyser [pylint](https://pylint.pycqa.org/en/latest/user_guide/checkers/features.html).  Analyse a directory via the command
+generates the dotfile `pylintrc` of the static code analyser [pylint](https://pylint.pycqa.org/en/latest/user_guide/checkers/features.html).  Analyse a directory via the command
 
 ```shell
-python -m pylint --rcfile .pylintrc {directory}
+python -m pylint --rcfile pylintrc {directory}
 ```
 
-The `.pylintrc` file of this template project has been **amended to adhere to team norms**, including
+The `pylintrc` file of this template project has been **amended to adhere to team norms**, including
 
 * Maximum number of characters on a single line.
   > max-line-length=127
