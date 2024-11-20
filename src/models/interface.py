@@ -72,11 +72,10 @@ class Interface:
             case 'bert':
                 src.models.bert.steps.Steps(
                     enumerator=self.__enumerator, archetype=self.__archetype,
-                    arguments=arguments, hyperspace=hyperspace, vault=self.__vault).exc()
+                    arguments=arguments, hyperspace=hyperspace, vault=self.__vault)
             case 'electra':
                 logging.info('ELECTRA: Future')
             case 'roberta':
-                logging.info(self.__vault.training)
                 logging.info('ROBERTA: Future')
             case 'distil':
                 src.models.distil.steps.Steps(
