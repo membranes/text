@@ -58,6 +58,7 @@ class Arguments(typing.NamedTuple):
     N_TRIALS: int
     N_INSTANCES: int
     save_total_limit: int
+    early_stopping_patience: int
     perturbation_interval: int
     quantile_fraction: float
     resample_probability: float
