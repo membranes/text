@@ -7,9 +7,10 @@ import transformers
 import src.elements.arguments as ag
 import src.elements.hyperspace as hp
 import src.functions.directories
-import src.models.algorithm
-import src.models.metrics
+
+
 import src.models.training_arguments
+import src.models.prerequisites
 import src.models.tuning
 
 
@@ -32,9 +33,6 @@ class Hyperpoints:
         self.__enumerator = enumerator
         self.__archetype = archetype
 
-        # Intelligence
-        self.__algorithm = src.models.algorithm.Algorithm(architecture=self.__arguments.architecture)
-
         # Directory preparation
         src.functions.directories.Directories().cleanup(path=self.__arguments.model_output_directory)
 
@@ -51,32 +49,15 @@ class Hyperpoints:
         :return:
         """
 
-        # Training Arguments
-        args = src.models.training_arguments.TrainingArguments(arguments=self.__arguments).exc()
-
-        # Model
-        algorithm = self.__algorithm.exc(
-            arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)
-
-        # Metrics
-        metrics = src.models.metrics.Metrics(archetype=self.__archetype)
+        # The transformers.Trainer
+        trainer = src.models.prerequisites.Prerequisites(
+            arguments=self.__arguments, enumerator=self.__enumerator, archetype=self.__archetype)(
+            training=training, validating=validating, tokenizer=tokenizer)
 
         # Tuning
         tuning = src.models.tuning.Tuning(arguments=self.__arguments, hyperspace=self.__hyperspace)
 
-        # Data Collator
-        data_collator: transformers.DataCollatorForTokenClassification = (
-            transformers.DataCollatorForTokenClassification(tokenizer=tokenizer))
-
-        # Hence
-        trainer = transformers.Trainer(
-            model_init=algorithm.model,
-            args=args, data_collator=data_collator,
-            train_dataset=training, eval_dataset=validating,
-            tokenizer=tokenizer,
-            compute_metrics=metrics.exc
-        )
-
+        # Best
         best = trainer.hyperparameter_search(
             hp_space=tuning.hp_space,
             compute_objective=tuning.compute_objective,
