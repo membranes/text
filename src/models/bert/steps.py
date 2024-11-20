@@ -99,6 +99,9 @@ class Steps:
             enumerator=self.__enumerator, archetype=self.__archetype, arguments=self.__arguments).exc(
             training=training, validating=validating, tokenizer=self.__tokenizer)
 
+        # Save
+        model.save_model(output_dir=os.path.join(self.__arguments.model_output_directory, 'model'))
+
         # Evaluating: vis-à-vis model & validation data
         originals, predictions = src.models.validation.Validation(
             validating=validating, archetype=self.__archetype).exc(model=model)
