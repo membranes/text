@@ -12,7 +12,9 @@ import src.elements.vault as vu
 import src.models.bert.structures
 import src.models.bert.tokenizer
 import src.models.hyperpoints
+import src.models.measurements
 import src.models.prime
+import src.models.validation
 
 
 class Steps:
@@ -47,6 +49,9 @@ class Steps:
         self.__tokenizer: transformers.tokenization_utils_base.PreTrainedTokenizerBase = (
             src.models.bert.tokenizer.Tokenizer(arguments=self.__arguments)())
 
+        # Storage Section
+        self.__section = self.__arguments.model_output_directory
+
     def __structures(self) -> typing.Tuple[datasets.Dataset, datasets.Dataset, datasets.Dataset]:
         """
         structures.training(), structures.validating(), structures.testing()
@@ -68,18 +73,15 @@ class Steps:
 
         training, validating, _ = self.__structures()
 
-        # Storage Section
-        section = self.__arguments.model_output_directory
-
         # The path for hyperparameter artefacts
         self.__arguments = self.__arguments._replace(
-            model_output_directory=os.path.join(section, 'hyperparameters'))
+            model_output_directory=os.path.join(self.__section, 'hyperparameters'))
 
         # Determining the optimal hyperparameters
-        optimal = src.models.hyperpoints.Hyperpoints(
+        hyperpoints = src.models.hyperpoints.Hyperpoints(
             arguments=self.__arguments, hyperspace=self.__hyperspace,
             enumerator=self.__enumerator, archetype=self.__archetype)
-        best = optimal(training=training, validating=validating, tokenizer=self.__tokenizer)
+        best = hyperpoints(training=training, validating=validating, tokenizer=self.__tokenizer)
         logging.info(best)
 
         # Hence, update the modelling variables
@@ -89,10 +91,17 @@ class Steps:
 
         # Additionally, prepare the artefacts storage area for the best model, vis-à-vis best hyperparameters set.
         self.__arguments = self.__arguments._replace(
-            model_output_directory=os.path.join(section, 'prime'), save_total_limit=1)
+            model_output_directory=os.path.join(self.__section, 'prime'),
+            EPOCHS=2*self.__arguments.EPOCHS, save_total_limit=1)
 
         # The prime model
-        src.models.prime.Prime(
-            enumerator=self.__enumerator, archetype=self.__archetype,
-            arguments=self.__arguments, tokenizer=self.__tokenizer).exc(
-            training=training, validating=validating)
+        model = src.models.prime.Prime(
+            enumerator=self.__enumerator, archetype=self.__archetype, arguments=self.__arguments).exc(
+            training=training, validating=validating, tokenizer=self.__tokenizer)
+
+        # Evaluating: vis-à-vis model & validation data
+        originals, predictions = src.models.validation.Validation(
+            validating=validating, archetype=self.__archetype).exc(model=model)
+
+        src.models.measurements.Measurements(
+            originals=originals, predictions=predictions, arguments=self.__arguments).exc(segment='prime')

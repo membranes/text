@@ -12,6 +12,8 @@ import src.models.distil.tokenizer
 import src.models.distil.yields
 import src.models.hyperpoints
 import src.models.prime
+import src.models.validation
+import src.models.measurements
 
 
 class Steps:
@@ -63,10 +65,10 @@ class Steps:
             model_output_directory=os.path.join(self.__section, 'hyperparameters'))
 
         # Determining the optimal hyperparameters
-        optimal = src.models.hyperpoints.Hyperpoints(
+        hyperpoints = src.models.hyperpoints.Hyperpoints(
             arguments=self.__arguments, hyperspace=self.__hyperspace,
             enumerator=self.__enumerator, archetype=self.__archetype)
-        best = optimal(training=yields['training'], validating=yields['validating'], tokenizer=self.__tokenizer)
+        best = hyperpoints(training=yields['training'], validating=yields['validating'], tokenizer=self.__tokenizer)
         logging.info(best)
 
         # Hence, update the modelling variables
@@ -75,12 +77,23 @@ class Steps:
             WEIGHT_DECAY=best.hyperparameters.get('weight_decay'),
             TRAIN_BATCH_SIZE=best.hyperparameters.get('per_device_train_batch_size'))
 
-        # Additionally, prepare the artefacts storage area for the best model, vis-à-vis best hyperparameters set.
+        # Additionally, prepare the artefacts storage area for the best model, vis-à-vis best hyperparameters
+        # set, and save a checkpoint at the optimal training point only by setting save_total_limit = 1.
         self.__arguments = self.__arguments._replace(
-            model_output_directory=os.path.join(self.__section, 'prime'), save_total_limit=1)
+            model_output_directory=os.path.join(self.__section, 'prime'),
+            EPOCHS=2*self.__arguments.EPOCHS, save_total_limit=1)
 
         # The prime model
-        src.models.prime.Prime(
-            enumerator=self.__enumerator, archetype=self.__archetype,
-            arguments=self.__arguments, tokenizer=self.__tokenizer).exc(
-            training=yields['training'], validating=yields['validating'])
+        model = src.models.prime.Prime(
+            enumerator=self.__enumerator, archetype=self.__archetype, arguments=self.__arguments).exc(
+            training=yields['training'], validating=yields['validating'], tokenizer=self.__tokenizer)
+
+        # Save
+        model.save_model(output_dir=os.path.join(self.__arguments.model_output_directory, 'model'))
+
+        # Evaluating: vis-à-vis model & validation data
+        originals, predictions = src.models.validation.Validation(
+            validating=yields['validating'], archetype=self.__archetype).exc(model=model)
+
+        src.models.measurements.Measurements(
+            originals=originals, predictions=predictions, arguments=self.__arguments).exc(segment='prime')
