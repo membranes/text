@@ -12,7 +12,7 @@ import src.models.distil.tokenizer
 import src.models.distil.yields
 import src.models.hyperpoints
 import src.models.prime
-import src.models.validation
+import src.models.estimates
 import src.models.measurements
 
 
@@ -92,7 +92,7 @@ class Steps:
         model.save_model(output_dir=os.path.join(self.__arguments.model_output_directory, 'model'))
 
         # Evaluating: vis-à-vis model & validation data
-        originals, predictions = src.models.validation.Validation(
+        originals, predictions = src.models.estimates.Estimates(
             blob=yields['validating'], archetype=self.__archetype).exc(model=model)
 
         src.models.measurements.Measurements(
