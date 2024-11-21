@@ -107,4 +107,5 @@ class Steps:
             blob=validating, archetype=self.__archetype).exc(model=model)
 
         src.models.measurements.Measurements(
-            originals=originals, predictions=predictions, arguments=self.__arguments).exc(segment='prime')
+            originals=originals, predictions=predictions, arguments=self.__arguments).exc(
+            segment=os.path.join('prime', 'metrics', 'validating'))
