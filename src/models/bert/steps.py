@@ -14,7 +14,7 @@ import src.models.bert.tokenizer
 import src.models.hyperpoints
 import src.models.measurements
 import src.models.prime
-import src.models.validation
+import src.models.estimates
 
 
 class Steps:
@@ -103,8 +103,8 @@ class Steps:
         model.save_model(output_dir=os.path.join(self.__arguments.model_output_directory, 'model'))
 
         # Evaluating: vis-à-vis model & validation data
-        originals, predictions = src.models.validation.Validation(
-            validating=validating, archetype=self.__archetype).exc(model=model)
+        originals, predictions = src.models.estimates.Estimates(
+            blob=validating, archetype=self.__archetype).exc(model=model)
 
         src.models.measurements.Measurements(
             originals=originals, predictions=predictions, arguments=self.__arguments).exc(segment='prime')
