@@ -93,7 +93,7 @@ class Steps:
 
         # Evaluating: vis-à-vis model & validation data
         originals, predictions = src.models.validation.Validation(
-            validating=yields['validating'], archetype=self.__archetype).exc(model=model)
+            blob=yields['validating'], archetype=self.__archetype).exc(model=model)
 
         src.models.measurements.Measurements(
             originals=originals, predictions=predictions, arguments=self.__arguments).exc(segment='prime')
