@@ -91,11 +91,11 @@ class Measurements:
     def exc(self, segment: str):
         """
 
-        :param segment: prime or hyperparameters
+        :param segment: path segment
         :return:
         """
 
-        path = os.path.join(self.__configurations.artefacts_, self.__arguments.architecture, segment, 'metrics')
+        path = os.path.join(self.__configurations.artefacts_, self.__arguments.architecture, segment)
         src.functions.directories.Directories().create(path=path)
 
         self.__sci(path=path)
