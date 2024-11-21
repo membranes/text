@@ -1,4 +1,4 @@
-"""Module validation.py"""
+"""Module estimates.py"""
 import logging
 import typing
 
@@ -7,9 +7,9 @@ import numpy as np
 import transformers
 
 
-class Validation:
+class Estimates:
     """
-    Executes the validation steps.
+    Determines the predictions w.r.t. (with respect to) a given data set.
     """
 
     def __init__(self, blob: datasets.Dataset, archetype: dict):
