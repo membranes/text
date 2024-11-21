@@ -1,6 +1,6 @@
 """Module steps.py"""
 import logging
-import os.path
+import os
 
 import datasets
 import transformers.tokenization_utils_base
