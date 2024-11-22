@@ -3,7 +3,7 @@ import logging
 import os
 
 import datasets
-import transformers.tokenization_utils_base
+import transformers
 
 import src.elements.arguments as ag
 import src.elements.hyperspace as hp
@@ -84,7 +84,7 @@ class Steps:
             EPOCHS=2*self.__arguments.EPOCHS, save_total_limit=1)
 
         # The prime model
-        model = src.models.prime.Prime(
+        model: transformers.Trainer = src.models.prime.Prime(
             enumerator=self.__enumerator, archetype=self.__archetype, arguments=self.__arguments).exc(
             training=yields['training'], validating=yields['validating'], tokenizer=self.__tokenizer)
 
