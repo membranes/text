@@ -12,9 +12,9 @@ import src.models.distil.tokenizer
 import src.models.distil.yields
 import src.models.hyperpoints
 import src.models.prime
-import src.evaluate.estimates
-import src.evaluate.measurements
-import src.evaluate.interface
+import src.valuate.estimates
+import src.valuate.measurements
+import src.valuate.interface
 
 
 class Steps:
@@ -93,7 +93,7 @@ class Steps:
         model.save_model(output_dir=os.path.join(self.__arguments.model_output_directory, 'model'))
 
         # Evaluating: vis-à-vis model & validation data
-        interface = src.evaluate.interface.Interface(model=model, archetype=self.__archetype, arguments=self.__arguments)
+        interface = src.valuate.interface.Interface(model=model, archetype=self.__archetype, arguments=self.__arguments)
 
         interface.exc(blob=yields['validating'],
                       path=os.path.join(self.__arguments.model_output_directory, 'metrics', 'validating'))
