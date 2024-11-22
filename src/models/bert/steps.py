@@ -95,7 +95,7 @@ class Steps:
             EPOCHS=2*self.__arguments.EPOCHS, save_total_limit=1)
 
         # The prime model
-        model = src.models.prime.Prime(
+        model: transformers.Trainer = src.models.prime.Prime(
             enumerator=self.__enumerator, archetype=self.__archetype, arguments=self.__arguments).exc(
             training=training, validating=validating, tokenizer=self.__tokenizer)
 
