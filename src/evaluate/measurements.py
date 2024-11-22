@@ -6,7 +6,7 @@ import seqeval.metrics as sme
 import sklearn.metrics as sm
 
 import config
-import src.models.numerics
+import src.evaluate.numerics
 import src.elements.arguments as ag
 import src.functions.objects
 import src.functions.directories
@@ -81,7 +81,7 @@ class Measurements:
         :return:
         """
 
-        values: dict = src.models.numerics.Numerics(
+        values: dict = src.evaluate.numerics.Numerics(
             originals=self.__originals, predictions=self.__predictions).exc()
         self.__objects.write(nodes=values, path=os.path.join(path, 'fundamental.json'))
 
