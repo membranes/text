@@ -15,6 +15,7 @@ import src.models.hyperpoints
 import src.evaluate.measurements
 import src.models.prime
 import src.evaluate.estimates
+import src.evaluate.interface
 
 
 class Steps:
@@ -103,9 +104,7 @@ class Steps:
         model.save_model(output_dir=os.path.join(self.__arguments.model_output_directory, 'model'))
 
         # Evaluating: vis-à-vis model & validation data
-        originals, predictions = src.evaluate.estimates.Estimates(
-            blob=validating, archetype=self.__archetype).exc(model=model)
+        interface = src.evaluate.interface.Interface(model=model, archetype=self.__archetype)
+        interface.exc(blob=validating, arguments=self.__arguments,
+                      path=os.path.join(self.__arguments.model_output_directory, 'metrics', 'validating'))
 
-        src.evaluate.measurements.Measurements(
-            originals=originals, predictions=predictions, arguments=self.__arguments).exc(
-            segment=os.path.join('prime', 'metrics', 'validating'))
