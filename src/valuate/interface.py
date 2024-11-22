@@ -28,7 +28,6 @@ class Interface:
         """
 
         :param blob:
-        :param arguments:
         :param path:
         :return:
         """
@@ -38,4 +37,3 @@ class Interface:
 
         src.valuate.measurements.Measurements(
             originals=originals, predictions=predictions, arguments=self.__arguments).exc(path=path)
-
