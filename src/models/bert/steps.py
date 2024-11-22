@@ -12,9 +12,9 @@ import src.elements.vault as vu
 import src.models.bert.structures
 import src.models.bert.tokenizer
 import src.models.hyperpoints
-import src.models.measurements
+import src.evaluate.measurements
 import src.models.prime
-import src.models.estimates
+import src.evaluate.estimates
 
 
 class Steps:
@@ -103,9 +103,9 @@ class Steps:
         model.save_model(output_dir=os.path.join(self.__arguments.model_output_directory, 'model'))
 
         # Evaluating: vis-à-vis model & validation data
-        originals, predictions = src.models.estimates.Estimates(
+        originals, predictions = src.evaluate.estimates.Estimates(
             blob=validating, archetype=self.__archetype).exc(model=model)
 
-        src.models.measurements.Measurements(
+        src.evaluate.measurements.Measurements(
             originals=originals, predictions=predictions, arguments=self.__arguments).exc(
             segment=os.path.join('prime', 'metrics', 'validating'))
