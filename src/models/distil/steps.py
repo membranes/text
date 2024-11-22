@@ -12,8 +12,8 @@ import src.models.distil.tokenizer
 import src.models.distil.yields
 import src.models.hyperpoints
 import src.models.prime
-import src.models.estimates
-import src.models.measurements
+import src.evaluate.estimates
+import src.evaluate.measurements
 
 
 class Steps:
@@ -92,9 +92,9 @@ class Steps:
         model.save_model(output_dir=os.path.join(self.__arguments.model_output_directory, 'model'))
 
         # Evaluating: vis-à-vis model & validation data
-        originals, predictions = src.models.estimates.Estimates(
+        originals, predictions = src.evaluate.estimates.Estimates(
             blob=yields['validating'], archetype=self.__archetype).exc(model=model)
 
-        src.models.measurements.Measurements(
+        src.evaluate.measurements.Measurements(
             originals=originals, predictions=predictions, arguments=self.__arguments).exc(
             segment=os.path.join('prime', 'metrics', 'validating'))
