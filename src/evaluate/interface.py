@@ -22,12 +22,12 @@ class Interface:
         self.__model = model
         self.__archetype = archetype
 
-    def exc(self, blob: datasets.Dataset, arguments: ag.Arguments, segment: str):
+    def exc(self, blob: datasets.Dataset, arguments: ag.Arguments, path: str):
         """
 
         :param blob:
         :param arguments:
-        :param segment:
+        :param path:
         :return:
         """
 
@@ -35,5 +35,5 @@ class Interface:
             blob=blob, archetype=self.__archetype).exc(model=self.__model)
 
         src.evaluate.measurements.Measurements(
-            originals=originals, predictions=predictions, arguments=arguments).exc(segment=segment)
+            originals=originals, predictions=predictions, arguments=arguments).exc(path=path)
 
