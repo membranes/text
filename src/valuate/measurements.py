@@ -6,7 +6,7 @@ import seqeval.metrics as sme
 import sklearn.metrics as sm
 
 import config
-import src.evaluate.numerics
+import src.valuate.numerics
 import src.elements.arguments as ag
 import src.functions.objects
 import src.functions.directories
