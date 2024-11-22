@@ -104,7 +104,7 @@ class Steps:
         model.save_model(output_dir=os.path.join(self.__arguments.model_output_directory, 'model'))
 
         # Evaluating: vis-à-vis model & validation data
-        interface = src.valuate.interface.Interface(model=model, archetype=self.__archetype, arguments=self.__arguments)
+        interface = src.valuate.interface.Interface(model=model, archetype=self.__archetype)
 
         interface.exc(blob=validating,
                       path=os.path.join(self.__arguments.model_output_directory, 'metrics', 'validating'))
