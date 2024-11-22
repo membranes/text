@@ -3,8 +3,8 @@ import datasets
 import transformers
 
 import src.elements.arguments as ag
-import src.evaluate.estimates
-import src.evaluate.measurements
+import src.valuate.estimates
+import src.valuate.measurements
 
 
 class Interface:
@@ -33,9 +33,9 @@ class Interface:
         :return:
         """
 
-        originals, predictions = src.evaluate.estimates.Estimates(
+        originals, predictions = src.valuate.estimates.Estimates(
             blob=blob, archetype=self.__archetype).exc(model=self.__model)
 
-        src.evaluate.measurements.Measurements(
+        src.valuate.measurements.Measurements(
             originals=originals, predictions=predictions, arguments=self.__arguments).exc(path=path)
 
