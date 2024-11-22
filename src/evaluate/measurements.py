@@ -88,14 +88,13 @@ class Measurements:
         # Preview
         self.__logger.info('numerics:\n%s', values)
 
-    def exc(self, segment: str):
+    def exc(self, path: str):
         """
 
-        :param segment: path segment
+        :param path: path segment
         :return:
         """
 
-        path = os.path.join(self.__configurations.artefacts_, self.__arguments.architecture, segment)
         src.functions.directories.Directories().create(path=path)
 
         self.__sci(path=path)
