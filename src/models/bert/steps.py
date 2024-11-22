@@ -12,9 +12,10 @@ import src.elements.vault as vu
 import src.models.bert.structures
 import src.models.bert.tokenizer
 import src.models.hyperpoints
-import src.models.measurements
+import src.valuate.measurements
 import src.models.prime
-import src.models.validation
+import src.valuate.estimates
+import src.valuate.interface
 
 
 class Steps:
@@ -71,7 +72,7 @@ class Steps:
         :return:
         """
 
-        training, validating, _ = self.__structures()
+        training, validating, testing = self.__structures()
 
         # The path for hyperparameter artefacts
         self.__arguments = self.__arguments._replace(
@@ -95,7 +96,7 @@ class Steps:
             EPOCHS=2*self.__arguments.EPOCHS, save_total_limit=1)
 
         # The prime model
-        model = src.models.prime.Prime(
+        model: transformers.Trainer = src.models.prime.Prime(
             enumerator=self.__enumerator, archetype=self.__archetype, arguments=self.__arguments).exc(
             training=training, validating=validating, tokenizer=self.__tokenizer)
 
@@ -103,8 +104,9 @@ class Steps:
         model.save_model(output_dir=os.path.join(self.__arguments.model_output_directory, 'model'))
 
         # Evaluating: vis-à-vis model & validation data
-        originals, predictions = src.models.validation.Validation(
-            validating=validating, archetype=self.__archetype).exc(model=model)
+        interface = src.valuate.interface.Interface(model=model, archetype=self.__archetype)
 
-        src.models.measurements.Measurements(
-            originals=originals, predictions=predictions, arguments=self.__arguments).exc(segment='prime')
+        interface.exc(blob=validating,
+                      path=os.path.join(self.__arguments.model_output_directory, 'metrics', 'validating'))
+        interface.exc(blob=testing,
+                      path=os.path.join(self.__arguments.model_output_directory, 'metrics', 'testing'))

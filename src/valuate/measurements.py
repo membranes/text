@@ -5,11 +5,9 @@ import os
 import seqeval.metrics as sme
 import sklearn.metrics as sm
 
-import config
-import src.models.numerics
-import src.elements.arguments as ag
-import src.functions.objects
 import src.functions.directories
+import src.functions.objects
+import src.valuate.numerics
 
 
 class Measurements:
@@ -17,20 +15,17 @@ class Measurements:
     For classification metrics calculations
     """
 
-    def __init__(self, originals: list, predictions: list, arguments: ag.Arguments):
+    def __init__(self, originals: list, predictions: list):
         """
 
         :param originals: The true values, a simple, i.e., un-nested, list.<br>
         :param predictions: The predictions, a simple list, i.e., un-nested, list.<br>
-        :param arguments: A suite of values/arguments for machine learning model development.<br>
         """
 
         self.__originals = originals
         self.__predictions = predictions
-        self.__arguments = arguments
 
         # Instances
-        self.__configurations = config.Config()
         self.__objects = src.functions.objects.Objects()
 
         # Logging
@@ -81,21 +76,20 @@ class Measurements:
         :return:
         """
 
-        values: dict = src.models.numerics.Numerics(
+        values: dict = src.valuate.numerics.Numerics(
             originals=self.__originals, predictions=self.__predictions).exc()
         self.__objects.write(nodes=values, path=os.path.join(path, 'fundamental.json'))
 
         # Preview
         self.__logger.info('numerics:\n%s', values)
 
-    def exc(self, segment: str):
+    def exc(self, path: str):
         """
 
-        :param segment: prime or hyperparameters
+        :param path: path segment
         :return:
         """
 
-        path = os.path.join(self.__configurations.artefacts_, self.__arguments.architecture, segment, 'metrics')
         src.functions.directories.Directories().create(path=path)
 
         self.__sci(path=path)

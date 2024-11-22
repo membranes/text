@@ -1,4 +1,4 @@
-"""Module validation.py"""
+"""Module estimates.py"""
 import logging
 import typing
 
@@ -7,18 +7,18 @@ import numpy as np
 import transformers
 
 
-class Validation:
+class Estimates:
     """
-    Executes the validation steps.
+    Determines the predictions w.r.t. (with respect to) a given data set.
     """
 
-    def __init__(self, validating: datasets.Dataset, archetype: dict):
+    def __init__(self, blob: datasets.Dataset, archetype: dict):
         """
 
-        :param validating:
+        :param blob:
         """
 
-        self.__validating = validating
+        self.__blob = blob
         self.__archetype = archetype
 
         # Logging
@@ -36,7 +36,7 @@ class Validation:
         """
 
         # The outputs bucket
-        bucket = model.predict(self.__validating)
+        bucket = model.predict(self.__blob)
         __labels: np.ndarray = bucket.label_ids
         __predictions: np.ndarray = bucket.predictions
         self.__logger.info('Labels: %s', __labels.shape)

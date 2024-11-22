@@ -1,9 +1,9 @@
 """Module steps.py"""
 import logging
-import os.path
+import os
 
 import datasets
-import transformers.tokenization_utils_base
+import transformers
 
 import src.elements.arguments as ag
 import src.elements.hyperspace as hp
@@ -12,8 +12,9 @@ import src.models.distil.tokenizer
 import src.models.distil.yields
 import src.models.hyperpoints
 import src.models.prime
-import src.models.validation
-import src.models.measurements
+import src.valuate.estimates
+import src.valuate.measurements
+import src.valuate.interface
 
 
 class Steps:
@@ -84,7 +85,7 @@ class Steps:
             EPOCHS=2*self.__arguments.EPOCHS, save_total_limit=1)
 
         # The prime model
-        model = src.models.prime.Prime(
+        model: transformers.Trainer = src.models.prime.Prime(
             enumerator=self.__enumerator, archetype=self.__archetype, arguments=self.__arguments).exc(
             training=yields['training'], validating=yields['validating'], tokenizer=self.__tokenizer)
 
@@ -92,8 +93,11 @@ class Steps:
         model.save_model(output_dir=os.path.join(self.__arguments.model_output_directory, 'model'))
 
         # Evaluating: vis-à-vis model & validation data
-        originals, predictions = src.models.validation.Validation(
-            validating=yields['validating'], archetype=self.__archetype).exc(model=model)
+        interface = src.valuate.interface.Interface(model=model, archetype=self.__archetype)
 
-        src.models.measurements.Measurements(
-            originals=originals, predictions=predictions, arguments=self.__arguments).exc(segment='prime')
+        interface.exc(
+            blob=yields['validating'],
+            path=os.path.join(self.__arguments.model_output_directory, 'metrics', 'validating'))
+        interface.exc(
+            blob=yields['testing'],
+            path=os.path.join(self.__arguments.model_output_directory, 'metrics', 'testing'))
