@@ -44,7 +44,7 @@ class Config:
         '''
         self.fraction = 0.8
         self.aside = 0.25
-        self.seed = 3
+        self.seed = 5
 
 
         '''
