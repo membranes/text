@@ -39,12 +39,12 @@ class Config:
         '''
         Splitting fractions:
             * 80% of the data for training
-            * A tenth of the remaining 20% for testing, i.e., 18%
-              for validating, 2% for testing
+            * A quarter, i.e., 0.25/100, of the remaining 20% for testing; 15%
+              for validating, 5% for testing.
         '''
         self.fraction = 0.8
-        self.aside = 0.1
-        self.seed = 5
+        self.aside = 0.25
+        self.seed = 3
 
 
         '''

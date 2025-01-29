@@ -40,7 +40,7 @@ class Splittings:
 
         blob = data.copy()
 
-        parent = blob.sample(frac=frac, random_state=self.__configurations.seed)
+        parent = blob.sample(frac=frac, random_state=self.__configurations.seed, replace=False)
         child = blob.drop(parent.index)
 
         parent.reset_index(drop=True, inplace=True)
