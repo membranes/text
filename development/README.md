@@ -4,6 +4,12 @@
 
 <br>
 
+> [!IMPORTANT] 
+> [Hugging Face Training Containers](https://github.com/aws/deep-learning-containers/blob/master/available_images.md#huggingface-training-containers)
+> [Hugging Face Inference Containers](https://github.com/aws/deep-learning-containers/blob/master/available_images.md#huggingface-inference-containers)
+
+<br>
+
 ### Remote Development
 
 For this Python project/template, the remote development environment requires
